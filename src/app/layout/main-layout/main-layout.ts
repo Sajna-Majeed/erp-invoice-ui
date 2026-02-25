@@ -4,6 +4,8 @@ import { Router,NavigationEnd } from '@angular/router';
 import { ThemeService } from '../../core/service/theme-services/theme';
 import { AuthService } from '../../core/service/api-services/auth/auth';
 import { SHARED_IMPORTS } from '../../shared/shared-imports';
+import { UserInfo } from '../../models/interface/user';
+import { UserService } from '../../core/service/model-services/user/user';
 @Component({
   selector: 'app-main-layout',
   imports: [SHARED_IMPORTS],
@@ -14,12 +16,14 @@ export class MainLayoutComponent {
 
   isMobile = false;
 currentRoute = '';
-
-
+isCollapsed = false;
+ user: UserInfo | null = null;
+  
   constructor(
     private breakpointObserver: BreakpointObserver,
     public themeService: ThemeService,
     private auth: AuthService,
+    private userService: UserService,
     private router: Router
   ) {
     this.breakpointObserver.observe([Breakpoints.Handset])
@@ -27,14 +31,23 @@ currentRoute = '';
         this.isMobile = result.matches;
       });
   }
+
+
+
 ngOnInit() {
+  
   this.router.events.subscribe(event => {
     if (event instanceof NavigationEnd) {
       this.currentRoute = this.router.url.replace('/', '').toUpperCase();
     }
   });
+   this.user = this.userService.getUser();
 }
 
+
+toggleSidebar() {
+  this.isCollapsed = !this.isCollapsed;
+}
   logout() {
     this.auth.logout();
     this.router.navigate(['/']);

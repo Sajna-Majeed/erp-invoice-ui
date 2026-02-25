@@ -17,6 +17,7 @@ export class UserService {
 
   // ✅ Save user info after login
   setUser(user: UserInfo) {
+    this.clearUser(); // Clear any existing user data
     this.user = user;
     localStorage.setItem('user', JSON.stringify(user));
   }

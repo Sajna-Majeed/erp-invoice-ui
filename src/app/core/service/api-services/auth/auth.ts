@@ -16,6 +16,15 @@ export class AuthService {
   setToken(token: string) {
     localStorage.setItem('token', token);
   }
+  setRefreshToken(token: string) {
+    localStorage.setItem('refreshToken', token);
+  }
+  
+  getRefreshToken() {
+    return localStorage.getItem('refreshToken');
+  }
+
+
 
   getToken() {
     return localStorage.getItem('token');
@@ -23,6 +32,8 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
   }
 
   isLoggedIn(): boolean {

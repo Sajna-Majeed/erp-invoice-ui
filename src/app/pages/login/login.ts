@@ -5,6 +5,7 @@ import { SHARED_IMPORTS } from '../../shared/shared-imports';
 import { AuthService } from '../../core/service/api-services/auth/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ThemeService } from '../../core/service/theme-services/theme';
+import { UserService } from '../../core/service/model-services/user/user';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -22,6 +23,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
+    private userService: UserService,
     private snackBar: MatSnackBar,
     public themeService: ThemeService,
     private router: Router
@@ -49,7 +51,13 @@ showError(message: string) {
 
     this.auth.login(this.form.value).subscribe({
       next: (res: any) => {
-        this.auth.setToken(res.token); // Adjust if API structure differs
+        this.auth.setToken(res.data.accessToken); 
+        this.auth.setRefreshToken(res.data.refreshToken);
+        this.userService.setUser({
+          username: res.data.username,
+          fullName: res.data.fullName,
+          userRole: res.data.role
+        });
         this.router.navigate(['/dashboard']);
       },
       error: () => {
