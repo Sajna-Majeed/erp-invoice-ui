@@ -1,0 +1,29 @@
+.charts-grid {
+  margin-top: 20px;
+  display: grid;
+  gap: 20px;
+
+  /* Exactly 2 columns on desktop */
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 700px) {
+  .charts-grid {
+    grid-template-columns: 1fr; /* 1 chart per row */
+  }
+}
+
+.chart-card {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ABSOLUTELY REQUIRED */
+/* Force canvas height — otherwise pie charts disappear */
+canvas {
+  width: 100% !important;
+  height: 300px !important;
+}

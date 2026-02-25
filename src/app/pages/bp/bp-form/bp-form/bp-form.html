@@ -1,0 +1,59 @@
+<mat-card>
+
+  <h2>{{ isEdit ? 'Edit Business Partner' : 'Create Business Partner' }}</h2>
+
+  <form #form="ngForm" (ngSubmit)="submit(form)">
+
+    <mat-form-field appearance="outline" style="width:100%">
+      <input matInput name="name" placeholder="Name"
+             [(ngModel)]="model.name" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width:100%">
+      <input matInput name="contact_Person" placeholder="Contact Person"
+             [(ngModel)]="model.contact_Person">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width:100%">
+      <input matInput name="email" placeholder="Email"
+             [(ngModel)]="model.email">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width:100%">
+      <input matInput name="mobile_Number" placeholder="Mobile Number"
+             [(ngModel)]="model.mobile_Number">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width:100%">
+      <input matInput name="city" placeholder="City"
+             [(ngModel)]="model.city">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width:100%">
+      <input matInput name="country_Code" placeholder="Country Code"
+             [(ngModel)]="model.country_Code">
+    </mat-form-field>
+
+    <mat-checkbox name="is_Customer"
+                  [(ngModel)]="model.is_Customer">
+      Customer
+    </mat-checkbox>
+
+    <mat-checkbox name="is_Seller"
+                  [(ngModel)]="model.is_Seller">
+      Seller
+    </mat-checkbox>
+
+    <div style="margin-top:15px">
+      <button mat-raised-button color="primary" type="submit">
+        {{ isEdit ? 'Update' : 'Create' }}
+      </button>
+
+      <button mat-button routerLink="/dashboard/bp">
+        Cancel
+      </button>
+    </div>
+
+  </form>
+
+</mat-card>

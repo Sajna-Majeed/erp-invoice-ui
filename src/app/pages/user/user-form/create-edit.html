@@ -1,0 +1,82 @@
+<mat-card>
+
+    <h2>{{ isEdit ? 'Edit User' : 'Create User' }}</h2>
+
+    <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" autocomplete="off">
+
+        <mat-form-field appearance="outline" style="width:100%">
+            <input matInput name="fullName" placeholder="Full Name" [(ngModel)]="newUser.fullName" required
+                #fullName="ngModel">
+            <mat-error *ngIf="fullName.invalid && fullName.touched">
+                Full Name is required
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width:100%">
+            <input matInput name="email" placeholder="Email" [(ngModel)]="newUser.email" required email
+                #email="ngModel">
+
+            <mat-error *ngIf="email.errors?.['required']">
+                Email is required
+            </mat-error>
+
+            <mat-error *ngIf="email.errors?.['email']">
+                Invalid email format
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width:100%">
+            <input matInput name="mobileNumber" placeholder="Mobile Number" [(ngModel)]="newUser.mobileNumber" required
+                pattern="^[0-9]{10}$" #mobileNumber="ngModel">
+
+            <mat-error *ngIf="mobileNumber.errors?.['required']">
+                Mobile Number is required
+            </mat-error>
+
+            <mat-error *ngIf="mobileNumber.errors?.['pattern']">
+                Invalid mobile number format
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="width:100%">
+            <input matInput name="username" placeholder="Username" [(ngModel)]="newUser.username" required minlength="3"
+                autocomplete="new-username" #username="ngModel">
+
+            <mat-error *ngIf="username.errors?.['required']">
+                Username is required
+            </mat-error>
+
+            <mat-error *ngIf="username.errors?.['minlength']">
+                Minimum 3 characters
+            </mat-error>
+        </mat-form-field>
+        <!-- Password only when creating -->
+        <mat-form-field *ngIf="!isEdit" appearance="outline" style="width:100%">
+            <input matInput name="password" type="password" placeholder="Password" [(ngModel)]="newUser.password"
+                required minlength="6" autocomplete="new-password" #password="ngModel">
+
+            <mat-error *ngIf="password.errors?.['required']">
+                Password is required
+            </mat-error>
+
+            <mat-error *ngIf="password.errors?.['minlength']">
+                Minimum 6 characters
+            </mat-error>
+        </mat-form-field>
+        <!-- <mat-form-field appearance="outline" style="width:100%">
+      <mat-select name="userRole" [(ngModel)]="newUser.userRole" required>
+        <mat-option [value]="1">Admin</mat-option>
+        <mat-option [value]="2">User</mat-option>
+      </mat-select>
+    </mat-form-field> -->
+
+        <div style="margin-top:15px">
+            <button mat-raised-button color="primary" [disabled]="!registerForm.valid" type="submit">
+                {{ isEdit ? 'Update' : 'Create' }}
+            </button>
+
+            <button mat-button type="button" routerLink="/dashboard/users" style="margin-left:10px">
+                Cancel
+            </button>
+        </div>
+
+    </form>
+
+</mat-card>

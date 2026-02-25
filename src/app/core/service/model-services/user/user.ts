@@ -1,0 +1,53 @@
+import { Injectable } from '@angular/core';
+import { UserInfo } from '../../../../models/interface/user';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+  private user: UserInfo | null = null;
+
+  constructor() {
+    // Load saved user from localStorage on startup
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      this.user = JSON.parse(savedUser);
+    }
+  }
+
+  // ✅ Save user info after login
+  setUser(user: UserInfo) {
+    this.user = user;
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  // ✅ Get current user (from memory or localStorage)
+  getUser(): UserInfo | null {
+    if (!this.user) {
+      const savedUser = localStorage.getItem('user');
+      this.user = savedUser ? JSON.parse(savedUser) : null;
+    }
+    return this.user;
+  }
+
+  // ✅ Clear user info (on logout)
+  clearUser() {
+    this.user = null;
+    localStorage.removeItem('user');
+  }
+
+  // ✅ Helper getters
+  getUsername(): string {
+    return this.user?.username || '';
+  }
+
+  getUserRole(): string {
+    return this.user?.userRole || '';
+  }
+
+  getEmail(): string {
+    return this.user?.fullName || '';
+  }
+}
+export type { UserInfo };
+

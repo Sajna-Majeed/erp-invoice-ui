@@ -1,0 +1,65 @@
+<mat-card>
+
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h2>Business Partners</h2>
+
+    <button mat-raised-button color="primary"
+            routerLink="/dashboard/bp/create">
+      <mat-icon>add</mat-icon>
+      Create
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2" style="width:100%; margin-top:15px;">
+
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="contact_Person">
+      <th mat-header-cell *matHeaderCellDef> Contact </th>
+      <td mat-cell *matCellDef="let row"> {{row.contact_Person}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef> City </th>
+      <td mat-cell *matCellDef="let row"> {{row.city}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.is_Customer ? 'Customer' : '' }}
+        {{ row.is_Seller ? ' Seller' : '' }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let row">
+
+        <button mat-icon-button color="accent"
+                [routerLink]="['/dashboard/bp/edit', row.bp_Id]">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button color="warn"
+                (click)="delete(row.bp_Id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+</mat-card>

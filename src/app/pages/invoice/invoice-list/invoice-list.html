@@ -1,0 +1,81 @@
+<mat-card>
+
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h2>Invoices</h2>
+
+    <button mat-raised-button color="primary"
+            routerLink="/dashboard/invoice/create">
+      <mat-icon>add</mat-icon>
+      Create Invoice
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z2" style="width:100%; margin-top:15px;">
+
+    <!-- Invoice No -->
+    <ng-container matColumnDef="invoice_No">
+      <th mat-header-cell *matHeaderCellDef> Invoice No </th>
+      <td mat-cell *matCellDef="let row"> {{row.invoice_No}} </td>
+    </ng-container>
+
+    <!-- Date -->
+    <ng-container matColumnDef="invoice_Date">
+      <th mat-header-cell *matHeaderCellDef> Date </th>
+      <td mat-cell *matCellDef="let row">
+        {{ row.invoice_Date | date:'dd/MM/yyyy' }}
+      </td>
+    </ng-container>
+
+    <!-- Net -->
+    <ng-container matColumnDef="net_Amt">
+      <th mat-header-cell *matHeaderCellDef> Net </th>
+      <td mat-cell *matCellDef="let row"> {{row.net_Amt}} </td>
+    </ng-container>
+
+    <!-- Total -->
+    <ng-container matColumnDef="total_W_Tax">
+      <th mat-header-cell *matHeaderCellDef> Total </th>
+      <td mat-cell *matCellDef="let row"> {{row.total_W_Tax}} </td>
+    </ng-container>
+
+    <!-- Actions -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+
+      <td mat-cell *matCellDef="let row">
+
+        <button mat-icon-button
+                color="primary"
+                matTooltip="View"
+                [routerLink]="['/dashboard/invoice/view', row.invoice_Id]">
+          <mat-icon>visibility</mat-icon>
+        </button>
+
+        <button mat-icon-button
+                color="accent"
+                matTooltip="Edit"
+                [routerLink]="['/dashboard/invoice/edit', row.invoice_Id]">
+          <mat-icon>edit</mat-icon>
+        </button>
+
+        <button mat-icon-button
+                color="warn"
+                matTooltip="Delete"
+                (click)="delete(row.invoice_Id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+
+  <mat-paginator [pageSize]="5"
+                 [pageSizeOptions]="[5,10,20]"
+                 showFirstLastButtons>
+  </mat-paginator>
+
+</mat-card>

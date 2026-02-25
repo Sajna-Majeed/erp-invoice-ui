@@ -1,0 +1,43 @@
+<div class="charts-grid">
+
+  <!-- User Type Pie -->
+  <mat-card class="chart-card">
+    <h3>User Types</h3>
+    <canvas baseChart 
+      [data]="userTypeChart" 
+      [options]="pieOptions" 
+      chartType="pie">
+    </canvas>
+  </mat-card>
+
+  <!-- Request Type Pie -->
+  <mat-card class="chart-card">
+    <h3>Request Types</h3>
+    <canvas baseChart 
+      [data]="requestTypeChart" 
+      [options]="pieOptions" 
+      chartType="pie">
+    </canvas>
+  </mat-card>
+
+  <!-- Ride Type Pie -->
+  <mat-card class="chart-card">
+    <h3>Ride Types</h3>
+    <canvas baseChart 
+      [data]="rideTypeChart" 
+      [options]="pieOptions" 
+      chartType="pie">
+    </canvas>
+  </mat-card>
+
+  <!-- Completed Rides Line -->
+  <mat-card class="chart-card">
+    <h3>Completed Rides</h3>
+    <canvas baseChart 
+      [data]="completedChart" 
+      [options]="lineOptions" 
+      chartType="line">
+    </canvas>
+  </mat-card>
+
+</div>
