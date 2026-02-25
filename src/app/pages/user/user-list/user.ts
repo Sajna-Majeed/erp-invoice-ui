@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { Router } from '@angular/router';
-import { forEachChild } from 'typescript';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { UserApiService } from '../../../core/service/api-services/user/user';
-import { SnackbarService } from '../../../core/service/model-services/snackbar/snackbar';
+
 @Component({
   selector: 'app-user',
   standalone: true,
@@ -11,48 +11,55 @@ import { SnackbarService } from '../../../core/service/model-services/snackbar/s
   templateUrl: './user.html',
   styleUrl: './user.css',
 })
-export class UsersComponent implements OnInit {
-constructor(
-    private router: Router,
-    private snackBar: SnackbarService,
-    private usersApiService: UserApiService
-  ) {}
- users: any[] = [];
+export class UserListComponent implements OnInit {
 
-  
-  displayedColumns: string[] = [ 'id','fullName','email','mobileNumber','username', 'role', 'actions'];
+  displayedColumns: string[] = ['id', 'fullName', 'email','mobileNumber', 'username','role',  'actions'];
+
+  users: any[] = [];
+  loading = false;
+
+  constructor(
+    private userService: UserApiService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit() {
     this.loadUsers();
   }
 
   loadUsers() {
-    this.usersApiService.getUsers().subscribe({
+    this.loading = true;
+    var id = 1
+    this.userService.getUsers().subscribe({
       next: (res: any) => {
-        var id=1
-        this.users = res.data ?? res;
+        // Only show employees (role 2)
+        this.users = res.data.filter((u: any) => u.role === 'User');
         this.users.forEach((user: any) => {
-          user.role = user.userRole === 1 ? 'Admin' : 'User';
           user.id = id++;
         });
+        this.loading = false;
       },
       error: () => {
-        this.snackBar.open('Failed to load users', 'OK', { duration: 3000 });
+        this.loading = false;
+        this.snackBar.open('Failed to load users', 'Close', { duration: 3000 });
       }
     });
   }
+  create() {
+    this.router.navigate(['/users/create']);
+  }
 
-  deleteUser(id: number) {
-    if (!confirm('Are you sure you want to delete this user?')) return;
+  edit(user: any) {
+    this.router.navigate(['/users/edit', user.userId]);
+  }
 
-    this.usersApiService.delete(id).subscribe({
-      next: () => {
-        this.snackBar.open('User deleted', 'OK', { duration: 2000 });
-        this.loadUsers();
-      },
-      error: () => {
-        this.snackBar.open('Delete failed', 'OK', { duration: 3000 });
-      }
+  delete(id: number) {
+    if (!confirm('Delete this employee?')) return;
+
+    this.userService.delete(id).subscribe(() => {
+      this.snackBar.open('Employee deleted', 'Close', { duration: 3000 });
+      this.loadUsers();
     });
   }
 }

@@ -18,7 +18,6 @@ export class UserApiService {
     return this.http.get<any>(`${this.baseUrl}/${id}`);
   }
   register(user: User) {
-    debugger
     return this.http.post(`${this.baseUrl}`, user);
   }
   update(user: User) {

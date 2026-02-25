@@ -6,11 +6,26 @@ import { AuthService } from '../../core/service/api-services/auth/auth';
 import { SHARED_IMPORTS } from '../../shared/shared-imports';
 import { UserInfo } from '../../models/interface/user';
 import { UserService } from '../../core/service/model-services/user/user';
+// import {
+//   trigger,
+//   transition,
+//   style,
+//   animate
+// } from '@angular/animations';
+
 @Component({
   selector: 'app-main-layout',
   imports: [SHARED_IMPORTS],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.css',
+//   animations: [
+//   trigger('fadeAnimation', [
+//     transition('* <=> *', [
+//       style({ opacity: 0 }),
+//       animate('200ms ease-in', style({ opacity: 1 }))
+//     ])
+//   ])
+// ]
 })
 export class MainLayoutComponent {
 
@@ -18,7 +33,7 @@ export class MainLayoutComponent {
 currentRoute = '';
 isCollapsed = false;
  user: UserInfo | null = null;
-  
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     public themeService: ThemeService,
@@ -35,10 +50,12 @@ isCollapsed = false;
 
 
 ngOnInit() {
-  
-  this.router.events.subscribe(event => {
+this.router.events.subscribe(event => {
     if (event instanceof NavigationEnd) {
-      this.currentRoute = this.router.url.replace('/', '').toUpperCase();
+      const segments = this.router.url.split('/').filter(Boolean);
+      this.currentRoute = segments[0]
+        ? segments[0].replace('-', ' ')
+        : 'Dashboard';
     }
   });
    this.user = this.userService.getUser();

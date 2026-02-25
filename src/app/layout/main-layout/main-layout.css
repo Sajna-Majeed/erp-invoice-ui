@@ -1,25 +1,13 @@
 .sidenav-container {
   height: 100vh;
 }
-.active-link {
-  background: rgba(99, 102, 241, 0.15);
+.active {
+  background: linear-gradient(
+    90deg,
+    rgba(99, 102, 241, 0.2),
+    transparent
+  );
   border-left: 4px solid #6366f1;
-}
-.sidenav {
-  width: 250px;
-  transition: width 0.3s ease;
-   border-right: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.sidenav.collapsed {
-  width: 70px;
-}
-.logo {
-  font-size: 20px;
-  font-weight: 600;
-  padding: 20px;
-  text-align: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .toolbar {
@@ -39,4 +27,58 @@
 .content {
   padding: 24px;
   min-height: calc(100vh - 64px);
+}
+.sidenav {
+  width: 250px;
+  transition: width 0.3s ease;
+  overflow: hidden;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.sidenav.collapsed {
+  width: 75px;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+mat-nav-list a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-left: 20px;
+}
+
+.sidenav.collapsed mat-nav-list a {
+  justify-content: center;
+}
+
+.menu-text {
+  transition: opacity 0.2s ease;
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 0;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.breadcrumb .current {
+  font-weight: 500;
+  opacity: 1;
+}
+.toolbar {
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
