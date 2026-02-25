@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { SHARED_IMPORTS } from '../../shared/shared-imports';
 import { AuthService } from '../../core/service/api-services/auth/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { ThemeService } from '../../core/service/theme-services/theme';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -23,6 +23,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private auth: AuthService,
     private snackBar: MatSnackBar,
+    public themeService: ThemeService,
     private router: Router
   ) {
     this.form = this.fb.group({

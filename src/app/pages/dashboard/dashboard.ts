@@ -8,7 +8,7 @@ import { AuthService } from '../../core/service/api-services/auth/auth';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SHARED_IMPORTS, MatSidenavContent, MatSidenavContainer, MatSidenav,MatListModule,MatToolbarModule],
+  imports: [SHARED_IMPORTS, MatListModule,MatToolbarModule],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })

@@ -1,17 +1,21 @@
 .sidenav-container {
   height: 100vh;
 }
-
+.active-link {
+  background: rgba(99, 102, 241, 0.15);
+  border-left: 4px solid #6366f1;
+}
 .sidenav {
-  width: 240px;
+  width: 250px;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .logo {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 600;
-  padding: 16px;
+  padding: 20px;
   text-align: center;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .toolbar {
@@ -20,8 +24,7 @@
   z-index: 10;
 }
 
-.title {
-  font-size: 18px;
+.app-title {
   font-weight: 500;
 }
 
@@ -31,6 +34,5 @@
 
 .content {
   padding: 24px;
-  background: #f5f6fa;
   min-height: calc(100vh - 64px);
 }

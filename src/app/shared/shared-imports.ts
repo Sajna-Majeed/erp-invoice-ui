@@ -18,9 +18,16 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LayoutModule } from '@angular/cdk/layout';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatMenuModule } from '@angular/material/menu';
+
+
 export const SHARED_IMPORTS = [
   CommonModule,
+  MatSlideToggleModule,
   MatProgressSpinnerModule,
+MatMenuModule,
+LayoutModule,
   LayoutModule,
   FormsModule,
   ReactiveFormsModule,

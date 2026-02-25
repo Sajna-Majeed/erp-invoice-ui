@@ -1,65 +1,75 @@
 <mat-sidenav-container class="sidenav-container">
 
-  <mat-sidenav
-    #drawer
-    class="sidenav"
-    [mode]="isMobile ? 'over' : 'side'"
-    [opened]="!isMobile">
+  <mat-sidenav #drawer class="sidenav" [mode]="isMobile ? 'over' : 'side'" [opened]="!isMobile">
 
     <div class="logo">
-      ERP System
+      ERP Pro
     </div>
 
     <mat-nav-list>
-      <a mat-list-item routerLink="/dashboard">
+      <a mat-list-item routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <mat-icon>dashboard</mat-icon>
         <span>Dashboard</span>
       </a>
 
-      <a mat-list-item routerLink="/users">
+      <a mat-list-item routerLink="/users" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
         <mat-icon>people</mat-icon>
         <span>Users</span>
       </a>
 
-      <a mat-list-item routerLink="/business-partner">
+      <a mat-list-item routerLink="/business-partner" routerLinkActive="active">
         <mat-icon>business</mat-icon>
         <span>Business Partners</span>
       </a>
 
-      <a mat-list-item routerLink="/invoice">
-        <mat-icon>receipt</mat-icon>
+      <a mat-list-item routerLink="/invoice" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <mat-icon>receipt_long</mat-icon>
         <span>Invoices</span>
       </a>
+
     </mat-nav-list>
 
   </mat-sidenav>
 
   <mat-sidenav-content>
 
+    <!-- TOP TOOLBAR -->
     <mat-toolbar color="primary" class="toolbar">
 
-      <button
-        *ngIf="isMobile"
-        mat-icon-button
-        (click)="drawer.toggle()">
+      <button *ngIf="isMobile" mat-icon-button (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
 
-      <span class="title">ERP Management</span>
+      <span class="app-title">ERP Management</span>
 
       <span class="spacer"></span>
 
-      <button mat-icon-button>
-        <mat-icon>notifications</mat-icon>
+      <!-- Dark Mode Toggle -->
+      <button mat-icon-button (click)="themeService.toggleTheme()">
+        <mat-icon>
+          {{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}
+        </mat-icon>
       </button>
 
-      <button mat-icon-button>
+      <!-- User Menu -->
+      <button mat-icon-button [matMenuTriggerFor]="userMenu">
         <mat-icon>account_circle</mat-icon>
       </button>
 
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+
     </mat-toolbar>
 
+    <!-- PAGE CONTENT -->
     <div class="content">
+      <div class="breadcrumb">
+        <span>{{ currentRoute }}</span>
+      </div>
       <router-outlet></router-outlet>
     </div>
 

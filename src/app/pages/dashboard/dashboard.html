@@ -1,52 +1,23 @@
-<mat-sidenav-container class="dashboard-container">
+<div class="dashboard">
 
-  <!-- Sidebar -->
-  <mat-sidenav #sidenav
-               [mode]="isMobile ? 'over' : 'side'"
-               [opened]="!isMobile"
-               class="sidenav">
+  <mat-card class="card">
+    <h3>Total Users</h3>
+    <h2>128</h2>
+  </mat-card>
 
-    <div class="logo">Base App</div>
+  <mat-card class="card">
+    <h3>Business Partners</h3>
+    <h2>42</h2>
+  </mat-card>
 
-    <mat-nav-list>
-      <a mat-list-item routerLink="/dashboard/home" routerLinkActive="active">Home</a>
-      <a mat-list-item routerLink="/dashboard/users" routerLinkActive="active">Users</a>
-      <a mat-list-item routerLink="/dashboard/invoice" routerLinkActive="active">Invoice</a>
-      <a mat-list-item routerLink="/dashboard/bp" routerLinkActive="active">Bussiness Partners</a>
-      <a mat-list-item routerLink="/dashboard/settings" routerLinkActive="active">Settings</a>
-    </mat-nav-list>
+  <mat-card class="card">
+    <h3>Invoices</h3>
+    <h2>314</h2>
+  </mat-card>
 
-  </mat-sidenav>
+  <mat-card class="card">
+    <h3>Revenue</h3>
+    <h2>$89,240</h2>
+  </mat-card>
 
-
-  <!-- Main content -->
-  <mat-sidenav-content class="main-content">
-
-    <!-- Top Navbar -->
-    <mat-toolbar color="primary" class="topbar">
-
-      <!-- Menu button (only on mobile) -->
-      <button *ngIf="isMobile"
-              mat-icon-button
-              (click)="toggleSidebar()">
-        <mat-icon>menu</mat-icon>
-      </button>
-
-      <span class="title">Dashboard</span>
-      <span class="spacer"></span>
-
-      <button mat-icon-button>
-        <mat-icon>account_circle</mat-icon>
-      </button>
-      <button mat-icon-button (click)="logout()">
-        <mat-icon>logout</mat-icon>
-      </button>
-    </mat-toolbar>
-
-    <!-- Page inner content -->
-    <div class="content">
-      <router-outlet></router-outlet>
-    </div>
-
-  </mat-sidenav-content>
-</mat-sidenav-container>
+</div>
