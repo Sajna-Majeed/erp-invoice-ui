@@ -30,4 +30,7 @@ export class ProductService {
     delete(productId: number) {  
       return this.api.delete(`${this.url}/${productId}`); 
     }
+    toggleStatus(productId: number) {
+      return this.api.delete(`${this.url}/toggle/${productId}`);
+    }
 }

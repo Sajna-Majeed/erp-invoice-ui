@@ -13,7 +13,7 @@ import { ProductDialogComponent } from '../product-dialog/product-dialog';
 })
 export class ProductComponent {
 products: any[] = [];
-displayedColumns = ['code','name','price','tax','actions'];
+displayedColumns = ['id','code','name','description','price','tax','status','actions'];
   constructor(
     private productService: ProductService,
     private confirm:ConfirmService,
@@ -26,6 +26,9 @@ ngOnInit() {
 load() {
   this.productService.getAll().subscribe((res:any)=>{
     this.products = res.data;
+     this.products.forEach((product: any, index: number) => {
+          product.id = index + 1;
+        });
   });
 }
 openCreate() {
@@ -59,6 +62,17 @@ delete(id:number){
   }).subscribe(r=>{
     if(r){
       this.productService.delete(id).subscribe(()=> this.load());
+    }
+  });
+}
+toggleStatus(id:number){
+  this.confirm.open({
+    title:'Toggle Product Status',
+    message:'Are you sure?',
+    color:'warn'
+  }).subscribe(r=>{
+    if(r){
+      this.productService.toggleStatus(id).subscribe(()=> this.load());
     }
   });
 }

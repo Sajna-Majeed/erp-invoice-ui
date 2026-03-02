@@ -10,6 +10,8 @@ import { InvoiceFormComponent } from './pages/invoice/invoice-form/invoice-view'
 import { InvoicePrintComponent } from './pages/invoice/invoice-print/invoice-print';
 import { ProductDialogComponent } from './pages/product/product-dialog/product-dialog';
 import { ProductComponent } from './pages/product/product/product';
+import { ServiceTypeComponent } from './pages/service-type/service-type-list/service-type-list';
+import { ServiceTypeDialogComponent } from './pages/service-type/service-type-dialog/service-type-dialog';
 export const routes: Routes = [
      { path: '', component: LoginComponent },
      { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -51,6 +53,14 @@ export const routes: Routes = [
                          { path: '', component: ProductComponent },
                          { path: 'create', component: ProductDialogComponent },
                          { path: 'edit/:id', component: ProductDialogComponent }
+                    ]
+               },
+                {
+                    path: 'serviceType',
+                    children: [
+                         { path: '', component: ServiceTypeComponent },
+                         { path: 'create', component: ServiceTypeDialogComponent },
+                         { path: 'edit/:id', component: ServiceTypeDialogComponent }
                     ]
                },
                { path: '', redirectTo: 'home', pathMatch: 'full' }

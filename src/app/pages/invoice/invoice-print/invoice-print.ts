@@ -5,11 +5,10 @@ import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { DatePipe } from '@angular/common';
 import { BussinessPointApiService } from '../../../core/service/api-services/bp/bussiness-point';
 import { ExcelExportService } from '../../../core/service/excel-services/excel-services';
-import { ErpCurrencyPipe } from "../../../shared/pipes/erp-currency-pipe";
 import { ErpNumberPipe } from "../../../shared/pipes/erp-number-pipe";
 @Component({
   selector: 'app-invoice-print',
-  imports: [SHARED_IMPORTS, DatePipe, ErpCurrencyPipe, ErpNumberPipe],
+  imports: [SHARED_IMPORTS, DatePipe, ErpNumberPipe],
   templateUrl: './invoice-print.html',
   styleUrl: './invoice-print.css',
 })

@@ -26,4 +26,7 @@ export class BussinessPointApiService {
   delete(id: number) {
     return this.api.delete(`${this.url}/${id}`);
   }
+   toggleStatus(id: number) {
+      return this.api.delete(`${this.url}/toggle/${id}`);
+    }
 }
