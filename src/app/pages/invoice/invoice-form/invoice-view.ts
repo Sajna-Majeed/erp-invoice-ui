@@ -1,191 +1,309 @@
-// import { Component, OnInit } from '@angular/core';
-// import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-// import { BussinessPointApiService } from '../../../services/api-services/bp/bussiness-point';
-// import { SHARED_IMPORTS } from '../../../shared/shared-imports';
-// import { MatDatepicker } from '@angular/material/datepicker';
-// import {MatNativeDateModule} from '@angular/material/core';
-// @Component({
-//   selector: 'app-invoice-view',
-//   imports: [SHARED_IMPORTS, MatDatepicker, MatNativeDateModule],
-//   templateUrl: './invoice-view.html',
-//   styleUrl: './invoice-view.css',
-// })
-// export class InvoiceView implements OnInit {
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormArray, Validators, FormGroup } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { InvoiceApiService } from '../../../core/service/api-services/invoice/invoice';
+import { BussinessPointApiService } from '../../../core/service/api-services/bp/bussiness-point';
+import { SHARED_IMPORTS } from '../../../shared/shared-imports';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { ProductService } from '../../../core/service/api-services/product/product';
 
-//   invoiceForm!: FormGroup;
+@Component({
+  selector: 'app-invoice-view',
+  imports: [SHARED_IMPORTS, MatDatepickerModule, MatNativeDateModule],
+  templateUrl: './invoice-view.html',
+  styleUrl: './invoice-view.css',
+})
+export class InvoiceFormComponent implements OnInit {
 
-//   businessPartners: any[] = [];
+  partners: any[] = [];
+  form!: FormGroup;
+  isEdit = false;
+  invoiceId!: number;
+  filteredProducts: { [key: number]: any[] } = {};
 
-//   fromBillingAddresses: any[] = [];
-//   toBillingAddresses: any[] = [];
-//   toShippingAddresses: any[] = [];
+  constructor(
+    private fb: FormBuilder,
+    private invoiceService: InvoiceApiService,
+    private bpService: BussinessPointApiService,
+    private router: Router,
+    private productService: ProductService,
+    private route: ActivatedRoute
+  ) { }
 
-//   displayedColumns = ['item', 'qty', 'price', 'tax', 'remove'];
+  ngOnInit() {
 
-//   constructor(
-//     private fb: FormBuilder,
-//     private bpService: BussinessPointApiService
-//   ) {}
+    this.initializeForm();
 
-//   ngOnInit(): void {
-//     this.initForm();
-//     this.loadPartners();
-//     this.handlePartnerChanges();
-//     this.calculateDueDate();
-//   }
+    this.invoiceId = +this.route.snapshot.paramMap.get('id')!;
+    this.isEdit = !!this.invoiceId;
 
-//   initForm() {
-//     this.invoiceForm = this.fb.group({
-//       invoiceNumber: [{ value: 'AUTO', disabled: true }],
-//       invoiceDate: [new Date(), Validators.required],
-//       dueDate: [{ value: '', disabled: true }],
-//       currency: ['AED'],
+    this.loadPartners();
 
-//       fromPartnerId: [''],
-//       fromBillingAddressId: [''],
-//       fromBillingAddress: this.createAddressGroup(),
+    if (this.isEdit) {
+      this.loadInvoice();
+    } else {
+      this.loadInvoiceNumber();
+      this.addLine();
+    }
 
-//       toPartnerId: [''],
-//       toBillingAddressId: [''],
-//       toBillingAddress: this.createAddressGroup(),
+    this.listenPartnerChange();
+  }
 
-//       toShippingAddressId: [''],
-//       toShippingAddress: this.createAddressGroup(),
+  initializeForm() {
+    this.form = this.fb.group({
+      invoice_Id: [0],
+      invoice_No: [''],
+      invoice_Date: [new Date(), Validators.required],
+      due_Date: [new Date(), Validators.required],
 
-//       sameAsBilling: [false],
+      invoice_Curreny_Code: ['AED', Validators.required],
+      invoice_Type_Code: [''],
+      invoice_Tsn_Code: [''],
+      bsn_Process_Type: [''],
+      specification_Identifier: [''],
+      payment_Means_Type_Code: [''],
 
-//       lines: this.fb.array([]),
+      net_Amt: [0],
+      total_Wo_Tax: [0],
+      total_Tax_Amt: [0],
+      total_W_Tax: [0],
+      payment_Due_Amt: [0],
 
-//       totalAmount: [{ value: 0, disabled: true }],
-//       totalTax: [{ value: 0, disabled: true }],
-//       grandTotal: [{ value: 0, disabled: true }]
-//     });
+      tax_Cat_Taxable_Amt: [0],
+      tax_Cat_Tax_Amt: [0],
+      tax_Cat_Code: [''],
+      tax_Cat_Rate: [5],
 
-//     this.addLine();
-//   }
+      bp_Id: [null, Validators.required],
+      addressLine: ['', Validators.required],
 
-//   createAddressGroup(): FormGroup {
-//     return this.fb.group({
-//       addressLine1: [''],
-//       city: [''],
-//       country: ['']
-//     });
-//   }
+      lines: this.fb.array([])
+    });
+  }
 
-//   get lines(): FormArray {
-//     return this.invoiceForm.get('lines') as FormArray;
-//   }
+  get lines(): FormArray {
+    return this.form.get('lines') as FormArray;
+  }
 
-//   addLine() {
-//     this.lines.push(this.fb.group({
-//       itemName: ['', Validators.required],
-//       quantity: [1],
-//       unitPrice: [0],
-//       taxPercent: [5],
-//       lineTotal: [{ value: 0, disabled: true }],
-//       taxAmount: [{ value: 0, disabled: true }]
-//     }));
-//   }
+  loadInvoiceNumber() {
+    this.invoiceService.getNextNumber().subscribe((res: any) => {
+      this.form.patchValue({ invoice_No: res.data });
+    });
+  }
 
-//   removeLine(index: number) {
-//     this.lines.removeAt(index);
-//     this.recalculate();
-//   }
+  loadPartners() {
+    this.bpService.getAll().subscribe((res: any) => {
+      this.partners = res.data;
+    });
+  }
 
-//   loadPartners() {
+  loadInvoice() {
 
-// this.bpService.getAll().subscribe((res: any) => {
-//       this.businessPartners  = res.data ?? res;
-//     });
+    this.invoiceService.getById(this.invoiceId).subscribe((res: any) => {
 
-//   }
+      const data = res.data;
 
-//   handlePartnerChanges() {
+      // Convert date strings to Date objects
+      data.invoice_Date = new Date(data.invoice_Date);
+      data.due_Date = new Date(data.due_Date);
 
-//     this.invoiceForm.get('fromPartnerId')?.valueChanges.subscribe(id => {
-//       if (!id) return;
+      // Clear existing lines
+      this.lines.clear();
 
-//       this.bpService.getById(id).subscribe(bp => {
-//         this.fromBillingAddresses = bp.addresses.filter((x:any)=>x.type==='Billing');
-//         const defaultAddr = this.fromBillingAddresses.find((x:any)=>x.isDefault);
-//         if (defaultAddr) this.patchAddress(defaultAddr,'fromBillingAddress');
-//       });
-//     });
+      // Add lines
+      data.lines.forEach((line: any) => {
+        this.lines.push(this.createLineGroup(line));
+      });
 
-//     this.invoiceForm.get('toPartnerId')?.valueChanges.subscribe(id => {
-//       if (!id) return;
+      // Patch header
+      this.form.patchValue(data);
 
-//       this.bpService.getById(id).subscribe(bp => {
+      this.calculateTotals();
+    });
+  }
 
-//         this.toBillingAddresses = bp.addresses.filter((x:any)=>x.type==='Billing');
-//         this.toShippingAddresses = bp.addresses.filter((x:any)=>x.type==='Shipping');
+  listenPartnerChange() {
 
-//         const defaultBilling = this.toBillingAddresses.find((x:any)=>x.isDefault);
-//         const defaultShipping = this.toShippingAddresses.find((x:any)=>x.isDefault);
+    this.form.get('bp_Id')?.valueChanges.subscribe(id => {
 
-//         if (defaultBilling)
-//           this.patchAddress(defaultBilling,'toBillingAddress');
+      if (this.isEdit) return; // prevent overwrite in edit
 
-//         if (defaultShipping)
-//           this.patchAddress(defaultShipping,'toShippingAddress');
-//       });
-//     });
+      const partner = this.partners.find(p => p.bp_Id == id);
 
-//     this.invoiceForm.get('sameAsBilling')?.valueChanges.subscribe(val => {
-//       if (val) {
-//         const billing = this.invoiceForm.get('toBillingAddress')?.value;
-//         this.invoiceForm.patchValue({
-//           toShippingAddress: billing
-//         });
-//       }
-//     });
-//   }
+      if (partner) {
+        this.form.patchValue({
+          addressLine:
+            partner.addressLine1 + '\n' +
+            partner.city + ', ' +
+            partner.country_Subdivision + ', ' +
+            partner.country
+        });
+      }
+    });
+  }
 
-//   patchAddress(address: any, group: string) {
-//     this.invoiceForm.get(group)?.patchValue({
-//       addressLine1: address.addressLine1,
-//       city: address.city,
-//       country: address.country
-//     });
-//   }
+  createLineGroup(line?: any) {
+    const group = this.fb.group({
+      invoice_Id: [line?.invoice_Id || 0],
+      rowNum: [line?.rowNum || this.lines.length + 1],
+      product_Id: [line?.product_Id ?? null],
+      item_Name: [line?.item_Name || '', [Validators.required, this.productValidator.bind(this)]],
+      description: [line?.description || ''],
+      inv_Line_Identifier: [line?.inv_Line_Identifier || ''],
+      unit_Of_Measure_Code: [line?.unit_Of_Measure_Code || 'PCS'],
+      item_Price_Base_Qty: [line?.item_Price_Base_Qty || 1, [Validators.required,Validators.min(1)]],
+      item_Gross_Price: [line?.item_Gross_Price || 0],
+      item_Tax_Cat_Code: [line?.item_Tax_Cat_Code || 'VAT'],
+      item_Net_Price: [{ value: line?.item_Net_Price || 0, disabled: true }],
+      item_Tax_Rate: [{ value: line?.item_Tax_Rate || 5, disabled: true }],
+      net_Amt: [line?.net_Amt || 0],
+      vat_In_Aed: [line?.vat_In_Aed || 0],
+      amt_In_Aed: [line?.amt_In_Aed || 0]
+    });
+    const index = this.lines.length;
 
-//   calculateDueDate() {
-//     const date = new Date(this.invoiceForm.value.invoiceDate);
-//     date.setDate(date.getDate() + 10);
-//     this.invoiceForm.patchValue({ dueDate: date });
-//   }
+    group.get('item_Name')?.valueChanges
+      .pipe(
+        debounceTime(300),
+        distinctUntilChanged()
+      )
+      .subscribe(value => {
 
-//   recalculate() {
+        if (!value) return;
 
-//     let total = 0;
-//     let tax = 0;
+        this.productService.search(value).subscribe((res: any) => {
+          this.filteredProducts[index] = res.data;
+        });
 
-//     this.lines.controls.forEach((line:any)=>{
-//       const qty = line.value.quantity;
-//       const price = line.value.unitPrice;
-//       const taxPercent = line.value.taxPercent;
+        this.calculateTotals();
+      });
+    group.get('item_Price_Base_Qty')?.valueChanges.subscribe(() => {
+      this.calculateLine(group);
+    });
+    group.get('item_Name')?.valueChanges.subscribe(value => {
+  if (typeof value === 'string') {
+    group.get('product_Id')?.setValue(null, { emitEvent: false });
+  }
+});
+    return group;
+  }
+productValidator(control: any) {
+  const value = control.value;
 
-//       const lineTotal = qty * price;
-//       const taxAmount = lineTotal * (taxPercent/100);
+  // If value is string, user typed manually
+  if (typeof value === 'string') {
+    return { invalidProduct: true };
+  }
 
-//       line.patchValue({ lineTotal, taxAmount }, { emitEvent:false });
+  return null;
+}
 
-//       total += lineTotal;
-//       tax += taxAmount;
-//     });
+displayProduct(product: any): string {
+  return product && product.name ? product.name : '';
+}
+  onProductSelected(product: any, index: number) {
 
-//     this.invoiceForm.patchValue({
-//       totalAmount: total,
-//       totalTax: tax,
-//       grandTotal: total + tax
-//     });
-//   }
+    const line = this.lines.at(index);
 
-//   submit() {
-//     const payload = this.invoiceForm.getRawValue();
-//     console.log(payload);
+    line.patchValue({
+      product_Id: product.id,
+      item_Name: product,
+      item_Net_Price: product.unit_Price,
+      item_Tax_Rate: product.tax_Rate
+    }, { emitEvent: false });
 
-//     // Send to API
-//     // Backend must clone addresses and save invoice
-//   }
-// }
+    this.calculateTotals();
+  }
+  validateProduct(index: number) {
+  const line = this.lines.at(index);
+  const value = line.get('item_Name')?.value;
+
+  if (typeof value === 'string') {
+    line.get('item_Name')?.setErrors({ invalidProduct: true });
+  }
+}
+  addLine() {
+    this.lines.push(this.createLineGroup());
+  }
+
+  removeLine(index: number) {
+    this.lines.removeAt(index);
+    this.calculateTotals();
+  }
+calculateLine(line: FormGroup) {
+
+    const raw = line.getRawValue();
+
+    const qty = +raw.item_Price_Base_Qty || 0;
+    const price = +raw.item_Net_Price || 0;
+    const rate = +raw.item_Tax_Rate || 0;
+
+    const net = qty * price;
+    const tax = (net * rate) / 100;
+    const total = net + tax;
+
+    line.patchValue({
+      net_Amt: net,
+      vat_In_Aed: tax,
+      amt_In_Aed: total
+    }, { emitEvent: false });
+
+     this.calculateTotals();
+  }
+  calculateTotals() {
+
+    let net = 0;
+    let tax = 0;
+
+    this.lines.controls.forEach(line => {
+
+      const raw = line.getRawValue();   // 🔥 IMPORTANT
+
+      const qty = +raw.item_Price_Base_Qty || 0;
+      const price = +raw.item_Net_Price || 0;
+      const rate = +raw.item_Tax_Rate || 0;
+
+      const lineNet = qty * price;
+      const lineTax = (lineNet * rate) / 100;
+
+      line.patchValue({
+        net_Amt: lineNet,
+        vat_In_Aed: lineTax,
+        amt_In_Aed: lineNet + lineTax
+      }, { emitEvent: false });
+
+      net += lineNet;
+      tax += lineTax;
+    });
+
+    this.form.patchValue({
+      net_Amt: net,
+      total_Wo_Tax: net,
+      total_Tax_Amt: tax,
+      total_W_Tax: net + tax,
+      payment_Due_Amt: net + tax
+    }, { emitEvent: false });
+  }
+
+  save() {
+
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    const payload = this.form.getRawValue();
+
+    if (this.isEdit) {
+      this.invoiceService.update(payload).subscribe(() => {
+        this.router.navigate(['/invoice']);
+      });
+    } else {
+      this.invoiceService.create(payload).subscribe(() => {
+        this.router.navigate(['/invoice']);
+      });
+    }
+  }
+}

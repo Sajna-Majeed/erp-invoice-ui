@@ -1,50 +1,67 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { BussinessPointApiService } from '../../../core/service/api-services/bp/bussiness-point';
-
-
-
+import { ConfirmService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 @Component({
   selector: 'app-bp-list',
   imports: [SHARED_IMPORTS],
   templateUrl: './bp-list.html',
   styleUrl: './bp-list.css',
 })
-export class BusinessPartnerListComponent  {
+export class BpListComponent implements OnInit {
 
-  private api = inject(BussinessPointApiService);
-  private snack = inject(MatSnackBar);
+  displayedColumns = ['id', 'name', 'email', 'mobile', 'type', 'actions'];
+  data: any[] = [];
 
-  displayedColumns: string[] = [
-    'name',
-    'contact_Person',
-    'email',
-    'city',
-    'type',
-    'actions'
-  ];
-
-  dataSource = new MatTableDataSource<any>();
+  constructor(
+    private service: BussinessPointApiService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private confirm: ConfirmService
+  ) {}
 
   ngOnInit() {
     this.load();
   }
 
   load() {
-    this.api.getAll().subscribe((res: any) => {
-      this.dataSource.data = res.data ?? res;
+    this.service.getAll().subscribe((res: any) => {
+      this.data = res.data;
+       this.data.forEach((bp: any, index: number) => {
+          bp.id = index + 1;
+        });
     });
   }
 
-  delete(id: number) {
-
-    if (!confirm('Delete this business partner?')) return;
-
-    this.api.delete(id).subscribe(() => {
-      this.snack.open('Deleted successfully', 'OK', { duration: 2000 });
-      this.load();
-    });
+  create() {
+    this.router.navigate(['/bp/create']);
   }
+
+  edit(row: any) {
+    this.router.navigate(['/bp/edit', row.bp_Id]);
+  }
+
+  
+ 
+ delete(id: number) {
+
+  this.confirm.open({
+   title: 'Delete Partner',
+   message: 'Are you sure you want to delete this partner?',
+    confirmText: 'Yes, Delete',
+    cancelText: 'Cancel',
+    color: 'warn'
+  }).subscribe(result => {
+
+    if (result) {
+       this.service.delete(id).subscribe(() => {
+        this.snackBar.open('Deleted successfully', 'Close', { duration: 3000 });
+        this.load();
+      });
+      }
+
+  });
+}
 }

@@ -1,31 +1,29 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../shared/enviorment';
+import { ApiService } from '../api-service';
 
 @Injectable({ providedIn: 'root' })
 export class BussinessPointApiService {
 
-  private baseUrl = `${environment.apiUrl}/bussinessPartner`;
+  private url = `bussinessPartner`;
 
-  constructor(private http: HttpClient) {}
-
+ constructor(private api: ApiService) {}
   getAll() {
-    return this.http.get(this.baseUrl);
+    return this.api.get(this.url);
   }
 
   getById(id: number) {
-    return this.http.get(`${this.baseUrl}/${id}`);
+    return this.api.get(`${this.url}/${id}`);
   }
 
   create(data: any) {
-    return this.http.post(this.baseUrl, data);
+    return this.api.post(this.url, data);
   }
 
-  update(id: number, data: any) {
-    return this.http.put(`${this.baseUrl}/${id}`, data);
+  update(data: any) {
+    return this.api.put(`${this.url}`, data);
   }
 
   delete(id: number) {
-    return this.http.delete(`${this.baseUrl}/${id}`);
+    return this.api.delete(`${this.url}/${id}`);
   }
 }

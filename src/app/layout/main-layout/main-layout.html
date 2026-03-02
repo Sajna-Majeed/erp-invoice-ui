@@ -1,7 +1,10 @@
 <mat-sidenav-container class="sidenav-container">
 
-  <mat-sidenav #drawer class="sidenav" [ngClass]="{ 'collapsed': isCollapsed }" [mode]="isMobile ? 'over' : 'side'"
-    [opened]="!isMobile">
+  <mat-sidenav #drawer
+             [mode]="isMobile ? 'over' : 'side'"
+             [opened]="!isMobile"
+             [style.width.px]="isCollapsed ? 70 : 240"
+             class="sidenav">
 
     <div class="logo-section">
       <div class="logo" *ngIf="!isCollapsed">ERP Pro</div>
@@ -9,28 +12,78 @@
         <mat-icon>{{ isCollapsed ? 'menu' : 'menu_open' }}</mat-icon>
       </button>
     </div>
-    <mat-nav-list>
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <mat-icon>dashboard</mat-icon>
-        <span class="menu-text" *ngIf="!isCollapsed">Dashboard</span>
-      </a>
-      <a mat-list-item *ngIf="user?.userRole === 'Admin'" routerLink="/users" routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
-        <mat-icon>people</mat-icon>
-        <span class="menu-text" *ngIf="!isCollapsed">Users</span>
-      </a>
+   <mat-nav-list>
 
-      <a mat-list-item routerLink="/business-partner" routerLinkActive="active">
-        <mat-icon>business</mat-icon>
-        <span class="menu-text" *ngIf="!isCollapsed">Business Partners</span>
-      </a>
+  <!-- Dashboard -->
+  <a mat-list-item
+     routerLink="/dashboard"
+     routerLinkActive="active"
+     [routerLinkActiveOptions]="{ exact: true }">
+    <mat-icon>dashboard</mat-icon>
+    <span class="menu-text" *ngIf="!isCollapsed">Dashboard</span>
+  </a>
 
-      <a mat-list-item routerLink="/invoice" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-        <mat-icon>receipt_long</mat-icon>
-        <span class="menu-text" *ngIf="!isCollapsed">Invoices</span>
-      </a>
+  <!-- ================= MASTER ================= -->
 
-    </mat-nav-list>
+  <mat-expansion-panel hideToggle *ngIf="!isCollapsed" class="menu-group">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>folder</mat-icon>
+        <span class="menu-text">Master</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <a mat-list-item routerLink="/product" routerLinkActive="active">
+      <mat-icon>inventory_2</mat-icon>
+      <span>Products</span>
+    </a>
+
+    <a mat-list-item routerLink="/service" routerLinkActive="active">
+      <mat-icon>build</mat-icon>
+      <span>Services</span>
+    </a>
+
+    <a mat-list-item routerLink="/bp" routerLinkActive="active">
+      <mat-icon>business</mat-icon>
+      <span>Business Partners</span>
+    </a>
+  </mat-expansion-panel>
+
+  <!-- ================= TRANSACTIONS ================= -->
+
+  <mat-expansion-panel hideToggle *ngIf="!isCollapsed" class="menu-group">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>swap_horiz</mat-icon>
+        <span class="menu-text">Transactions</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <a mat-list-item routerLink="/invoice" routerLinkActive="active">
+      <mat-icon>receipt_long</mat-icon>
+      <span>Invoices</span>
+    </a>
+  </mat-expansion-panel>
+
+  <!-- ================= SETTINGS ================= -->
+
+  <mat-expansion-panel hideToggle
+                       *ngIf="!isCollapsed && user?.userRole === 'Admin'"
+                       class="menu-group">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        <mat-icon>settings</mat-icon>
+        <span class="menu-text">Settings</span>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <a mat-list-item routerLink="/users" routerLinkActive="active">
+      <mat-icon>people</mat-icon>
+      <span>Users</span>
+    </a>
+  </mat-expansion-panel>
+
+</mat-nav-list>
 
   </mat-sidenav>
 

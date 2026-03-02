@@ -1,0 +1,46 @@
+<h2>Products</h2>
+
+<div class="toolbar-row">
+  <button mat-raised-button color="primary" (click)="openCreate()">
+    + New Product
+  </button>
+</div>
+
+<table mat-table [dataSource]="products" class="mat-elevation-z2 full-width">
+
+  <ng-container matColumnDef="code">
+    <th mat-header-cell *matHeaderCellDef> Code </th>
+    <td mat-cell *matCellDef="let p"> {{ p.code }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let p"> {{ p.name }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef> Price </th>
+    <td mat-cell *matCellDef="let p"> {{ p.unit_Price | number:'1.2-2' }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="tax">
+    <th mat-header-cell *matHeaderCellDef> Tax % </th>
+    <td mat-cell *matCellDef="let p"> {{ p.tax_Rate }}% </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> </th>
+    <td mat-cell *matCellDef="let p">
+      <button mat-icon-button color="primary" (click)="openEdit(p.prod_Id)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button color="warn" (click)="delete(p.prod_Id)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+</table>

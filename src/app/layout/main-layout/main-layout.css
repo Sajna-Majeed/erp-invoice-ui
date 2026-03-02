@@ -1,44 +1,23 @@
+/* ============================= */
+/* Layout Container */
+/* ============================= */
+
 .sidenav-container {
   height: 100vh;
 }
-.active {
-  background: linear-gradient(
-    90deg,
-    rgba(99, 102, 241, 0.2),
-    transparent
-  );
-  border-left: 4px solid #6366f1;
-}
 
-.toolbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
+/* ============================= */
+/* Sidebar */
+/* ============================= */
 
-.app-title {
-  font-weight: 500;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-
-.content {
-  padding: 24px;
-  min-height: calc(100vh - 64px);
-}
 .sidenav {
-  width: 250px;
   transition: width 0.3s ease;
-  overflow: hidden;
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  overflow-x: hidden;
+  border-right: 1px solid rgba(0, 0, 0, 0.06);
+  backdrop-filter: blur(8px);
 }
 
-.sidenav.collapsed {
-  width: 75px;
-}
-
+/* Logo Section */
 .logo-section {
   display: flex;
   align-items: center;
@@ -49,22 +28,74 @@
 .logo {
   font-size: 18px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
+/* Nav Items */
 mat-nav-list a {
   display: flex;
   align-items: center;
   gap: 16px;
   padding-left: 20px;
+  height: 48px;
+  transition: background 0.2s ease;
 }
 
+/* Active Route */
+.active {
+  background: linear-gradient(
+    90deg,
+    rgba(99, 102, 241, 0.18),
+    transparent
+  );
+  border-left: 4px solid #6366f1;
+}
+
+/* Collapsed State */
 .sidenav.collapsed mat-nav-list a {
   justify-content: center;
+  padding-left: 0;
 }
 
 .menu-text {
   transition: opacity 0.2s ease;
+  white-space: nowrap;
 }
+
+/* ============================= */
+/* Toolbar */
+/* ============================= */
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.app-title {
+  font-weight: 500;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* ============================= */
+/* Content Area */
+/* ============================= */
+
+.content {
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  transition: all 0.3s ease;
+}
+
+/* ============================= */
+/* Breadcrumb */
+/* ============================= */
+
 .breadcrumb {
   display: flex;
   align-items: center;
@@ -78,7 +109,42 @@ mat-nav-list a {
   font-weight: 500;
   opacity: 1;
 }
-.toolbar {
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+
+/* ============================= */
+/* Smooth Animations */
+/* ============================= */
+
+mat-sidenav {
+  transition: width 0.3s ease;
+}
+
+/* ============================= */
+/* Dark Mode Enhancements */
+/* ============================= */
+
+:host-context(.dark-theme) .sidenav {
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+:host-context(.dark-theme) .toolbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+mat-nav-list a:hover {
+  background: rgba(99, 102, 241, 0.08);
+}
+.sidenav.collapsed .menu-text {
+  opacity: 0;
+  width: 0;
+}
+.menu-group {
+  box-shadow: none;
+  background: transparent;
+}
+
+.menu-group .mat-expansion-panel-header {
+  padding-left: 16px;
+}
+
+.menu-group mat-list-item {
+  padding-left: 40px;
 }

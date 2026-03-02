@@ -29,3 +29,25 @@ body {
   font-family: 'Roboto', sans-serif;
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
 }
+.confirm-dialog .mat-mdc-dialog-container {
+  border-radius: 16px;
+  padding: 10px;
+}
+
+.confirm-dialog h2 {
+  font-weight: 600;
+  padding: 10px;
+}
+
+.confirm-dialog mat-dialog-content {
+  margin-top: 5px;
+}
+.mat-mdc-dialog-container {
+  border-radius: 0px;
+}
+
+.dialog-form {
+  display: grid;
+  gap: 16px;
+  margin-top: 10px;
+}

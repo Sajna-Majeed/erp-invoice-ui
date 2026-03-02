@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { UserApiService } from '../../../core/service/api-services/user/user';
+import { ConfirmService } from '../../../shared/confirm-dialog/confirm-dialog.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-user',
@@ -13,7 +15,7 @@ import { UserApiService } from '../../../core/service/api-services/user/user';
 })
 export class UserListComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'fullName', 'email','mobileNumber', 'username','role',  'actions'];
+  displayedColumns: string[] = ['id', 'fullName', 'email', 'mobileNumber', 'username', 'role', 'actions'];
 
   users: any[] = [];
   loading = false;
@@ -21,7 +23,8 @@ export class UserListComponent implements OnInit {
   constructor(
     private userService: UserApiService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private confirm: ConfirmService
   ) { }
 
   ngOnInit() {
@@ -54,12 +57,25 @@ export class UserListComponent implements OnInit {
     this.router.navigate(['/users/edit', user.userId]);
   }
 
-  delete(id: number) {
-    if (!confirm('Delete this employee?')) return;
 
-    this.userService.delete(id).subscribe(() => {
-      this.snackBar.open('Employee deleted', 'Close', { duration: 3000 });
-      this.loadUsers();
+
+  delete(id: number) {
+
+    this.confirm.open({
+      title: 'Delete employee',
+      message: 'Are you sure you want to delete this employee?',
+      confirmText: 'Yes, Delete',
+      cancelText: 'Cancel',
+      color: 'warn'
+    }).subscribe(result => {
+
+      if (result) {
+        this.userService.delete(id).subscribe(() => {
+          this.snackBar.open('Deleted successfully', 'Close', { duration: 3000 });
+          this.loadUsers();
+        });
+      }
+
     });
   }
 }

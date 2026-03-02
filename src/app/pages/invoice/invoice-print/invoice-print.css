@@ -1,0 +1,78 @@
+.invoice-container {
+  max-width: 900px;
+  margin: auto;
+  padding: 30px;
+  background: white;
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.from-to {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.invoice-meta {
+  margin-top: 20px;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+}
+
+.invoice-table th,
+.invoice-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.invoice-table th {
+  background: #f5f5f5;
+}
+
+.totals {
+  margin-top: 30px;
+  text-align: right;
+}
+
+.grand-total {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+/* Hide button when printing */
+@media print {
+  button {
+    display: none;
+  }
+
+  body {
+    margin: 0;
+  }
+}
+@media print {
+
+  body * {
+    visibility: hidden;
+  }
+
+  #invoice-content,
+  #invoice-content * {
+    visibility: visible;
+  }
+
+  #invoice-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+}

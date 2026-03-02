@@ -1,64 +1,88 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { InvoiceApiService } from '../../../core/service/api-services/invoice/invoice';
-
+import { ConfirmService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-invoice-list',
-  imports: [SHARED_IMPORTS, MatPaginator],
+  imports: [SHARED_IMPORTS,],
   templateUrl: './invoice-list.html',
   styleUrl: './invoice-list.css',
 })
+export class InvoiceListComponent implements OnInit {
 
-export class InvoiceList implements OnInit {
-
-  private api = inject(InvoiceApiService);
-  private snack = inject(MatSnackBar);
-
-  displayedColumns: string[] = [
-    'invoice_No',
-    'invoice_Date',
-    'net_Amt',
-    'total_W_Tax',
+  displayedColumns = [
+    'invoiceNumber',
+    'partner',
+    'invoiceDate',
+    'dueDate',
+    'total',
+    'status',
     'actions'
   ];
 
-  dataSource = new MatTableDataSource<any>();
+  data: any[] = [];
+  loading = false;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  constructor(
+    private service: InvoiceApiService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private confirm:ConfirmService
+  ) {}
 
   ngOnInit() {
-    this.loadInvoices();
+    this.load();
   }
 
-  loadInvoices() {
-    this.api.getAll().subscribe({
+  load() {
+    this.loading = true;
+
+    this.service.getAll().subscribe({
       next: (res: any) => {
-        this.dataSource.data = res.data ?? res;
-        this.dataSource.paginator = this.paginator;
+        this.data = res.data;
+        this.loading = false;
       },
       error: () => {
-        this.snack.open('Failed to load invoices', 'OK', { duration: 3000 });
+        this.loading = false;
+        this.snackBar.open('Failed to load invoices', 'Close', { duration: 3000 });
       }
     });
   }
+
+  create() {
+    this.router.navigate(['/invoice/create']);
+  }
+
+  edit(row: any) {
+    this.router.navigate(['/invoice/edit', row.invoice_Id]);
+  }
+ view(row: any) {
+    this.router.navigate(['/invoice/view', row.invoice_Id]);
+  }
+
+  
 
   delete(id: number) {
 
-    if (!confirm('Are you sure you want to delete this invoice?'))
-      return;
+  this.confirm.open({
+    title: 'Delete Invoice',
+    message: 'Are you sure you want to delete this invoice?',
+    confirmText: 'Yes, Delete',
+    cancelText: 'Cancel',
+    color: 'warn'
+  }).subscribe(result => {
 
-    this.api.delete(id).subscribe({
-      next: () => {
-        this.snack.open('Invoice deleted', 'OK', { duration: 2000 });
-        this.loadInvoices();
-      },
-      error: () => {
-        this.snack.open('Delete failed', 'OK', { duration: 3000 });
+    if (result) {
+       this.service.delete(id).subscribe(() => {
+          this.snackBar.open('Invoice deleted', 'Close', { duration: 3000 });
+          this.load();
+        });
       }
-    });
-  }
+
+  });
+}
 }

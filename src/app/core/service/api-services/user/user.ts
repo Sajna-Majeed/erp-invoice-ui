@@ -1,29 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../../shared/enviorment';
 import { User } from '../../../../models/interface/user';
+import { ApiService } from '../api-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserApiService {
-   private baseUrl = environment.apiUrl + '/Users';
+   private url = 'Users';
 
-  constructor(private http: HttpClient) {}
+  constructor(private api: ApiService) {}
 
   getUsers() {
-    return this.http.get<any>(this.baseUrl);
+    return this.api.get(this.url);
   }
   getUserById(id: number) {
-    return this.http.get<any>(`${this.baseUrl}/${id}`);
+    return this.api.get(`${this.url}/${id}`);
   }
   register(user: User) {
-    return this.http.post(`${this.baseUrl}`, user);
+    return this.api.post(this.url, user);
   }
   update(user: User) {
-    return this.http.put(`${this.baseUrl}`, user);
+    return this.api.put(this.url, user);
   }
   delete(userId: number) {  
-    return this.http.delete(`${this.baseUrl}/${userId}`); 
+    return this.api.delete(`${this.url}/${userId}`); 
   }
 }
