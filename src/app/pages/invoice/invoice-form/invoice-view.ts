@@ -111,16 +111,24 @@ export class InvoiceFormComponent implements OnInit {
 
       // Clear existing lines
       this.lines.clear();
+this.productService.getAll().subscribe((products: any) => {
 
-      // Add lines
+      const productList = products.data;
+
+      this.lines.clear();
+
       data.lines.forEach((line: any) => {
+
+        const product = productList.find((p: { id: any; }) => p.id === line.product_Id);
+
+        line.item_Name = product || '';
+
         this.lines.push(this.createLineGroup(line));
       });
 
-      // Patch header
       this.form.patchValue(data);
-
       this.calculateTotals();
+    });
     });
   }
 
@@ -293,7 +301,13 @@ calculateLine(line: FormGroup) {
       this.form.markAllAsTouched();
       return;
     }
+ this.lines.controls.forEach(line => {
+      const itemName = line.get('item_Name')?.value;
 
+      if (itemName && typeof itemName === 'object') { 
+        line.get('item_Name')?.setValue(itemName.name);
+      }
+  });
     const payload = this.form.getRawValue();
 
     if (this.isEdit) {

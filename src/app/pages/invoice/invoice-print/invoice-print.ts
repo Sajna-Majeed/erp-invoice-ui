@@ -4,9 +4,12 @@ import { InvoiceApiService } from '../../../core/service/api-services/invoice/in
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { DatePipe } from '@angular/common';
 import { BussinessPointApiService } from '../../../core/service/api-services/bp/bussiness-point';
+import { ExcelExportService } from '../../../core/service/excel-services/excel-services';
+import { ErpCurrencyPipe } from "../../../shared/pipes/erp-currency-pipe";
+import { ErpNumberPipe } from "../../../shared/pipes/erp-number-pipe";
 @Component({
   selector: 'app-invoice-print',
-  imports: [SHARED_IMPORTS, DatePipe],
+  imports: [SHARED_IMPORTS, DatePipe, ErpCurrencyPipe, ErpNumberPipe],
   templateUrl: './invoice-print.html',
   styleUrl: './invoice-print.css',
 })
@@ -21,24 +24,30 @@ export class InvoicePrintComponent implements OnInit {
     email: 'info@company.com'
   };
 
+
   constructor(
     private route: ActivatedRoute,
     private invoiceService: InvoiceApiService,
-    private bpService:BussinessPointApiService
+    private bpService:BussinessPointApiService,
+    private   excelService: ExcelExportService
   ) { }
 
   ngOnInit() {
     this.invoiceId = +this.route.snapshot.paramMap.get('id')!;
     this.invoiceService.getById(this.invoiceId).subscribe((res: any) => {
       this.invoice = res.data;
-debugger
       this.bpService.getById(this.invoice.bp_Id).subscribe((res: any) => {
       this.invoice.businessPoint = res.data;
+      this.invoice.bp_Name = res.data.name;
+      this.invoice.addressLine = `${res.data.addressLine1}, ${res.data.city}, ${res.data.country_Subdivision}, ${res.data.country}`;
     });
     });
      
   }
-
+exportExcel() {
+  if (!this.invoice) return;
+  this.excelService.exportInvoice(this.invoice);
+}
   print() {
     const content = document.getElementById('invoice-content')?.innerHTML;
 
