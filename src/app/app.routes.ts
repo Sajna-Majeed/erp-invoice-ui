@@ -12,6 +12,8 @@ import { ProductDialogComponent } from './pages/product/product-dialog/product-d
 import { ProductComponent } from './pages/product/product/product';
 import { ServiceTypeComponent } from './pages/service-type/service-type-list/service-type-list';
 import { ServiceTypeDialogComponent } from './pages/service-type/service-type-dialog/service-type-dialog';
+import { ModuleDialogComponent } from './pages/module/module-dialog/module-dialog';
+import { ModuleListComponent } from './pages/module/module-list/module-list';
 export const routes: Routes = [
      { path: '', component: LoginComponent },
      { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -61,6 +63,14 @@ export const routes: Routes = [
                          { path: '', component: ServiceTypeComponent },
                          { path: 'create', component: ServiceTypeDialogComponent },
                          { path: 'edit/:id', component: ServiceTypeDialogComponent }
+                    ]
+               },
+               {
+                    path: 'module',
+                    children: [
+                         { path: '', component: ModuleListComponent },
+                         { path: 'create', component: ModuleDialogComponent },
+                         { path: 'edit/:id', component: ModuleDialogComponent }
                     ]
                },
                { path: '', redirectTo: 'home', pathMatch: 'full' }

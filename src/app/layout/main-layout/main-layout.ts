@@ -60,7 +60,20 @@ this.router.events.subscribe(event => {
   });
    this.user = this.userService.getUser();
 }
+isMasterActive(): boolean {
+  return this.router.url.startsWith('/product') ||
+         this.router.url.startsWith('/serviceType') ||
+         this.router.url.startsWith('/module') ||
+         this.router.url.startsWith('/bp');
+}
 
+isTransactionActive(): boolean {
+  return this.router.url.startsWith('/invoice');
+}
+
+isSettingsActive(): boolean {
+  return this.router.url.startsWith('/users');
+}
 
 toggleSidebar() {
   this.isCollapsed = !this.isCollapsed;

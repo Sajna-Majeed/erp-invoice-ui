@@ -1,98 +1,139 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="layout-container" autosize>
 
-  <mat-sidenav #drawer
+  <!-- ================= SIDENAV ================= -->
+<mat-sidenav #drawer
+             class="sidenav"
              [mode]="isMobile ? 'over' : 'side'"
-             [opened]="!isMobile"
-             [style.width.px]="isCollapsed ? 70 : 240"
-             class="sidenav">
+             [opened]="isMobile ? false : true"
+             [class.collapsed]="isCollapsed">
 
-    <div class="logo-section">
-      <div class="logo" *ngIf="!isCollapsed">ERP Pro</div>
-      <button mat-icon-button (click)="toggleSidebar()" *ngIf="!isMobile">
-        <mat-icon>{{ isCollapsed ? 'menu' : 'menu_open' }}</mat-icon>
-      </button>
-    </div>
-   <mat-nav-list>
+  <!-- Logo -->
+  <div class="logo-section">
+    <div class="logo" *ngIf="!isCollapsed">ERP <span>Pro</span></div>
 
-  <!-- Dashboard -->
-  <a mat-list-item
-     routerLink="/dashboard"
-     routerLinkActive="active"
-     [routerLinkActiveOptions]="{ exact: true }">
-    <mat-icon>dashboard</mat-icon>
-    <span class="menu-text" *ngIf="!isCollapsed">Dashboard</span>
-  </a>
+    <button mat-icon-button
+            *ngIf="!isMobile"
+            (click)="toggleSidebar()">
+      <mat-icon>
+        {{ isCollapsed ? 'chevron_right' : 'chevron_left' }}
+      </mat-icon>
+    </button>
+  </div>
 
-  <!-- ================= MASTER ================= -->
+  <mat-nav-list>
 
-  <mat-expansion-panel hideToggle *ngIf="!isCollapsed" class="menu-group">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-icon>folder</mat-icon>
-        <span class="menu-text">Master</span>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <a mat-list-item routerLink="/product" routerLinkActive="active">
-      <mat-icon>inventory_2</mat-icon>
-      <span>Products</span>
+    <!-- DASHBOARD -->
+    <a mat-list-item
+       routerLink="/dashboard"
+       routerLinkActive="active"
+       [routerLinkActiveOptions]="{ exact: true }">
+      <mat-icon>dashboard</mat-icon>
+      <span class="menu-text">Dashboard</span>
     </a>
 
-    <a mat-list-item routerLink="/serviceType" routerLinkActive="active">
-      <mat-icon>build</mat-icon>
-      <span>Services</span>
-    </a>
+    <mat-divider></mat-divider>
 
-    <a mat-list-item routerLink="/bp" routerLinkActive="active">
-      <mat-icon>business</mat-icon>
-      <span>Business Partners</span>
-    </a>
-  </mat-expansion-panel>
+    <!-- ================= MASTER ================= -->
+    <mat-expansion-panel
+        class="menu-group"
+        [expanded]="isMasterActive()"
+        hideToggle>
 
-  <!-- ================= TRANSACTIONS ================= -->
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>folder</mat-icon>
+          <span class="menu-text">Master</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-  <mat-expansion-panel hideToggle *ngIf="!isCollapsed" class="menu-group">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-icon>swap_horiz</mat-icon>
-        <span class="menu-text">Transactions</span>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
+      <a mat-list-item
+         routerLink="/product"
+         routerLinkActive="active">
+        <mat-icon>inventory_2</mat-icon>
+        <span>Products</span>
+      </a>
 
-    <a mat-list-item routerLink="/invoice" routerLinkActive="active">
-      <mat-icon>receipt_long</mat-icon>
-      <span>Invoices</span>
-    </a>
-  </mat-expansion-panel>
+      <a mat-list-item
+         routerLink="/serviceType"
+         routerLinkActive="active">
+        <mat-icon>build</mat-icon>
+        <span>Services</span>
+      </a>
 
-  <!-- ================= SETTINGS ================= -->
+      <a mat-list-item
+         routerLink="/module"
+         routerLinkActive="active">
+        <mat-icon>view_module</mat-icon>
+        <span>Modules</span>
+      </a>
 
-  <mat-expansion-panel hideToggle
-                       *ngIf="!isCollapsed && user?.userRole === 'Admin'"
-                       class="menu-group">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <mat-icon>settings</mat-icon>
-        <span class="menu-text">Settings</span>
-      </mat-panel-title>
-    </mat-expansion-panel-header>
+      <a mat-list-item
+         routerLink="/bp"
+         routerLinkActive="active">
+        <mat-icon>business</mat-icon>
+        <span>Business Partners</span>
+      </a>
 
-    <a mat-list-item routerLink="/users" routerLinkActive="active">
-      <mat-icon>people</mat-icon>
-      <span>Users</span>
-    </a>
-  </mat-expansion-panel>
+    </mat-expansion-panel>
 
-</mat-nav-list>
+    <!-- ================= TRANSACTIONS ================= -->
+    <mat-expansion-panel
+        class="menu-group"
+        [expanded]="isTransactionActive()"
+        hideToggle>
 
-  </mat-sidenav>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>swap_horiz</mat-icon>
+          <span class="menu-text">Transactions</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-  <mat-sidenav-content>
+      <a mat-list-item
+         routerLink="/invoice"
+         routerLinkActive="active">
+        <mat-icon>receipt_long</mat-icon>
+        <span>Invoices</span>
+      </a>
 
-    <!-- TOP TOOLBAR -->
-    <mat-toolbar color="primary" class="toolbar">
+    </mat-expansion-panel>
 
-      <button *ngIf="isMobile" mat-icon-button (click)="drawer.toggle()">
+    <!-- ================= SETTINGS ================= -->
+    <mat-expansion-panel
+        *ngIf="user?.userRole === 'Admin'"
+        class="menu-group"
+        [expanded]="isSettingsActive()"
+        hideToggle>
+
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <mat-icon>settings</mat-icon>
+          <span class="menu-text">Settings</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <a mat-list-item
+         routerLink="/users"
+         routerLinkActive="active">
+        <mat-icon>people</mat-icon>
+        <span>Users</span>
+      </a>
+
+    </mat-expansion-panel>
+
+  </mat-nav-list>
+
+</mat-sidenav>
+
+
+  <!-- ================= CONTENT ================= -->
+  <mat-sidenav-content class="main-content">
+
+    <mat-toolbar color="primary" class="toolbar mat-elevation-z4">
+
+      <button *ngIf="isMobile"
+              mat-icon-button
+              (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
 
@@ -100,14 +141,12 @@
 
       <span class="spacer"></span>
 
-      <!-- Dark Mode Toggle -->
       <button mat-icon-button (click)="themeService.toggleTheme()">
         <mat-icon>
           {{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}
         </mat-icon>
       </button>
 
-      <!-- User Menu -->
       <button mat-icon-button [matMenuTriggerFor]="userMenu">
         <mat-icon>account_circle</mat-icon>
       </button>
@@ -121,16 +160,20 @@
 
     </mat-toolbar>
 
-    <!-- PAGE CONTENT -->
-    <div class="content">
-      <nav class="breadcrumb">
-        <span>Home</span>
-        <mat-icon>chevron_right</mat-icon>
-        <span class="current">{{ currentRoute }}</span>
-      </nav>
-      <div>
+    <div class="content-wrapper">
+
+      <div class="page-card" [@fadeAnimation]="currentRoute">
+
+        <nav class="breadcrumb">
+          <span>Home</span>
+          <mat-icon>chevron_right</mat-icon>
+          <span class="current">{{ currentRoute }}</span>
+        </nav>
+
         <router-outlet></router-outlet>
+
       </div>
+
     </div>
 
   </mat-sidenav-content>
