@@ -25,7 +25,8 @@
               }
             ],
             "styles": [
-              "src/custom-theme.scss",
+              "node_modules/primeng/themes/lara-light-indigo/theme.css",
+              "node_modules/primeicons/primeicons.css",
               "src/styles.css"
             ]
           },

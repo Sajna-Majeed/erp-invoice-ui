@@ -1,184 +1,76 @@
-<mat-sidenav-container class="layout-container" autosize>
+<div class="layout">
 
-  <!-- ================= SIDENAV ================= -->
-  <mat-sidenav #drawer
-    class="sidenav"
-    [mode]="isMobile ? 'over' : 'side'"
-    [opened]="isMobile ? false : true"
-    [class.collapsed]="isCollapsed">
+  <!-- SIDEBAR -->
+  <div class="sidebar" [class.collapsed]="isCollapsed">
 
-    <!-- Logo -->
-    <div class="logo-section">
-      @if (!isCollapsed) {
-        <div class="logo">ERP <span>Pro</span></div>
-      }
+    <div class="sidebar-header">
+      <span class="logo" *ngIf="!isCollapsed">ERP Traveler</span>
 
-      @if (!isMobile) {
-        <button mat-icon-button
-          (click)="toggleSidebar()">
-          <mat-icon>
-            {{ isCollapsed ? 'chevron_right' : 'chevron_left' }}
-          </mat-icon>
-        </button>
-      }
+      <button pButton
+              icon="pi pi-bars"
+              text
+              (click)="toggleSidebar()">
+      </button>
     </div>
 
-    <mat-nav-list>
+    <p-panelMenu [model]="menuItems"
+                 [style]="{ width: '100%' }"
+                 class="erp-menu">
+    </p-panelMenu>
 
-      <!-- DASHBOARD -->
-      <a mat-list-item
-        routerLink="/dashboard"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
-        <mat-icon>dashboard</mat-icon>
-        <span class="menu-text">Dashboard</span>
-      </a>
-
-      <mat-divider></mat-divider>
-
-      <!-- ================= MASTER ================= -->
-      <mat-expansion-panel
-        class="menu-group"
-        [expanded]="isMasterActive()"
-        hideToggle>
-
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <mat-icon>folder</mat-icon>
-            <span class="menu-text">Master</span>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <a mat-list-item
-          routerLink="/product"
-          routerLinkActive="active">
-          <mat-icon>inventory_2</mat-icon>
-          <span>Products</span>
-        </a>
-
-        <a mat-list-item
-          routerLink="/serviceType"
-          routerLinkActive="active">
-          <mat-icon>build</mat-icon>
-          <span>Services</span>
-        </a>
-
-        <a mat-list-item
-          routerLink="/module"
-          routerLinkActive="active">
-          <mat-icon>view_module</mat-icon>
-          <span>Modules</span>
-        </a>
-
-        <a mat-list-item
-          routerLink="/bp"
-          routerLinkActive="active">
-          <mat-icon>business</mat-icon>
-          <span>Business Partners</span>
-        </a>
-
-      </mat-expansion-panel>
-
-      <!-- ================= TRANSACTIONS ================= -->
-      <mat-expansion-panel
-        class="menu-group"
-        [expanded]="isTransactionActive()"
-        hideToggle>
-
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            <mat-icon>swap_horiz</mat-icon>
-            <span class="menu-text">Transactions</span>
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <a mat-list-item
-          routerLink="/invoice"
-          routerLinkActive="active">
-          <mat-icon>receipt_long</mat-icon>
-          <span>Invoices</span>
-        </a>
-
-      </mat-expansion-panel>
-
-      <!-- ================= SETTINGS ================= -->
-      @if (user?.userRole === 'Admin') {
-        <mat-expansion-panel
-          class="menu-group"
-          [expanded]="isSettingsActive()"
-          hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <mat-icon>settings</mat-icon>
-              <span class="menu-text">Settings</span>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <a mat-list-item
-            routerLink="/users"
-            routerLinkActive="active">
-            <mat-icon>people</mat-icon>
-            <span>Users</span>
-          </a>
-        </mat-expansion-panel>
-      }
-
-    </mat-nav-list>
-
-  </mat-sidenav>
+  </div>
 
 
-  <!-- ================= CONTENT ================= -->
-  <mat-sidenav-content class="main-content">
+  <!-- MAIN -->
+  <div class="main">
 
-    <mat-toolbar color="primary" class="toolbar mat-elevation-z4">
+    <!-- TOPBAR -->
+    <div class="topbar">
 
-      @if (isMobile) {
-        <button
-          mat-icon-button
-          (click)="drawer.toggle()">
-          <mat-icon>menu</mat-icon>
+      <div class="topbar-left">
+        <button *ngIf="isMobile"
+                pButton
+                icon="pi pi-bars"
+                text
+                (click)="mobileSidebar = true">
         </button>
-      }
 
-      <span class="app-title">ERP Management</span>
+        <span class="page-title">{{ currentRoute }}</span>
+      </div>
 
-      <span class="spacer"></span>
+      <div class="topbar-right">
 
-      <button mat-icon-button (click)="themeService.toggleTheme()">
-        <mat-icon>
-          {{ themeService.isDark() ? 'light_mode' : 'dark_mode' }}
-        </mat-icon>
-      </button>
+        <!-- User Menu -->
+        <p-menu #userMenu
+                [popup]="true"
+                [model]="userItems">
+        </p-menu>
 
-      <button mat-icon-button [matMenuTriggerFor]="userMenu">
-        <mat-icon>account_circle</mat-icon>
-      </button>
-
-      <mat-menu #userMenu="matMenu">
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>logout</mat-icon>
-          <span>Logout</span>
+        <button pButton
+                icon="pi pi-user"
+                text
+                (click)="userMenu.toggle($event)">
         </button>
-      </mat-menu>
-
-    </mat-toolbar>
-
-    <div class="content-wrapper">
-
-      <div class="page-card" [@fadeAnimation]="currentRoute">
-
-        <nav class="breadcrumb">
-          <span>Home</span>
-          <mat-icon>chevron_right</mat-icon>
-          <span class="current">{{ currentRoute }}</span>
-        </nav>
-
-        <router-outlet></router-outlet>
 
       </div>
 
     </div>
 
-  </mat-sidenav-content>
+    <!-- CONTENT -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
 
-</mat-sidenav-container>
+  </div>
+
+</div>
+
+
+<!-- MOBILE DRAWER -->
+<p-drawer [(visible)]="mobileSidebar"
+          position="left"
+          [modal]="true">
+
+  <p-panelMenu [model]="menuItems"></p-panelMenu>
+
+</p-drawer>

@@ -24,8 +24,19 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import {  MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { ButtonModule } from 'primeng/button';
+import { AvatarModule } from 'primeng/avatar';
+import { RippleModule } from 'primeng/ripple';
+import { DrawerModule } from 'primeng/drawer';
+import { MenuTemplates } from 'primeng/types/menu';
 export const SHARED_IMPORTS = [
   CommonModule,
+  PanelMenuModule,
+  DrawerModule,
+  ButtonModule,
+  AvatarModule,
+  RippleModule,
   MatSlideToggleModule,
   MatAutocompleteModule,
   MatProgressSpinnerModule,
