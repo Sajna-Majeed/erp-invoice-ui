@@ -7,7 +7,7 @@
 
 <table mat-table [dataSource]="data" class="mat-elevation-z2 full-width">
 
-   <ng-container matColumnDef="id">
+  <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> ID </th>
     <td mat-cell *matCellDef="let row"> {{row.id}} </td>
   </ng-container>
@@ -29,9 +29,15 @@
   <ng-container matColumnDef="type">
     <th mat-header-cell *matHeaderCellDef>Type</th>
     <td mat-cell *matCellDef="let row">
-      <span *ngIf="row.is_Seller">Seller</span>
-       <span *ngIf="row.is_Seller && row.is_Customer"> / </span>
-      <span *ngIf="row.is_Customer">Customer</span>
+      @if (row.is_Seller) {
+        <span>Seller</span>
+      }
+      @if (row.is_Seller && row.is_Customer) {
+        <span> / </span>
+      }
+      @if (row.is_Customer) {
+        <span>Customer</span>
+      }
     </td>
   </ng-container>
 

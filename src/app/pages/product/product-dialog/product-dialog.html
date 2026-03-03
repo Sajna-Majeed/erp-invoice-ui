@@ -1,62 +1,72 @@
 <h2 mat-dialog-title class="dialog-title">
-    {{ isEdit ? 'Edit Product' : 'Create Product' }}
+  {{ isEdit ? 'Edit Product' : 'Create Product' }}
 </h2>
 
 <mat-dialog-content>
 
-    <form [formGroup]="form" class="dialog-form">
+  <form [formGroup]="form" class="dialog-form">
 
-        <mat-form-field appearance="outline">
-            <mat-label>Product Code</mat-label>
-            <input matInput formControlName="code" readonly>
-        </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Product Code</mat-label>
+      <input matInput formControlName="code" readonly>
+    </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Name</mat-label>
-            <input matInput formControlName="name">
-            <mat-error *ngIf="form.get('name')?.hasError('required')">
-                Name is required
-            </mat-error>
-        </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name">
+      @if (form.get('name')?.hasError('required')) {
+        <mat-error>
+          Name is required
+        </mat-error>
+      }
+    </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description"></textarea>
-        </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description"></textarea>
+    </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>UOM</mat-label>
-            <input matInput formControlName="uom">
-        </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>UOM</mat-label>
+      <input matInput formControlName="uom">
+    </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Unit Price</mat-label>
-            <input matInput type="number" formControlName="unit_Price">
-            <mat-error *ngIf="form.get('unit_Price')?.hasError('required')">
-                Unit Price is required
-            </mat-error>
-            <mat-error *ngIf="form.get('unit_Price')?.hasError('min')">
-                Unit Price must be positive
-            </mat-error>
-        </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Unit Price</mat-label>
+      <input matInput type="number" formControlName="unit_Price">
+      @if (form.get('unit_Price')?.hasError('required')) {
+        <mat-error>
+          Unit Price is required
+        </mat-error>
+      }
+      @if (form.get('unit_Price')?.hasError('min')) {
+        <mat-error>
+          Unit Price must be positive
+        </mat-error>
+      }
+    </mat-form-field>
 
-        <mat-form-field appearance="outline">
-            <mat-label>Tax %</mat-label>
-            <input matInput type="number" formControlName="tax_Rate">
-            <mat-error *ngIf="form.get('tax_Rate')?.hasError('required')">
-                Tax Rate is required
-            </mat-error>
-            <mat-error *ngIf="form.get('tax_Rate')?.hasError('min') || form.get('tax_Rate')?.hasError('max')">
-                Tax Rate must be between 0 and 100
-            </mat-error>
-        </mat-form-field>
-    </form>
+    <mat-form-field appearance="outline">
+      <mat-label>Tax %</mat-label>
+      <input matInput type="number" formControlName="tax_Rate">
+      @if (form.get('tax_Rate')?.hasError('required')) {
+        <mat-error>
+          Tax Rate is required
+        </mat-error>
+      }
+      @if (form.get('tax_Rate')?.hasError('min') || form.get('tax_Rate')?.hasError('max')) {
+        <mat-error>
+          Tax Rate must be between 0 and 100
+        </mat-error>
+      }
+    </mat-form-field>
+  </form>
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-    <button mat-stroked-button (click)="close()">Cancel</button>
-    <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">
-        Save
-    </button>
+  <button mat-stroked-button (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">
+    Save
+  </button>
 </mat-dialog-actions>

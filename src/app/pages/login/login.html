@@ -1,9 +1,9 @@
 <!-- <div class="theme-toggle">
-  <mat-slide-toggle
-    [checked]="themeService.isDark()"
-    (change)="themeService.toggleTheme()">
-    Dark Mode
-  </mat-slide-toggle>
+<mat-slide-toggle
+  [checked]="themeService.isDark()"
+  (change)="themeService.toggleTheme()">
+  Dark Mode
+</mat-slide-toggle>
 </div> -->
 <div class="login-wrapper">
 
@@ -43,8 +43,12 @@
           class="full-width login-btn"
           [disabled]="isLoading">
 
-          <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
-          <span *ngIf="!isLoading">Login</span>
+          @if (isLoading) {
+            <mat-spinner diameter="20"></mat-spinner>
+          }
+          @if (!isLoading) {
+            <span>Login</span>
+          }
 
         </button>
 

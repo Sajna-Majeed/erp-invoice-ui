@@ -1,80 +1,75 @@
-<div class="invoice-container" *ngIf="invoice">
-
-  <div class="top-bar">
-    <h1>INVOICE</h1>
-    <button mat-raised-button color="primary" (click)="print()">
-      Download PDF
-    </button>
-    <button mat-stroked-button type="button" (click)="exportExcel()">
-      Export Excel
-    </button>
-  </div>
-
-  <!-- FROM / TO SECTION -->
-  <div id="invoice-content" >
-    <div class="from-to">
-
-      <div class="from">
-        <h3>From</h3>
-        <p><strong>{{ company.name }}</strong></p>
-        <p>{{ company.address }}</p>
-        <p>{{ company.phone }}</p>
-        <p>{{ company.email }}</p>
-      </div>
-
-      <div class="to">
-        <h3>To</h3>
-        <p><strong>{{ invoice?.businessPoint?.name }}</strong></p>
-        <p style="white-space: pre-line;">
-          {{ invoice.addressLine }}
-        </p>
-        <p>{{ invoice?.businessPoint?.mobile_No }}</p>
-        <p>{{ invoice?.businessPoint?.email }}</p>
-      </div>
-
+@if (invoice) {
+  <div class="invoice-container">
+    <div class="top-bar">
+      <h1>INVOICE</h1>
+      <button mat-raised-button color="primary" (click)="print()">
+        Download PDF
+      </button>
+      <button mat-stroked-button type="button" (click)="exportExcel()">
+        Export Excel
+      </button>
     </div>
-
-    <!-- INVOICE DETAILS -->
-    <div class="invoice-meta">
-      <div>
-        <p><strong>Invoice No:</strong> {{ invoice.invoice_No }}</p>
-        <p><strong>Date:</strong> {{ invoice.invoice_Date | date }}</p>
-        <p><strong>Due Date:</strong> {{ invoice.due_Date | date }}</p>
+    <!-- FROM / TO SECTION -->
+    <div id="invoice-content" >
+      <div class="from-to">
+        <div class="from">
+          <h3>From</h3>
+          <p><strong>{{ company.name }}</strong></p>
+          <p>{{ company.address }}</p>
+          <p>{{ company.phone }}</p>
+          <p>{{ company.email }}</p>
+        </div>
+        <div class="to">
+          <h3>To</h3>
+          <p><strong>{{ invoice?.businessPoint?.name }}</strong></p>
+          <p style="white-space: pre-line;">
+            {{ invoice.addressLine }}
+          </p>
+          <p>{{ invoice?.businessPoint?.mobile_No }}</p>
+          <p>{{ invoice?.businessPoint?.email }}</p>
+        </div>
       </div>
-    </div>
-
-    <!-- LINE ITEMS TABLE -->
-    <table class="invoice-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Item</th>
-          <th>Qty</th>
-          <th>Price</th>
-          <th>Tax %</th>
-          <th>Total (in AED)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let line of invoice.lines; let i = index">
-          <td >{{ i + 1 }}</td>
-          <td >{{ line.item_Name }}</td>
-          <td class="text-right">{{ line.item_Price_Base_Qty }}</td>
-          <td class="text-right">{{ line.item_Net_Price | erpNumber }}</td>
-          <td class="text-right">{{ line.item_Tax_Rate }}%</td>
-         
-          <td class="text-right"> {{ line.amt_In_Aed | erpNumber }}</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- TOTALS -->
-    <div class="totals">
-      <div><strong>Net:</strong> {{ invoice.net_Amt | erpNumber }}</div>
-      <div><strong>Tax:</strong> {{ invoice.total_Tax_Amt | erpNumber }}</div>
-      <div class="grand-total">
-        <strong>Total:</strong> {{ invoice.total_W_Tax | erpNumber }}
+      <!-- INVOICE DETAILS -->
+      <div class="invoice-meta">
+        <div>
+          <p><strong>Invoice No:</strong> {{ invoice.invoice_No }}</p>
+          <p><strong>Date:</strong> {{ invoice.invoice_Date | date }}</p>
+          <p><strong>Due Date:</strong> {{ invoice.due_Date | date }}</p>
+        </div>
+      </div>
+      <!-- LINE ITEMS TABLE -->
+      <table class="invoice-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Item</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Tax %</th>
+            <th>Total (in AED)</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (line of invoice.lines; track line; let i = $index) {
+            <tr>
+              <td >{{ i + 1 }}</td>
+              <td >{{ line.item_Name }}</td>
+              <td class="text-right">{{ line.item_Price_Base_Qty }}</td>
+              <td class="text-right">{{ line.item_Net_Price | erpNumber }}</td>
+              <td class="text-right">{{ line.item_Tax_Rate }}%</td>
+              <td class="text-right"> {{ line.amt_In_Aed | erpNumber }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      <!-- TOTALS -->
+      <div class="totals">
+        <div><strong>Net:</strong> {{ invoice.net_Amt | erpNumber }}</div>
+        <div><strong>Tax:</strong> {{ invoice.total_Tax_Amt | erpNumber }}</div>
+        <div class="grand-total">
+          <strong>Total:</strong> {{ invoice.total_W_Tax | erpNumber }}
+        </div>
       </div>
     </div>
   </div>
-</div>
+}
