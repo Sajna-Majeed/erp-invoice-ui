@@ -1,26 +1,26 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './pages/login/login';
 import { MainLayoutComponent } from './layout/main-layout/main-layout';
 import { authGuard } from './core/guard/auth-guard';
-import { UserListComponent } from './pages/user/user-list/user';
-import { UserFormComponent } from './pages/user/user-form/create-edit';
-import { BpFormComponent } from './pages/bp/bp-form/bp-form/bp-form';
-import { BpListComponent } from './pages/bp/bp-list/bp-list';
-import { InvoiceFormComponent } from './pages/invoice/invoice-form/invoice-view';
-import { InvoicePrintComponent } from './pages/invoice/invoice-print/invoice-print';
-import { ProductDialogComponent } from './pages/product/product-dialog/product-dialog';
-import { ProductComponent } from './pages/product/product/product';
-import { ServiceTypeComponent } from './pages/service-type/service-type-list/service-type-list';
-import { ServiceTypeDialogComponent } from './pages/service-type/service-type-dialog/service-type-dialog';
-import { ModuleDialogComponent } from './pages/module/module-dialog/module-dialog';
-import { ModuleListComponent } from './pages/module/module-list/module-list';
+import { LoginComponent } from './features/login/login';
+import { UserListComponent } from './features/user/user-list/user';
+import { UserFormComponent } from './features/user/user-form/create-edit';
+import { BpListComponent } from './features/bp/bp-list/bp-list';
+import { BpFormComponent } from './features/bp/bp-form/bp-form/bp-form';
+import { InvoiceFormComponent } from './features/invoice/invoice-form/invoice-view';
+import { InvoicePrintComponent } from './features/invoice/invoice-print/invoice-print';
+import { ProductDialogComponent } from './features/product/product-dialog/product-dialog';
+import { ProductComponent } from './features/product/product/product';
+import { ServiceTypeComponent } from './features/service-type/service-type-list/service-type-list';
+import { ServiceTypeDialogComponent } from './features/service-type/service-type-dialog/service-type-dialog';
+import { ModuleDialogComponent } from './features/module/module-dialog/module-dialog';
+import { ModuleListComponent } from './features/module/module-list/module-list';
 export const routes: Routes = [
      { path: '', component: LoginComponent },
      { path: '', redirectTo: 'login', pathMatch: 'full' },
      {
           path: '', canActivate: [authGuard], component: MainLayoutComponent,
           children: [
-               { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.DashboardComponent) },
+               { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard').then(m => m.DashboardComponent) },
                {
                     path: 'users',
                     children: [
@@ -43,7 +43,7 @@ export const routes: Routes = [
 
                { path: 'invoice',
                      children: [
-                         { path: '', loadComponent: () => import('./pages/invoice/invoice-list/invoice-list').then(m => m.InvoiceListComponent) },
+                         { path: '', loadComponent: () => import('./features/invoice/invoice-list/invoice-list').then(m => m.InvoiceListComponent) },
                           { path: 'create', component: InvoiceFormComponent },
                          { path: 'edit/:id', component: InvoiceFormComponent },
                          { path: 'view/:id', component: InvoicePrintComponent }

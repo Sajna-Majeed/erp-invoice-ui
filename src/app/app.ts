@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { GlobalSpinnerComponent } from './shared/global-spinner/global-spinner/global-spinner';
+import { GlobalSpinnerComponent } from './shared/components/global-spinner/global-spinner/global-spinner';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, GlobalSpinnerComponent],

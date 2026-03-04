@@ -10,10 +10,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { map, of } from 'rxjs';
-import { TextFieldComponent } from "../../../shared/form-fields/text-field/text-field";
-import { SelectFieldComponent } from "../../../shared/form-fields/select-field/select-field";
-import { NumberFieldComponent } from "../../../shared/form-fields/number-field/number-field";
-import { CrudTableComponent } from "../../../shared/form-fields/crud-table/crud-table";
+import { TextFieldComponent } from '../../../shared/components/text-field/text-field';
+import { SelectFieldComponent } from '../../../shared/components/select-field/select-field';
+import { NumberFieldComponent } from '../../../shared/components/number-field/number-field';
+import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
 
 @Component({
   selector: 'app-product',

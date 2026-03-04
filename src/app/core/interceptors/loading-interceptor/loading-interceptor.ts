@@ -12,7 +12,7 @@ export const LoadingInterceptor: HttpInterceptorFn = (req, next) => {
     loadingService.show();
   }
 
-  loadingService.show();
+ 
 
   return next(req).pipe(
     finalize(() => {

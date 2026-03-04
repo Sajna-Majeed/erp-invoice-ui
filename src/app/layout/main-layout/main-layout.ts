@@ -4,8 +4,7 @@ import { Router,NavigationEnd } from '@angular/router';
 import { ThemeService } from '../../core/service/theme-services/theme';
 import { AuthService } from '../../core/service/api-services/auth/auth';
 import { SHARED_IMPORTS } from '../../shared/shared-imports';
-import { UserInfo } from '../../models/interface/user';
-import { UserService } from '../../core/service/model-services/user/user';
+import { UserInfo, UserService } from '../../core/service/model-services/user/user';
 
 
 @Component({

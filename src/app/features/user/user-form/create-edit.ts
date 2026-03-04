@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { UserApiService } from '../../../core/service/api-services/user/user';
-import { User } from '../../../models/interface/user';
+import { User } from '../../../core/models/user';
 
 @Component({
   selector: 'app-create-edit',

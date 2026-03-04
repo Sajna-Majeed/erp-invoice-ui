@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SHARED_IMPORTS } from '../../shared-imports';
-import { FormErrorComponent } from '../../form-error/form-error/form-error';
+import { FormErrorComponent } from '../form-error/form-error';
 
 @Component({
   selector: 'app-select-field',

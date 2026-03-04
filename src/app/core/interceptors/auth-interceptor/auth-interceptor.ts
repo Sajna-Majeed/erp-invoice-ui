@@ -4,7 +4,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { catchError, throwError } from 'rxjs';
-import { AuthService } from '../service/api-services/auth/auth';
+import { AuthService } from '../../service/api-services/auth/auth';
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
 
