@@ -10,10 +10,15 @@ import {
   Validators,
 } from '@angular/forms';
 import { map, of } from 'rxjs';
+import { TextFieldComponent } from "../../../shared/form-fields/text-field/text-field";
+import { SelectFieldComponent } from "../../../shared/form-fields/select-field/select-field";
+import { NumberFieldComponent } from "../../../shared/form-fields/number-field/number-field";
+import { CrudTableComponent } from "../../../shared/form-fields/crud-table/crud-table";
+
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [SHARED_IMPORTS],
+  imports: [SHARED_IMPORTS, TextFieldComponent, SelectFieldComponent, NumberFieldComponent, CrudTableComponent],
   templateUrl: './product.html',
   styleUrl: './product.css',
   providers: [ConfirmationService, MessageService],
@@ -38,6 +43,13 @@ export class ProductComponent {
     this.loadUOMs();
     this.load();
   }
+  columns = [
+  { field: 'code', header: 'Code' },
+  { field: 'name', header: 'Name' },
+  { field: 'uom', header: 'UOM' },
+  { field: 'unit_Price', header: 'Price' },
+  { field: 'tax_Rate', header: 'Tax %' }
+];
   initForm() {
     this.form = this.fb.group({
       id: [null],

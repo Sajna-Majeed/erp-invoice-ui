@@ -1,0 +1,18 @@
+<div class="field flex flex-col gap-1">
+
+        <label>{{label}}</label>
+
+        <input
+            pInputText
+            [formControlName]="controlName"
+            [formGroup]="form"
+            [invalid]="form.get(controlName)?.invalid && submitted"
+        />
+
+        <app-form-error
+            [control]="form.get(controlName)"
+            [label]="label"
+            [show]="submitted">
+        </app-form-error>
+
+    </div>

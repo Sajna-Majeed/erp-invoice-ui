@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
+import { GlobalSpinnerComponent } from './shared/global-spinner/global-spinner/global-spinner';
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, GlobalSpinnerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

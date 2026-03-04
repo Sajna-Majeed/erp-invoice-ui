@@ -13,7 +13,7 @@
     </div>
   </div>
   <!-- Search -->
-  <p-card>
+  <!-- <p-card>
     <div class="search-bar">
       <span class="p-input-icon-left" style="width: 100%">
         <p-floatLabel variant="on">
@@ -27,63 +27,17 @@
         </p-floatLabel>
       </span>
     </div>
-  </p-card>
+  </p-card> -->
   <!-- Table -->
   <p-card>
-    <p-table
-      #table
-      [value]="products"
-      [paginator]="true"
-      [rows]="10"
-      [rowsPerPageOptions]="[5, 10, 20]"
-      [responsiveLayout]="'scroll'"
-      [globalFilterFields]="['code', 'name', 'description']"
+    <app-crud-table
+      [data]="products"
+      [columns]="columns"
+      (edit)="openEdit($event)"
+      (delete)="delete($event)"
+      (toggle)="toggleStatus($event)"
     >
-      <ng-template pTemplate="header">
-        <tr>
-          <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
-          <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-          <th pSortableColumn="uom_id">UOM <p-sortIcon field="uom_id"></p-sortIcon></th>
-          <th pSortableColumn="unit_Price">Price <p-sortIcon field="unit_Price"></p-sortIcon></th>
-          <th pSortableColumn="tax_Rate">Tax <p-sortIcon field="tax_Rate"></p-sortIcon></th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-product>
-        <tr>
-          <td>{{ product.code }}</td>
-          <td>{{ product.name }}</td>
-          <td>{{ product.uom }}</td>
-          <td>{{ product.unit_Price | currency }}</td>
-          <td>{{ product.tax_Rate }}%</td>
-          <td>
-            <p-button
-              *ngIf="product.is_Active"
-              icon="pi pi-check"
-              severity="success"
-              (click)="toggleStatus(product)"
-            />
-            <p-button
-              *ngIf="!product.is_Active"
-              icon="pi pi-times"
-              severity="danger"
-              (click)="toggleStatus(product)"
-            />
-          </td>
-          <td>
-            <button pButton icon="pi pi-pencil" text (click)="openEdit(product)"></button>
-            <button
-              pButton
-              icon="pi pi-trash"
-              text
-              severity="danger"
-              (click)="delete(product)"
-            ></button>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+    </app-crud-table>
   </p-card>
 </div>
 <!-- Dialog -->
@@ -96,68 +50,50 @@
   <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"> </p-progressSpinner>
   <form [formGroup]="form">
     <div class="form-grid">
-      <div class="field"><label>Code</label> <input pInputText formControlName="code" /></div>
       <div class="field">
-        <label>Name</label>
-        <input
-          pInputText
-          formControlName="name"
-          class="full-width"
-          [class.ng-invalid]="isInvalid('name')"
-        />
-        <small *ngIf="isInvalid('name')" class="p-error"> {{ getError('name') }} </small>
+        <label>Code</label>
+        <input pInputText formControlName="code" />
       </div>
+      <app-text-field
+        label="Product Name"
+        controlName="name"
+        [form]="form"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+
       <div class="field">
         <label>Description</label> <input pInputText formControlName="description" />
       </div>
-      <div class="field">
-        <label>UOM</label>
-        <p-select
-          [options]="uoms"
-          formControlName="uom_id"
-          optionLabel="code"
-          optionValue="uom_id"
-          placeholder="Select UOM"
-          [filter]="true"
-          showClear
-          class="full-width"
-          [class.ng-invalid]="isInvalid('uom_id')"
-        >
-        </p-select>
-        <small *ngIf="isInvalid('uom_id')" class="p-error"> {{ getError('uom_id') }} </small>
-      </div>
-      <div class="field">
-        <label>Unit Price</label>
-        <p-inputNumber
-          formControlName="unit_Price"
-          mode="currency"
-          currency="USD"
-          locale="en-US"
-          [min]="0"
-          class="full-width"
-          [class.ng-invalid]="isInvalid('unit_Price')"
-        >
-        </p-inputNumber>
-        <small *ngIf="isInvalid('unit_Price')" class="p-error">
-          {{ getError('unit_Price') }}
-        </small>
-      </div>
-      <div class="field">
-        <label>Tax Rate</label>
-        <p-inputNumber
-          formControlName="tax_Rate"
-          mode="decimal"
-          [min]="0"
-          [max]="100"
-          suffix="%"
-          [minFractionDigits]="0"
-          [maxFractionDigits]="2"
-          class="full-width"
-          [class.ng-invalid]="isInvalid('tax_Rate')"
-        >
-        </p-inputNumber>
-        <small *ngIf="isInvalid('tax_Rate')" class="p-error"> {{ getError('tax_Rate') }} </small>
-      </div>
+      <app-select-field
+        label="UOM"
+        controlName="uom_Id"
+        [options]="uoms"
+        optionLabel="code"
+        optionValue="uom_Id"
+        [form]="form"
+        [submitted]="formSubmitted"
+      >
+      </app-select-field>
+
+      <app-number-field
+        label="Unit Price"
+        controlName="unit_Price"
+        mode="currency"
+        currency="INR"
+        [form]="form"
+        [submitted]="formSubmitted"
+      >
+      </app-number-field>
+
+      <app-number-field
+        label="Tax Rate"
+        controlName="tax_Rate"
+        suffix="%"
+        [form]="form"
+        [submitted]="formSubmitted"
+      >
+      </app-number-field>
     </div>
   </form>
   <ng-template pTemplate="footer">

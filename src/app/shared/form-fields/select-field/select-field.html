@@ -1,0 +1,21 @@
+ <div class="field flex flex-col gap-1">
+
+        <label>{{label}}</label>
+
+        <p-select
+            [options]="options"
+            [optionLabel]="optionLabel"
+            [optionValue]="optionValue"
+            [formControlName]="controlName"
+            [formGroup]="form"
+            [invalid]="form.get(controlName)?.invalid && submitted"
+            class="w-full">
+        </p-select>
+
+        <app-form-error
+            [control]="form.get(controlName)"
+            [label]="label"
+            [show]="submitted">
+        </app-form-error>
+
+    </div>

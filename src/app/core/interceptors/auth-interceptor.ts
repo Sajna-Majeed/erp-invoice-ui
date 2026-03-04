@@ -1,26 +1,52 @@
+
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { catchError, throwError } from 'rxjs';
+import { AuthService } from '../service/api-services/auth/auth';
+
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('token');
-const router = inject(Router);
+
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const messageService = inject(MessageService);
+
+  const token = authService.getToken();
+
+  let authReq = req;
+
+  // Attach JWT token
   if (token) {
-    const newReq = req.clone({
+    authReq = req.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
     });
-    return next(newReq);
   }
-return next(req).pipe(
+
+  return next(authReq).pipe(
     catchError((error) => {
 
-      // Auto logout on 401
       if (error.status === 401) {
-        localStorage.removeItem('token');
+        authService.logout();
         router.navigate(['/login']);
+      }
+
+      if (error.status === 403) {
+        messageService.add({
+          severity: 'error',
+          summary: 'Access Denied',
+          detail: 'You do not have permission.'
+        });
+      }
+
+      if (error.status === 500) {
+        messageService.add({
+          severity: 'error',
+          summary: 'Server Error',
+          detail: 'Something went wrong on the server.'
+        });
       }
 
       return throwError(() => error);

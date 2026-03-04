@@ -2,7 +2,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../shared/enviorment';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../../../models/interface/Apiresponse';
+import { ApiResponse } from '../../../models/interface/ApiResponse';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,10 +28,15 @@ export class ApiService {
     return httpParams;
   }
 
-  get<T>(url: string, params?: any): Observable<ApiResponse<T>> {
+  get<T>(url: string, params?: any, options?: any): Observable<ApiResponse<T>> {
+     let headers = new HttpHeaders();
+
+  if (options?.skipSpinner) {
+    headers = headers.set('X-Skip-Spinner', 'true');
+  }
     return this.http.get<ApiResponse<T>>(
       `${this.baseUrl}/${url}`,
-      { params: this.buildParams(params) }
+      { params: this.buildParams(params), headers }
     );
   }
 
