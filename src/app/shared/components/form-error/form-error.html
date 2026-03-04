@@ -1,39 +1,5 @@
-@if (control?.invalid && show) {
-
-        @if (control?.errors?.['required']) {
-            <p-message severity="error" size="small" variant="simple">
-                {{ label }} is required
-            </p-message>
-        }
-
-        @if (control?.errors?.['maxlength']) {
-            <p-message severity="error" size="small" variant="simple">
-                Maximum length exceeded
-            </p-message>
-        }
-
-        @if (control?.errors?.['min']) {
-            <p-message severity="error" size="small" variant="simple">
-                Value cannot be negative
-            </p-message>
-        }
-
-        @if (control?.errors?.['max']) {
-            <p-message severity="error" size="small" variant="simple">
-                Value exceeds allowed limit
-            </p-message>
-        }
-
-        @if (control?.errors?.['email']) {
-            <p-message severity="error" size="small" variant="simple">
-                Invalid email address
-            </p-message>
-        }
-
-        @if (control?.errors?.['nameExists']) {
-            <p-message severity="error" size="small" variant="simple">
-                {{ label }} already exists
-            </p-message>
-        }
-
-    }
+@if(message){
+<p-message severity="error" size="small" variant="simple">
+  {{message}}
+</p-message>
+}

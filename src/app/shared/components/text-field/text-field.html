@@ -1,18 +1,17 @@
 <div class="field flex flex-col gap-1">
 
-        <label>{{label}}</label>
+<label>{{label}}</label>
 
-        <input
-            pInputText
-            [formControlName]="controlName"
-            [formGroup]="form"
-            [invalid]="form.get(controlName)?.invalid && submitted"
-        />
+<input
+  pInputText
+  [formControlName]="controlName"
+  [invalid]="control?.invalid && (control?.touched || submitted)"
+/>
 
-        <app-form-error
-            [control]="form.get(controlName)"
-            [label]="label"
-            [show]="submitted">
-        </app-form-error>
+<app-form-error
+  [control]="control"
+  [label]="label"
+  [show]="submitted">
+</app-form-error>
 
-    </div>
+</div>

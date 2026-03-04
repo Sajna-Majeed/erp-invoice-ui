@@ -12,33 +12,16 @@
       ></button>
     </div>
   </div>
-  <!-- Search -->
-  <!-- <p-card>
-    <div class="search-bar">
-      <span class="p-input-icon-left" style="width: 100%">
-        <p-floatLabel variant="on">
-          <input
-            pInputText
-            id="search"
-            (input)="table.filterGlobal($any($event.target).value, 'contains')"
-            autocomplete="off"
-          />
-          <label for="search"> <i class="pi pi-search"></i> Search products...</label>
-        </p-floatLabel>
-      </span>
-    </div>
-  </p-card> -->
+  
   <!-- Table -->
-  <p-card>
-    <app-crud-table
-      [data]="products"
-      [columns]="columns"
-      (edit)="openEdit($event)"
-      (delete)="delete($event)"
-      (toggle)="toggleStatus($event)"
-    >
-    </app-crud-table>
-  </p-card>
+  <app-crud-table
+  [data]="products"
+  [columns]="columns"
+  [loading]="loading"
+  (edit)="openEdit($event)"
+  (delete)="delete($event.prod_Id)"
+  (toggle)="toggleStatus($event.prod_Id)">
+</app-crud-table>
 </div>
 <!-- Dialog -->
 <p-dialog
@@ -57,7 +40,6 @@
       <app-text-field
         label="Product Name"
         controlName="name"
-        [form]="form"
         [submitted]="formSubmitted"
       >
       </app-text-field>
@@ -71,7 +53,6 @@
         [options]="uoms"
         optionLabel="code"
         optionValue="uom_Id"
-        [form]="form"
         [submitted]="formSubmitted"
       >
       </app-select-field>
@@ -81,7 +62,6 @@
         controlName="unit_Price"
         mode="currency"
         currency="INR"
-        [form]="form"
         [submitted]="formSubmitted"
       >
       </app-number-field>
@@ -90,7 +70,6 @@
         label="Tax Rate"
         controlName="tax_Rate"
         suffix="%"
-        [form]="form"
         [submitted]="formSubmitted"
       >
       </app-number-field>
@@ -102,7 +81,7 @@
       pButton
       label="Save"
       icon="pi pi-check"
-      [disabled]="form.invalid || isSaving"
+      [disabled]="form.invalid || form.pending || isSaving"
       [loading]="isSaving"
       (click)="saveProduct()"
     ></button>

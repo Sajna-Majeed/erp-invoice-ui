@@ -1,22 +1,38 @@
 import { Component, Input } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { InputTextModule } from 'primeng/inputtext';
+import {
+  AbstractControl,
+  ControlContainer,
+  FormGroupDirective,
+  ReactiveFormsModule
+} from '@angular/forms';
+
 import { CommonModule } from '@angular/common';
-import { SHARED_IMPORTS } from '../../shared-imports';
+import { InputTextModule } from 'primeng/inputtext';
 import { FormErrorComponent } from '../form-error/form-error';
 
 @Component({
   selector: 'app-text-field',
   standalone: true,
-  imports: [CommonModule, InputTextModule, FormErrorComponent,SHARED_IMPORTS],
-  templateUrl: './text-field.html',
-    styleUrl: './text-field.css',
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    FormErrorComponent
+  ],
+  viewProviders: [
+    { provide: ControlContainer, useExisting: FormGroupDirective }
+  ],
+  templateUrl: './text-field.html'
 })
 export class TextFieldComponent {
 
   @Input() label!: string;
   @Input() controlName!: string;
-  @Input() form!: FormGroup;
   @Input() submitted = false;
 
+  constructor(private controlContainer: ControlContainer) {}
+
+  get control(): AbstractControl | null {
+    return this.controlContainer.control?.get(this.controlName) ?? null;
+  }
 }
