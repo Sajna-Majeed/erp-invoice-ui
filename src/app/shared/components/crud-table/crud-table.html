@@ -3,16 +3,23 @@
     <!-- Search -->
     <div class="table-header">
         <p-card>
-            <div class="search-bar">
-                <span class="p-input-icon-left" style="width: 100%">
+            <p-toolbar>
+                <ng-template #start>
                     <p-floatLabel variant="on">
                         <input pInputText id="search"
                             (input)="table.filterGlobal($any($event.target).value, 'contains')" autocomplete="off" />
                         <label for="search"> <i class="pi pi-search"></i> Search products...</label>
                     </p-floatLabel>
-                </span>
-            </div>
+                </ng-template>
+                <ng-template #end>
+                    <p-splitbutton icon="pi pi-download" [model]="items"  [rounded]="true" [text]="true" [raised]="true" />
+                </ng-template>
+
+            </p-toolbar>
+
+
         </p-card>
+
     </div>
 
     <p-table #table [value]="data" [loading]="loading" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
@@ -27,7 +34,7 @@
 
                     {{col.header}}
 
-                   <p-sortIcon *ngIf="col.sortable !== false" [field]="col.field"></p-sortIcon>
+                    <p-sortIcon *ngIf="col.sortable !== false" [field]="col.field"></p-sortIcon>
 
                 </th>
                 <th style="width:140px">Actions</th>

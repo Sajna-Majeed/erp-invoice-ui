@@ -36,6 +36,8 @@
     "chart.js": "^4.5.1",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
+    "jspdf": "^4.2.0",
+    "jspdf-autotable": "^5.0.7",
     "ng2-charts": "^8.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^21.1.2",

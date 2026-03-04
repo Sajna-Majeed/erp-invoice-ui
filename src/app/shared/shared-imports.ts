@@ -16,12 +16,12 @@ import { DrawerModule } from 'primeng/drawer';
 import { CardModule } from 'primeng/card';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
-import {PasswordModule} from 'primeng/password';
+import { PasswordModule } from 'primeng/password';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SelectModule } from 'primeng/select';
-
-
+import { ToolbarModule } from 'primeng/toolbar';
+import { SplitButtonModule } from 'primeng/splitbutton';
 
 
 
@@ -64,15 +64,16 @@ export const SHARED_IMPORTS = [
   TableModule,
   DialogModule,
   PanelMenuModule,
-CardModule,
-FloatLabelModule,
-InputTextModule,
-PasswordModule,
-ReactiveFormsModule,
-InputNumberModule,
-ProgressSpinnerModule,
-SelectModule,
-
+  CardModule,
+  FloatLabelModule,
+  InputTextModule,
+  PasswordModule,
+  ReactiveFormsModule,
+  InputNumberModule,
+  ProgressSpinnerModule,
+  SelectModule,
+  ToolbarModule,
+  SplitButtonModule,
 
 
 
