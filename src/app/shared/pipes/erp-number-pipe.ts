@@ -7,12 +7,12 @@ import { UserService } from '../../core/service/model-services/user/user';
 export class ErpNumberPipe implements PipeTransform {
 constructor(private userService: UserService) {}
  transform(value: number | null | undefined): string {
-
+const companyData= this.userService.getCompany()?.company;
   if (value == null) return `0.00`;
 
   return new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: this.userService.getCompany()?.decimalPlaces || 2,
-    maximumFractionDigits: this.userService.getCompany()?.decimalPlaces || 2
+    minimumFractionDigits: companyData?.decimalplace||0,
+    maximumFractionDigits: companyData?.decimalplace||0
   }).format(value);
 }
 

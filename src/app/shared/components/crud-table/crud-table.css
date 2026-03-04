@@ -3,3 +3,10 @@
   gap: 10px;
   margin-bottom: 12px;
 }
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}

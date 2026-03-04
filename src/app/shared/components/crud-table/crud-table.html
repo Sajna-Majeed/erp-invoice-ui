@@ -12,7 +12,8 @@
                     </p-floatLabel>
                 </ng-template>
                 <ng-template #end>
-                    <p-splitbutton icon="pi pi-download" [model]="items"  [rounded]="true" [text]="true" [raised]="true" />
+                    <p-splitbutton icon="pi pi-download" [model]="items" [rounded]="true" [text]="true"
+                        [raised]="true" />
                 </ng-template>
 
             </p-toolbar>
@@ -23,7 +24,8 @@
     </div>
 
     <p-table #table [value]="data" [loading]="loading" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
-        [globalFilterFields]="columns.map(c => c.field)" responsiveLayout="scroll">
+        [globalFilterFields]="columns.map(c => c.field)" responsiveLayout="scroll" [scrollable]="true"
+        scrollHeight="400px" [tableStyle]="{ 'min-width': '50rem' }" [size]="'small'">
 
         <!-- Header -->
         <ng-template pTemplate="header">
@@ -48,7 +50,9 @@
 
             <tr>
 
-                <td *ngFor="let col of columns">
+                <td *ngFor="let col of columns"
+                [ngClass]="{'text-right': col.type === 'currency' || col.type === 'tax' ||
+                col.type === 'number','text-center': col.type === 'status' }" >
 
                     <!-- TEXT -->
                     <span *ngIf="col.type === 'text'">
@@ -60,9 +64,14 @@
                         {{ row[col.field] | erpCurrency }}
                     </span>
 
-                     <!-- NUMBER -->
-                     <span *ngIf="col.type === 'number'">
+                    <!-- NUMBER -->
+                    <span *ngIf="col.type === 'number'">
                         {{ row[col.field] | erpNumber }}
+                    </span>
+
+                      <!-- NUMBER -->
+                    <span *ngIf="col.type === 'tax'">
+                        {{  (row[col.field]) + '%' }}
                     </span>
                     <!-- STATUS -->
                     <span *ngIf="col.type === 'status'">

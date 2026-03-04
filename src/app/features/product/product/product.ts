@@ -45,7 +45,7 @@ export class ProductComponent {
     { field: 'name', header: 'Name', type: 'text' },
     { field: 'uom', header: 'UOM', type: 'text' },
     { field: 'unit_Price', header: 'Price', type: 'currency' },
-    { field: 'tax_Rate', header: 'Tax', type: 'number' },
+    { field: 'tax_Rate', header: 'Tax', type: 'tax' },
     { field: 'is_Active', header: 'Status', type: 'status' ,sortable:false}
   ];
 

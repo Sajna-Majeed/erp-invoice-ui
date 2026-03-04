@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SHARED_IMPORTS } from '../../shared-imports';
 import * as ExcelJS from 'exceljs';
@@ -9,6 +9,7 @@ import { MenuItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { ErpCurrencyPipe } from "../../pipes/erp-currency-pipe";
 import { ErpNumberPipe } from "../../pipes/erp-number-pipe";
+import { UserService } from '../../../core/service/model-services/user/user';
 
 
 @Component({
@@ -33,111 +34,166 @@ export class CrudTableComponent {
   @Output() delete = new EventEmitter<any>();
   @Output() toggle = new EventEmitter<any>();
 
- 
-exportExcel() {
 
-  const workbook = new ExcelJS.Workbook();
-  const worksheet = workbook.addWorksheet('Report');
+  userService = inject(UserService);
+  company: any = this.userService.getCompany()?.company;
+  currency = this.company?.currency ?? '₹';
+  decimals = this.company?.decimalplace ?? 0;
 
-  // Company Header
-  worksheet.addRow(['ERP Management System']);
-  worksheet.addRow(['Report: ' + this.fileName]);
-  worksheet.addRow(['Generated: ' + new Date().toLocaleString()]);
-  worksheet.addRow([]);
+  formatNumber = (value: number) =>
+    new Intl.NumberFormat('en-IN', {
+      minimumFractionDigits: this.decimals,
+      maximumFractionDigits: this.decimals
+    }).format(value);
 
-  const headerRow = worksheet.addRow(this.columns.map(c => c.header));
 
-  // Style header
-  headerRow.font = { bold: true };
-  headerRow.alignment = { vertical: 'middle', horizontal: 'center' };
 
-  headerRow.eachCell(cell => {
-    cell.border = {
-      top: { style: 'thin' },
-      left: { style: 'thin' },
-      bottom: { style: 'thin' },
-      right: { style: 'thin' }
-    };
-  });
 
-  // Data rows
-  this.data.forEach(row => {
 
-    const values = this.columns.map(col => {
+  exportExcel() {
 
-      if (col.type === 'status')
-        return row[col.field] ? 'Active' : 'Inactive';
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Report');
+    const currencyFormat = `"${this.currency}"#,##0.${'0'.repeat(this.decimals)}`;
+    const numberFormat = `#,##0.${'0'.repeat(this.decimals)}`;
+    // Header
+    worksheet.addRow(['ERP Management System']);
+    worksheet.addRow([`Report: ${this.fileName}`]);
+    worksheet.addRow([`Generated: ${new Date().toLocaleString()}`]);
+    worksheet.addRow([]);
 
-      return row[col.field];
+    const headerRow = worksheet.addRow(this.columns.map(c => c.header));
+
+    headerRow.font = { bold: true };
+
+    headerRow.eachCell(cell => {
+      cell.alignment = { horizontal: 'center' };
+    });
+
+    this.data.forEach(row => {
+
+      const values = this.columns.map(col => row[col.field]);
+      const newRow = worksheet.addRow(values);
+
+      this.columns.forEach((col, index) => {
+
+        const cell = newRow.getCell(index + 1);
+
+        if (col.type === 'currency') {
+
+          cell.numFmt = currencyFormat;
+          cell.alignment = { horizontal: 'right' };
+
+        }
+
+        if (col.type === 'number') {
+
+          cell.numFmt = numberFormat;
+          cell.alignment = { horizontal: 'right' };
+
+        }
+
+        if (col.type === 'tax') {
+
+          cell.numFmt = `${numberFormat}\\%`;
+          cell.alignment = { horizontal: 'right' };
+
+        }
+
+        if (col.type === 'text') {
+
+          cell.alignment = { horizontal: 'left' };
+
+        }
+
+        if (col.type === 'status') {
+
+          cell.value = row[col.field] ? 'Active' : 'Inactive';
+          cell.alignment = { horizontal: 'center' };
+
+        }
+
+      });
 
     });
 
-    const newRow = worksheet.addRow(values);
-
-    newRow.eachCell(cell => {
-      cell.border = {
-        top: { style: 'thin' },
-        left: { style: 'thin' },
-        bottom: { style: 'thin' },
-        right: { style: 'thin' }
-      };
+    worksheet.columns.forEach(column => {
+      column.width = 20;
     });
 
-  });
+    workbook.xlsx.writeBuffer().then(buffer => {
 
-  // Auto column width
-  worksheet.columns.forEach(column => {
-    column.width = 20;
-  });
+      const blob = new Blob(
+        [buffer],
+        { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
+      );
 
-  workbook.xlsx.writeBuffer().then(buffer => {
+      saveAs(blob, `${this.fileName}.xlsx`);
 
-    const blob = new Blob(
-      [buffer],
-      { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }
+    });
+
+  }
+
+  exportPdf() {
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text('ERP Management System', 14, 15);
+
+    doc.setFontSize(12);
+    doc.text(`Report: ${this.fileName}`, 14, 22);
+    doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 28);
+
+    const headers = [this.columns.map(c => c.header)];
+
+    const rows = this.data.map(row =>
+      this.columns.map(col => {
+
+        if (col.type === 'status')
+          return row[col.field] ? 'Active' : 'Inactive';
+        if (col.type === 'tax') {
+          const value = Number(row[col.field] ?? 0);
+          return `${value.toFixed(this.decimals)}%`;
+        }
+
+        if (col.type === 'currency') {
+          const value = Number(row[col.field] ?? 0);
+          return `${this.currency}${this.formatNumber(value)}`;
+        }
+
+        if (col.type === 'number') {
+          const value = Number(row[col.field] ?? 0);
+          return this.formatNumber(value);
+        }
+
+        return row[col.field];
+
+      })
     );
 
-    saveAs(blob, `${this.fileName}.xlsx`);
+    autoTable(doc, {
+      startY: 35,
+      head: headers,
+      body: rows,
+      theme: 'grid',
 
-  });
+      columnStyles: this.columns.reduce((styles: any, col: any, index: number) => {
 
-}
- exportPdf() {
+        if (col.type === 'currency' || col.type === 'number') {
+          styles[index] = { halign: 'right' };
+        }
 
-  const doc = new jsPDF();
+        if (col.type === 'status') {
+          styles[index] = { halign: 'center' };
+        }
 
-  // Title
-  doc.setFontSize(16);
-  doc.text('ERP Management System', 14, 15);
+        return styles;
 
-  doc.setFontSize(12);
-  doc.text(`Report: ${this.fileName}`, 14, 22);
-  doc.text(`Generated: ${new Date().toLocaleString()}`, 14, 28);
+      }, {})
+    });
 
-  const headers = [this.columns.map(c => c.header)];
+    doc.save(`${this.fileName}.pdf`);
 
-  const rows = this.data.map(row =>
-    this.columns.map(col => {
-
-      if (col.type === 'status')
-        return row[col.field] ? 'Active' : 'Inactive';
-
-      return row[col.field];
-
-    })
-  );
-
-  autoTable(doc, {
-    startY: 35,
-    head: headers,
-    body: rows,
-    theme: 'grid',
-    headStyles: {
-      fillColor: [41, 128, 185]
-    }
-  });
-
-  doc.save(`${this.fileName}.pdf`);
-
-}
+  }
 }
