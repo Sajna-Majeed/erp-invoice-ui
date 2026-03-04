@@ -57,9 +57,13 @@
 
                     <!-- CURRENCY -->
                     <span *ngIf="col.type === 'currency'">
-                        {{ row[col.field] | currency:'INR' }}
+                        {{ row[col.field] | erpCurrency }}
                     </span>
 
+                     <!-- NUMBER -->
+                     <span *ngIf="col.type === 'number'">
+                        {{ row[col.field] | erpNumber }}
+                    </span>
                     <!-- STATUS -->
                     <span *ngIf="col.type === 'status'">
 

@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
-import { ConfirmService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ServiceTypeApiService } from '../../../core/service/api-services/serviceType/service-type';
 import { ServiceTypeDialogComponent } from '../service-type-dialog/service-type-dialog';
@@ -16,7 +15,6 @@ serviceTypes: any[] = [];
 displayedColumns = ['id','code','name','description','actions'];
   constructor(
     private serviceTypeService: ServiceTypeApiService,
-    private confirm:ConfirmService,
     private dialog: MatDialog
   ) { }
 ngOnInit() {
@@ -55,14 +53,14 @@ openEdit(id: number) {
   });
 }
 delete(id:number){
-  this.confirm.open({
-    title:'Delete Service Type',
-    message:'Are you sure?',
-    color:'warn'
-  }).subscribe(r=>{
-    if(r){
-      this.serviceTypeService.delete(id).subscribe(()=> this.load());
-    }
-  });
+  // this.confirm.open({
+  //   title:'Delete Service Type',
+  //   message:'Are you sure?',
+  //   color:'warn'
+  // }).subscribe(r=>{
+  //   if(r){
+  //     this.serviceTypeService.delete(id).subscribe(()=> this.load());
+  //   }
+  // });
 }
 }

@@ -57,6 +57,10 @@ showError(message: string) {
           fullName: res.data.fullName,
           userRole: res.data.role
         });
+        debugger
+        this.userService.setCompany({
+          company: res.data.company
+        });
         this.router.navigate(['/dashboard']);
       },
       error: () => {

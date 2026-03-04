@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { BussinessPointApiService } from '../../../core/service/api-services/bp/bussiness-point';
-import { ConfirmService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 @Component({
   selector: 'app-bp-list',
   imports: [SHARED_IMPORTS],
@@ -19,7 +18,6 @@ export class BpListComponent implements OnInit {
     private service: BussinessPointApiService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private confirm: ConfirmService
   ) {}
 
   ngOnInit() {
@@ -47,21 +45,21 @@ export class BpListComponent implements OnInit {
  
  delete(id: number) {
 
-  this.confirm.open({
-   title: 'Delete Partner',
-   message: 'Are you sure you want to delete this partner?',
-    confirmText: 'Yes, Delete',
-    cancelText: 'Cancel',
-    color: 'warn'
-  }).subscribe(result => {
+  // this.confirm.open({
+  //  title: 'Delete Partner',
+  //  message: 'Are you sure you want to delete this partner?',
+  //   confirmText: 'Yes, Delete',
+  //   cancelText: 'Cancel',
+  //   color: 'warn'
+  // }).subscribe(result => {
 
-    if (result) {
-       this.service.delete(id).subscribe(() => {
-        this.snackBar.open('Deleted successfully', 'Close', { duration: 3000 });
-        this.load();
-      });
-      }
+  //   if (result) {
+  //      this.service.delete(id).subscribe(() => {
+  //       this.snackBar.open('Deleted successfully', 'Close', { duration: 3000 });
+  //       this.load();
+  //     });
+  //     }
 
-  });
+  // });
 }
 }

@@ -4,7 +4,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { InvoiceApiService } from '../../../core/service/api-services/invoice/invoice';
-import { ConfirmService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 
 @Component({
   selector: 'app-invoice-list',
@@ -31,7 +30,6 @@ export class InvoiceListComponent implements OnInit {
     private service: InvoiceApiService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private confirm:ConfirmService
   ) {}
 
   ngOnInit() {
@@ -68,21 +66,21 @@ export class InvoiceListComponent implements OnInit {
 
   delete(id: number) {
 
-  this.confirm.open({
-    title: 'Delete Invoice',
-    message: 'Are you sure you want to delete this invoice?',
-    confirmText: 'Yes, Delete',
-    cancelText: 'Cancel',
-    color: 'warn'
-  }).subscribe(result => {
+  // this.confirm.open({
+  //   title: 'Delete Invoice',
+  //   message: 'Are you sure you want to delete this invoice?',
+  //   confirmText: 'Yes, Delete',
+  //   cancelText: 'Cancel',
+  //   color: 'warn'
+  // }).subscribe(result => {
 
-    if (result) {
-       this.service.delete(id).subscribe(() => {
-          this.snackBar.open('Invoice deleted', 'Close', { duration: 3000 });
-          this.load();
-        });
-      }
+  //   if (result) {
+  //      this.service.delete(id).subscribe(() => {
+  //         this.snackBar.open('Invoice deleted', 'Close', { duration: 3000 });
+  //         this.load();
+  //       });
+  //     }
 
-  });
+  // });
 }
 }

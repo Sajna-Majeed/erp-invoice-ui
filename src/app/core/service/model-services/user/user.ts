@@ -6,7 +6,7 @@ import { UserInfo } from '../../../models/user';
 })
 export class UserService {
   private user: UserInfo | null = null;
-
+  private company: any | null = null;
   constructor() {
     // Load saved user from localStorage on startup
     const savedUser = localStorage.getItem('user');
@@ -35,6 +35,28 @@ export class UserService {
   clearUser() {
     this.user = null;
     localStorage.removeItem('user');
+  }
+
+  setCompany(company: any) {
+    this.clearUser(); // Clear any existing user data
+    this.company = company;
+    debugger
+    localStorage.setItem('company', JSON.stringify(company));
+  }
+
+  // ✅ Get current company (from memory or localStorage)
+  getCompany(): any | null {
+    if (!this.company) {
+      const savedCompany = localStorage.getItem('company');
+      this.company = savedCompany ? JSON.parse(savedCompany) : null;
+    }
+    return this.company;
+  }
+
+  // ✅ Clear company info (on logout)
+  clearCompany() {
+    this.company = null;
+    localStorage.removeItem('company');
   }
 
   // ✅ Helper getters

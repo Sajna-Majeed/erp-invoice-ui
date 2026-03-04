@@ -7,11 +7,13 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { MenuItem } from 'primeng/api';
 import { MessageService } from 'primeng/api';
+import { ErpCurrencyPipe } from "../../pipes/erp-currency-pipe";
+import { ErpNumberPipe } from "../../pipes/erp-number-pipe";
 
 
 @Component({
   selector: 'app-crud-table',
-  imports: [CommonModule, SHARED_IMPORTS],
+  imports: [CommonModule, SHARED_IMPORTS, ErpCurrencyPipe, ErpNumberPipe],
   templateUrl: './crud-table.html',
   styleUrl: './crud-table.css',
 })

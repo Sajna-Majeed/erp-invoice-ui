@@ -8,7 +8,6 @@ import { BpListComponent } from './features/bp/bp-list/bp-list';
 import { BpFormComponent } from './features/bp/bp-form/bp-form/bp-form';
 import { InvoiceFormComponent } from './features/invoice/invoice-form/invoice-view';
 import { InvoicePrintComponent } from './features/invoice/invoice-print/invoice-print';
-import { ProductDialogComponent } from './features/product/product-dialog/product-dialog';
 import { ProductComponent } from './features/product/product/product';
 import { ServiceTypeComponent } from './features/service-type/service-type-list/service-type-list';
 import { ServiceTypeDialogComponent } from './features/service-type/service-type-dialog/service-type-dialog';
@@ -52,9 +51,7 @@ export const routes: Routes = [
                {
                     path: 'product',
                     children: [
-                         { path: '', component: ProductComponent },
-                         { path: 'create', component: ProductDialogComponent },
-                         { path: 'edit/:id', component: ProductDialogComponent }
+                         { path: '', component: ProductComponent }
                     ]
                },
                 {

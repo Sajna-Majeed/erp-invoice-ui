@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
 import { UserApiService } from '../../../core/service/api-services/user/user';
-import { ConfirmService } from '../../../shared/confirm-dialog/confirm-dialog.service';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -24,7 +23,6 @@ export class UserListComponent implements OnInit {
     private userService: UserApiService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private confirm: ConfirmService
   ) { }
 
   ngOnInit() {
@@ -61,21 +59,21 @@ export class UserListComponent implements OnInit {
 
   delete(id: number) {
 
-    this.confirm.open({
-      title: 'Delete employee',
-      message: 'Are you sure you want to delete this employee?',
-      confirmText: 'Yes, Delete',
-      cancelText: 'Cancel',
-      color: 'warn'
-    }).subscribe(result => {
+    // this.confirm.open({
+    //   title: 'Delete employee',
+    //   message: 'Are you sure you want to delete this employee?',
+    //   confirmText: 'Yes, Delete',
+    //   cancelText: 'Cancel',
+    //   color: 'warn'
+    // }).subscribe(result => {
 
-      if (result) {
-        this.userService.delete(id).subscribe(() => {
-          this.snackBar.open('Deleted successfully', 'Close', { duration: 3000 });
-          this.loadUsers();
-        });
-      }
+    //   if (result) {
+    //     this.userService.delete(id).subscribe(() => {
+    //       this.snackBar.open('Deleted successfully', 'Close', { duration: 3000 });
+    //       this.loadUsers();
+    //     });
+    //   }
 
-    });
+    // });
   }
 }
