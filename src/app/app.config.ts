@@ -1,10 +1,12 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './core/interceptors/auth-interceptor';
-
+import { providePrimeNG } from 'primeng/config';
+import Lara from '@primeuix/themes/lara';
+import { MessageService } from 'primeng/api';
+import Aura from '@primeuix/themes/aura';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -12,6 +14,15 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     provideHttpClient(withInterceptors([AuthInterceptor])),
-     provideAnimations()
-  ]
+    providePrimeNG({
+      theme: {
+        preset: Lara,
+        options: {
+          cssLayer: true,
+          darkModeSelector: '.dark-mode'
+        }
+      }
+    }),
+    MessageService
+  ],
 };

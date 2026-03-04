@@ -1,5 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-
+/* ===== GLOBAL RESET ===== */
 
 html, body {
   height: 100%;
@@ -7,48 +6,94 @@ html, body {
 }
 
 body {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Inter, Roboto, "Helvetica Neue", sans-serif;
+  background: var(--p-surface-ground);
+  color: var(--p-text-color);
 }
 
-.error-snackbar {
-  background-color: #f44336 !important; /* red */
-  color: #fff !important;
+
+/* ===== MODERN PURPLE SAAS THEME ===== */
+
+:root {
+  /* Primary Brand */
+  --p-primary-color: #7C3AED;
+  --p-primary-hover-color: #6D28D9;
+  --p-primary-active-color: #5B21B6;
+  --p-primary-contrast-color: #ffffff;
+
+  /* Surfaces */
+  --p-surface-ground: #F8F7FF;
+  --p-surface-card: #ffffff;
+
+  /* Text */
+  --p-text-color: #1F2937;
+
+  /* Borders & Radius */
+  --p-border-radius: 12px;
+}
+.dark-mode {
+  --p-primary-color: #6366F1;
+  --p-primary-hover-color: #4F46E5;
+  --p-primary-active-color: #4338CA;
+  --p-primary-contrast-color: #ffffff;
+
+  --p-surface-ground: #0F172A;
+  --p-surface-card: #1E293B;
+  --p-text-color: #E2E8F0;
 }
 
-.warning-snackbar {
-  background-color: #ff9800 !important; /* orange */
-  color: #fff !important;
+/* ===== GLOBAL LAYOUT HELPERS ===== */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-.info-snackbar {
-  background-color: #2196f3 !important; /* blue */
-  color: #fff !important;
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.mat-mdc-snack-bar-container {
-  border-radius: 6px;
-  font-family: 'Roboto', sans-serif;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-}
-.confirm-dialog .mat-mdc-dialog-container {
-  border-radius: 16px;
-  padding: 10px;
+.actions {
+  display: flex;
+  gap: 0.75rem;
 }
 
-.confirm-dialog h2 {
-  font-weight: 600;
-  padding: 10px;
-}
 
-.confirm-dialog mat-dialog-content {
-  margin-top: 5px;
-}
-.mat-mdc-dialog-container {
-  border-radius: 0px;
-}
+/* ===== FORM GRID STANDARD ===== */
 
-.dialog-form {
+.form-grid {
   display: grid;
-  gap: 16px;
-  margin-top: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+
+/* ===== TABLE POLISH ===== */
+
+.p-datatable .p-datatable-thead > tr > th {
+  font-weight: 600;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background: rgba(124, 58, 237, 0.05);
+}
+
+
+/* ===== DIALOG POLISH ===== */
+
+.p-dialog .p-dialog-header {
+  font-weight: 600;
+}
+
+.p-dialog .p-dialog-content {
+  padding-top: 1rem;
 }

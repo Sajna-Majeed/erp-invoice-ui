@@ -3,9 +3,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SHARED_IMPORTS } from '../../shared/shared-imports';
 import { AuthService } from '../../core/service/api-services/auth/auth';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ThemeService } from '../../core/service/theme-services/theme';
 import { UserService } from '../../core/service/model-services/user/user';
+import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -24,7 +24,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private auth: AuthService,
     private userService: UserService,
-    private snackBar: MatSnackBar,
+    private messageService: MessageService,
     public themeService: ThemeService,
     private router: Router
   ) {
@@ -34,11 +34,10 @@ export class LoginComponent {
     });
   }
 showError(message: string) {
-  this.snackBar.open(message, 'Close', {
-    duration: 4000,
-    horizontalPosition: 'right',
-    verticalPosition: 'top',
-    panelClass: ['error-snackbar']
+  this.messageService.add({
+    severity: 'error',
+    summary: 'Error',
+    detail: message
   });
 }
   onSubmit() {

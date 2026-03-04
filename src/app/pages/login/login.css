@@ -1,70 +1,63 @@
-.theme-toggle {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
-}
 .login-wrapper {
   display: flex;
-  min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+  height: 100vh;
+  background: var(--p-surface-ground);
 }
 
+/* Left Branding */
 .login-left {
   flex: 1;
-  background: linear-gradient(135deg, #e684aa, #ec92b4);
+  background: linear-gradient(135deg, #7C3AED, #5B21B6);
   color: white;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 40px;
-}
-
-.branding {
-  max-width: 400px;
+  align-items: center;
+  padding: 2rem;
 }
 
 .branding h1 {
-  font-size: 36px;
-  font-weight: 700;
-  margin-bottom: 16px;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .branding p {
-  font-size: 16px;
   opacity: 0.9;
 }
 
+/* Right Login */
 .login-right {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 24px;
-  background: #f8fafc;
+  padding: 2rem;
 }
 
 .login-card {
   width: 100%;
-  max-width: 400px;
-  padding: 32px;
-  border-radius: 20px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  max-width: 380px;
+  padding: 2rem;
+  border-radius: 16px;
+  background: var(--p-surface-card);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .subtitle {
-  margin-bottom: 24px;
-  color: #6b7280;
+  color: #6B7280;
+  margin-top: -0.5rem;
 }
 
-.full-width {
-  width: 100%;
-  margin-bottom: 16px;
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
 }
 
 .login-btn {
-  height: 48px;
-  font-weight: 600;
+  width: 100%;
 }
 
 /* Mobile */

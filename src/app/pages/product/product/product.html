@@ -1,58 +1,175 @@
-<h2>Products</h2>
-
-<div class="toolbar-row">
-  <button mat-raised-button color="primary" (click)="openCreate()">
-    + New Product
-  </button>
+<div class="page">
+  <!-- Header -->
+  <div class="page-header">
+    <h2>Products</h2>
+    <div class="actions">
+      <button
+        pButton
+        label="Add Product"
+        icon="pi pi-plus"
+        class="p-button-primary"
+        (click)="openCreate()"
+      ></button>
+    </div>
+  </div>
+  <!-- Search -->
+  <p-card>
+    <div class="search-bar">
+      <span class="p-input-icon-left" style="width: 100%">
+        <p-floatLabel variant="on">
+          <input
+            pInputText
+            id="search"
+            (input)="table.filterGlobal($any($event.target).value, 'contains')"
+            autocomplete="off"
+          />
+          <label for="search"> <i class="pi pi-search"></i> Search products...</label>
+        </p-floatLabel>
+      </span>
+    </div>
+  </p-card>
+  <!-- Table -->
+  <p-card>
+    <p-table
+      #table
+      [value]="products"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [responsiveLayout]="'scroll'"
+      [globalFilterFields]="['code', 'name', 'description']"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="code">Code <p-sortIcon field="code"></p-sortIcon></th>
+          <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="uom_id">UOM <p-sortIcon field="uom_id"></p-sortIcon></th>
+          <th pSortableColumn="unit_Price">Price <p-sortIcon field="unit_Price"></p-sortIcon></th>
+          <th pSortableColumn="tax_Rate">Tax <p-sortIcon field="tax_Rate"></p-sortIcon></th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>{{ product.code }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.uom }}</td>
+          <td>{{ product.unit_Price | currency }}</td>
+          <td>{{ product.tax_Rate }}%</td>
+          <td>
+            <p-button
+              *ngIf="product.is_Active"
+              icon="pi pi-check"
+              severity="success"
+              (click)="toggleStatus(product)"
+            />
+            <p-button
+              *ngIf="!product.is_Active"
+              icon="pi pi-times"
+              severity="danger"
+              (click)="toggleStatus(product)"
+            />
+          </td>
+          <td>
+            <button pButton icon="pi pi-pencil" text (click)="openEdit(product)"></button>
+            <button
+              pButton
+              icon="pi pi-trash"
+              text
+              severity="danger"
+              (click)="delete(product)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-card>
 </div>
-
-<table mat-table [dataSource]="products" class="mat-elevation-z2 full-width">
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef> ID </th>
-    <td mat-cell *matCellDef="let row"> {{row.id}} </td>
-  </ng-container>
-  <ng-container matColumnDef="code">
-    <th mat-header-cell *matHeaderCellDef> Code </th>
-    <td mat-cell *matCellDef="let p"> {{ p.code }} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let p"> {{ p.name }} </td>
-  </ng-container>
-  <ng-container matColumnDef="description">
-    <th mat-header-cell *matHeaderCellDef> Description </th>
-    <td mat-cell *matCellDef="let p"> {{ p.description }} </td>
-  </ng-container>
-  <ng-container matColumnDef="price">
-    <th mat-header-cell *matHeaderCellDef> Price </th>
-    <td mat-cell *matCellDef="let p"> {{ p.unit_Price | number:'1.2-2' }} </td>
-  </ng-container>
-
-  <ng-container matColumnDef="tax">
-    <th mat-header-cell *matHeaderCellDef> Tax % </th>
-    <td mat-cell *matCellDef="let p"> {{ p.tax_Rate }}% </td>
-  </ng-container>
-  <ng-container matColumnDef="status">
-    <th mat-header-cell *matHeaderCellDef> Status </th>
-    <td mat-cell *matCellDef="let p"> 
-      <button  matFab extended aria-label="Activate or inactivate" [color]="p.is_Active ? 'primary' : 'warn'"  (click)="toggleStatus(p.prod_Id)">
-        {{ p.is_Active ? 'Active' : 'Inactive' }}
-      </button></td>
-  </ng-container>
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef> </th>
-    <td mat-cell *matCellDef="let p">
-      <button mat-icon-button color="primary" (click)="openEdit(p.prod_Id)">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="delete(p.prod_Id)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-</table>
+<!-- Dialog -->
+<p-dialog
+  header="{{ dialogTitle }}"
+  [(visible)]="productDialog"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+>
+  <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"> </p-progressSpinner>
+  <form [formGroup]="form">
+    <div class="form-grid">
+      <div class="field"><label>Code</label> <input pInputText formControlName="code" /></div>
+      <div class="field">
+        <label>Name</label>
+        <input
+          pInputText
+          formControlName="name"
+          class="full-width"
+          [class.ng-invalid]="isInvalid('name')"
+        />
+        <small *ngIf="isInvalid('name')" class="p-error"> {{ getError('name') }} </small>
+      </div>
+      <div class="field">
+        <label>Description</label> <input pInputText formControlName="description" />
+      </div>
+      <div class="field">
+        <label>UOM</label>
+        <p-select
+          [options]="uoms"
+          formControlName="uom_id"
+          optionLabel="code"
+          optionValue="uom_id"
+          placeholder="Select UOM"
+          [filter]="true"
+          showClear
+          class="full-width"
+          [class.ng-invalid]="isInvalid('uom_id')"
+        >
+        </p-select>
+        <small *ngIf="isInvalid('uom_id')" class="p-error"> {{ getError('uom_id') }} </small>
+      </div>
+      <div class="field">
+        <label>Unit Price</label>
+        <p-inputNumber
+          formControlName="unit_Price"
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          [min]="0"
+          class="full-width"
+          [class.ng-invalid]="isInvalid('unit_Price')"
+        >
+        </p-inputNumber>
+        <small *ngIf="isInvalid('unit_Price')" class="p-error">
+          {{ getError('unit_Price') }}
+        </small>
+      </div>
+      <div class="field">
+        <label>Tax Rate</label>
+        <p-inputNumber
+          formControlName="tax_Rate"
+          mode="decimal"
+          [min]="0"
+          [max]="100"
+          suffix="%"
+          [minFractionDigits]="0"
+          [maxFractionDigits]="2"
+          class="full-width"
+          [class.ng-invalid]="isInvalid('tax_Rate')"
+        >
+        </p-inputNumber>
+        <small *ngIf="isInvalid('tax_Rate')" class="p-error"> {{ getError('tax_Rate') }} </small>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" text (click)="hideDialog()"></button>
+    <button
+      pButton
+      label="Save"
+      icon="pi pi-check"
+      [disabled]="form.invalid || isSaving"
+      [loading]="isSaving"
+      (click)="saveProduct()"
+    ></button>
+  </ng-template>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog> <p-toast></p-toast>

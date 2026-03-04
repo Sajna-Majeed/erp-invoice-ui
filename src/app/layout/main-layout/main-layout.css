@@ -1,67 +1,78 @@
 .layout {
   display: flex;
   height: 100vh;
-  background: var(--surface-ground);
 }
 
-/* SIDEBAR */
-
+/* Sidebar */
 .sidebar {
-  width: 260px;
-  background: var(--surface-card);
-  border-right: 1px solid var(--surface-border);
+  width: 270px;
+  background: var(--p-surface-card);
+  border-right: 1px solid rgba(0,0,0,0.05);
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
-  transition: width 0.3s ease;
 }
 
-.sidebar.collapsed {
-  width: 80px;
-}
-
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
+.logo {
+  margin: 0 0 2rem 0;
   font-weight: 600;
-  border-bottom: 1px solid var(--surface-border);
 }
 
-/* MAIN */
+/* Make menu blend */
+.erp-menu .p-panelmenu-panel {
+  border: none;
+  background: transparent;
+}
 
+.erp-menu .p-panelmenu-header > a {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+}
+
+.erp-menu .p-panelmenu-header > a:hover {
+  background: rgba(124, 58, 237, 0.08);
+}
+
+/* Active highlight */
+.erp-menu .p-menuitem-link-active {
+  background: rgba(124, 58, 237, 0.12) !important;
+  border-radius: 10px;
+}
+
+/* Main */
 .main {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* TOPBAR */
-
+/* Topbar */
 .topbar {
-  height: 64px;
-  background: var(--surface-card);
-  border-bottom: 1px solid var(--surface-border);
+  height: 60px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 24px;
+  padding: 0 1.5rem;
+  background: var(--p-surface-card);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
 }
 
-.page-title {
+.title {
   font-weight: 600;
-  font-size: 18px;
 }
 
+.spacer {
+  flex: 1;
+}
+
+/* Content */
 .content {
   flex: 1;
-  padding: 24px;
   overflow: auto;
-  background: var(--surface-ground);
+  padding: 1.5rem;
+  background: var(--p-surface-ground);
 }
 
-/* Responsive */
-
+/* Mobile */
 @media (max-width: 768px) {
   .sidebar {
     display: none;

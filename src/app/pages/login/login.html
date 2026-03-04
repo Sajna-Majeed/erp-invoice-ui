@@ -1,12 +1,6 @@
-<!-- <div class="theme-toggle">
-<mat-slide-toggle
-  [checked]="themeService.isDark()"
-  (change)="themeService.toggleTheme()">
-  Dark Mode
-</mat-slide-toggle>
-</div> -->
 <div class="login-wrapper">
 
+  <!-- Left Branding -->
   <div class="login-left">
     <div class="branding">
       <h1>ERP Pro</h1>
@@ -14,48 +8,46 @@
     </div>
   </div>
 
+  <!-- Right Form -->
   <div class="login-right">
 
-    <mat-card class="login-card">
+    <div class="login-card">
 
       <h2>Welcome Back</h2>
       <p class="subtitle">Sign in to continue</p>
 
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Username</mat-label>
-          <input matInput formControlName="username">
-          <mat-icon matSuffix>person</mat-icon>
-        </mat-form-field>
+        <p-floatLabel variant="on">
+          <input pInputText id="username" formControlName="username" fluid />
+          <label for="username">Username</label>
+        </p-floatLabel>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
-          <button mat-icon-button matSuffix type="button" (click)="hide = !hide">
-            <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-        </mat-form-field>
+        <p-floatLabel variant="on">
+          <p-password 
+            id="password"
+            formControlName="password"
+            feedback="false"
+            fluid 
+            toggleMask>
+          </p-password>
+          <label for="password">Password</label>
+        </p-floatLabel>
 
         <button
-          mat-raised-button
-          color="primary"
-          class="full-width login-btn"
-          [disabled]="isLoading">
-
-          @if (isLoading) {
-            <mat-spinner diameter="20"></mat-spinner>
-          }
-          @if (!isLoading) {
-            <span>Login</span>
-          }
-
+          pButton
+          type="submit"
+          label="Login"
+          class="login-btn"
+          [loading]="isLoading">
         </button>
 
       </form>
 
-    </mat-card>
+    </div>
 
   </div>
 
 </div>
+
+<p-toast></p-toast>

@@ -1,62 +1,58 @@
 <div class="layout">
 
-  <!-- SIDEBAR -->
-  <div class="sidebar" [class.collapsed]="isCollapsed">
+  <!-- Sidebar -->
+  <aside class="sidebar" *ngIf="!isMobile">
 
     <div class="sidebar-header">
-      <span class="logo" *ngIf="!isCollapsed">ERP Traveler</span>
-
-      <button pButton
-              icon="pi pi-bars"
-              text
-              (click)="toggleSidebar()">
-      </button>
+      <h2 class="logo">ERP Pro</h2>
     </div>
 
-    <p-panelMenu [model]="menuItems"
-                 [style]="{ width: '100%' }"
-                 class="erp-menu">
+    <p-panelMenu 
+      [model]="menuItems"
+      styleClass="erp-menu">
     </p-panelMenu>
 
-  </div>
+  </aside>
 
-
-  <!-- MAIN -->
+  <!-- Main -->
   <div class="main">
 
-    <!-- TOPBAR -->
-    <div class="topbar">
+    <!-- Topbar -->
+    <header class="topbar">
 
-      <div class="topbar-left">
-        <button *ngIf="isMobile"
-                pButton
-                icon="pi pi-bars"
-                text
-                (click)="mobileSidebar = true">
-        </button>
+      <button 
+        *ngIf="isMobile"
+        pButton 
+        icon="pi pi-bars" 
+        text 
+        (click)="mobileSidebar = true">
+      </button>
 
-        <span class="page-title">{{ currentRoute }}</span>
-      </div>
+      <span class="title">{{ currentRoute }}</span>
 
-      <div class="topbar-right">
+      <div class="spacer"></div>
 
-        <!-- User Menu -->
-        <p-menu #userMenu
-                [popup]="true"
-                [model]="userItems">
-        </p-menu>
+      <!-- Dark Toggle -->
+      <button 
+        pButton 
+        text
+        (click)="themeService.toggle()"
+        [icon]="themeService.isDark() ? 'pi pi-sun' : 'pi pi-moon'">
+      </button>
 
-        <button pButton
-                icon="pi pi-user"
-                text
-                (click)="userMenu.toggle($event)">
-        </button>
+      <!-- User Menu -->
+      <p-menu #userMenu [popup]="true" [model]="userItems"></p-menu>
 
-      </div>
+      <button 
+        pButton 
+        text 
+        icon="pi pi-user"
+        (click)="userMenu.toggle($event)">
+      </button>
 
-    </div>
+    </header>
 
-    <!-- CONTENT -->
+    <!-- Content -->
     <div class="content">
       <router-outlet></router-outlet>
     </div>
@@ -65,12 +61,7 @@
 
 </div>
 
-
-<!-- MOBILE DRAWER -->
-<p-drawer [(visible)]="mobileSidebar"
-          position="left"
-          [modal]="true">
-
+<!-- Mobile Drawer -->
+<p-drawer [(visible)]="mobileSidebar" position="left">
   <p-panelMenu [model]="menuItems"></p-panelMenu>
-
 </p-drawer>

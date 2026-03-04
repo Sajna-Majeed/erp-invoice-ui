@@ -3,33 +3,44 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
 
-  private darkClass = 'dark-theme';
+  private storageKey = 'app-theme';
+  private darkClass = 'dark-mode';   // 👈 must match Prime config
 
   constructor() {
-    this.loadTheme();
+    this.init();
   }
 
-  toggleTheme() {
-    document.documentElement.classList.toggle(this.darkClass);
-
-    const isDark =
-      document.documentElement.classList.contains(this.darkClass);
-
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-    document.body.style.colorScheme = isDark ? 'dark' : 'light';
-  }
-
-  loadTheme() {
-    const saved = localStorage.getItem('theme');
+  init(): void {
+    const saved = localStorage.getItem(this.storageKey);
 
     if (saved === 'dark') {
-      document.documentElement.classList.add(this.darkClass);
-      document.body.style.colorScheme = 'dark';
+      this.enableDark();
+    } else {
+      this.disableDark();
     }
   }
 
+  toggle(): void {
+    if (this.isDark()) {
+      this.disableDark();
+    } else {
+      this.enableDark();
+    }
+  }
+
+  enableDark(): void {
+    document.body.classList.add(this.darkClass);
+    document.documentElement.style.colorScheme = 'dark';
+    localStorage.setItem(this.storageKey, 'dark');
+  }
+
+  disableDark(): void {
+    document.body.classList.remove(this.darkClass);
+    document.documentElement.style.colorScheme = 'light';
+    localStorage.setItem(this.storageKey, 'light');
+  }
+
   isDark(): boolean {
-    return document.documentElement.classList.contains(this.darkClass);
+    return document.body.classList.contains(this.darkClass);
   }
 }
