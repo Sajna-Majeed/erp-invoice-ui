@@ -36,7 +36,7 @@ export class CrudTableComponent {
 
 
   userService = inject(UserService);
-  company: any = this.userService.getCompany()?.company;
+  company: any = this.userService.getCompany();
   currency = this.company?.currency ?? '₹';
   decimals = this.company?.decimalplace ?? 0;
 
@@ -70,14 +70,20 @@ export class CrudTableComponent {
       cell.alignment = { horizontal: 'center' };
     });
 
-    this.data.forEach(row => {
+    this.data.forEach((row, index) => {
 
-      const values = this.columns.map(col => row[col.field]);
+      const values = this.columns.map((col) => {
+        if (col.type === 'rowId') {
+          return index + 1;
+        }
+        return row[col.field];
+      });
       const newRow = worksheet.addRow(values);
 
       this.columns.forEach((col, index) => {
 
         const cell = newRow.getCell(index + 1);
+
 
         if (col.type === 'currency') {
 
@@ -107,9 +113,8 @@ export class CrudTableComponent {
         }
 
         if (col.type === 'status') {
-
-          cell.value = row[col.field] ? 'Active' : 'Inactive';
-          cell.alignment = { horizontal: 'center' };
+  cell.value = row[col.field] ? '✔ Active' : '❌ Inactive';
+  cell.alignment = { horizontal: 'center' };
 
         }
 
@@ -147,19 +152,22 @@ export class CrudTableComponent {
 
     const headers = [this.columns.map(c => c.header)];
 
-    const rows = this.data.map(row =>
+    const rows = this.data.map((row, index) =>
       this.columns.map(col => {
-
+        if (col.type === 'rowId')
+          return index + 1;
         if (col.type === 'status')
-          return row[col.field] ? 'Active' : 'Inactive';
+          //return row[col.field] ? 'Active' : 'Inactive';
+         //return row[col.field] ? '✔ Active' : '✖ Inactive';
+         return row[col.field] ? '[OK] Active' : '[X] Inactive';
         if (col.type === 'tax') {
           const value = Number(row[col.field] ?? 0);
-          return `${value.toFixed(this.decimals)}%`;
+          return `${value.toFixed(this.decimals)}`;
         }
 
         if (col.type === 'currency') {
           const value = Number(row[col.field] ?? 0);
-          return `${this.currency}${this.formatNumber(value)}`;
+          return `${this.formatNumber(value)}`;
         }
 
         if (col.type === 'number') {

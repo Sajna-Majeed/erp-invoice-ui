@@ -25,13 +25,15 @@
 
     <p-table #table [value]="data" [loading]="loading" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5,10,20]"
         [globalFilterFields]="columns.map(c => c.field)" responsiveLayout="scroll" [scrollable]="true"
-        scrollHeight="400px" [tableStyle]="{ 'min-width': '50rem' }" [size]="'small'">
+        scrollHeight="400px" [tableStyle]="{ 'min-width': '50rem' }" [size]="'small'" [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [rowsPerPageOptions]="[10, 25, 50]">
 
         <!-- Header -->
         <ng-template pTemplate="header">
 
             <tr>
-
                 <th *ngFor="let col of columns" pSortableColumn="{{col.field}}">
 
                     {{col.header}}
@@ -46,14 +48,17 @@
         </ng-template>
 
         <!-- Body -->
-        <ng-template pTemplate="body" let-row>
+        <ng-template pTemplate="body" let-row let-rowIndex="rowIndex">
 
             <tr>
 
-                <td *ngFor="let col of columns"
-                [ngClass]="{'text-right': col.type === 'currency' || col.type === 'tax' ||
-                col.type === 'number','text-center': col.type === 'status' }" >
-
+                <td *ngFor="let col of columns" [ngClass]="{'text-right': col.type === 'currency' ||
+                col.type === 'number','text-center': col.type === 'status'||col.type === 'tax' }">
+                    
+                    <span *ngIf="col.type === 'rowId'">
+                         {{ rowIndex + 1 }}
+                    </span>
+                  
                     <!-- TEXT -->
                     <span *ngIf="col.type === 'text'">
                         {{ row[col.field] }}
@@ -69,9 +74,9 @@
                         {{ row[col.field] | erpNumber }}
                     </span>
 
-                      <!-- NUMBER -->
+                    <!-- NUMBER -->
                     <span *ngIf="col.type === 'tax'">
-                        {{  (row[col.field]) + '%' }}
+                        {{ (row[col.field])  }}
                     </span>
                     <!-- STATUS -->
                     <span *ngIf="col.type === 'status'">

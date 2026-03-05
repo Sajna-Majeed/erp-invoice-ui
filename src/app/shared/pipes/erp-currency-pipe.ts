@@ -9,7 +9,7 @@ export class ErpCurrencyPipe implements PipeTransform {
   constructor(private userService: UserService) {}
  transform(value: number | null | undefined, currency?: string): string {
   
-  const companyData= this.userService.getCompany()?.company;
+  const companyData= this.userService.getCompany();
    
   const amount = value ?? 0;
   

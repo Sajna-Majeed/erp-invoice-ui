@@ -50,7 +50,7 @@ export class UserService {
       const savedCompany = localStorage.getItem('company');
       this.company = savedCompany ? JSON.parse(savedCompany) : null;
     }
-    return this.company;
+    return this.company.company;
   }
 
   // ✅ Clear company info (on logout)

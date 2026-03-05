@@ -7,7 +7,7 @@ import { UserService } from '../../core/service/model-services/user/user';
 export class ErpNumberPipe implements PipeTransform {
 constructor(private userService: UserService) {}
  transform(value: number | null | undefined): string {
-const companyData= this.userService.getCompany()?.company;
+const companyData= this.userService.getCompany();
   if (value == null) return `0.00`;
 
   return new Intl.NumberFormat('en-US', {

@@ -8,6 +8,7 @@ import { TextFieldComponent } from '../../../shared/components/text-field/text-f
 import { SelectFieldComponent } from '../../../shared/components/select-field/select-field';
 import { NumberFieldComponent } from '../../../shared/components/number-field/number-field';
 import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
+import { UserService } from '../../../core/service/model-services/user/user';
 
 @Component({
   selector: 'app-product',
@@ -39,26 +40,31 @@ export class ProductComponent {
   formSubmitted = false;
 
   form!: FormGroup;
-
-  columns = [
-    { field: 'code', header: 'Code', type: 'text' },
-    { field: 'name', header: 'Name', type: 'text' },
-    { field: 'uom', header: 'UOM', type: 'text' },
-    { field: 'unit_Price', header: 'Price', type: 'currency' },
-    { field: 'tax_Rate', header: 'Tax', type: 'tax' },
-    { field: 'is_Active', header: 'Status', type: 'status' ,sortable:false}
-  ];
+company:any={};
+  columns: any[] = [ ];
 
   constructor(
     private productService: ProductService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
+    private userservice:UserService,
     private fb: FormBuilder
   ) {}
 
+  
   ngOnInit() {
     this.initForm();
     this.loadUOMs();
+    this.company = this.userservice.getCompany();
+    this.columns = [
+     { field: 'rowId', header: '#', type: 'rowId' },
+    { field: 'code', header: 'Code', type: 'text' },
+    { field: 'name', header: 'Name', type: 'text' },
+    { field: 'uom', header: 'UOM', type: 'text' },
+    { field: 'unit_Price', header: `Price (${this.company.currency})`, type: 'currency' },
+    { field: 'tax_Rate', header: 'Tax %', type: 'tax' },
+    { field: 'is_Active', header: 'Status', type: 'status' ,sortable:false}
+    ];
   }
 
   initForm() {
