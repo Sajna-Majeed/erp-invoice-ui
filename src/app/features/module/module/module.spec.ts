@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ServiceTypeDialog } from './service-type-dialog';
+import { Module } from './module';
 
-describe('ServiceTypeDialog', () => {
-  let component: ServiceTypeDialog;
-  let fixture: ComponentFixture<ServiceTypeDialog>;
+describe('Module', () => {
+  let component: Module;
+  let fixture: ComponentFixture<Module>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ServiceTypeDialog]
+      imports: [Module]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ServiceTypeDialog);
+    fixture = TestBed.createComponent(Module);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

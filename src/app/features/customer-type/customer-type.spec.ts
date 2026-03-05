@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModuleDialog } from './module-dialog';
+import { CustomerType } from './customer-type';
 
-describe('ModuleDialog', () => {
-  let component: ModuleDialog;
-  let fixture: ComponentFixture<ModuleDialog>;
+describe('CustomerType', () => {
+  let component: CustomerType;
+  let fixture: ComponentFixture<CustomerType>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModuleDialog]
+      imports: [CustomerType]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModuleDialog);
+    fixture = TestBed.createComponent(CustomerType);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

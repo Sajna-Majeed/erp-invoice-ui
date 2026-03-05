@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModuleList } from './module-list';
+import { ServiceType } from './service-type';
 
-describe('ModuleList', () => {
-  let component: ModuleList;
-  let fixture: ComponentFixture<ModuleList>;
+describe('ServiceType', () => {
+  let component: ServiceType;
+  let fixture: ComponentFixture<ServiceType>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ModuleList]
+      imports: [ServiceType]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModuleList);
+    fixture = TestBed.createComponent(ServiceType);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -9,10 +9,9 @@ import { BpFormComponent } from './features/bp/bp-form/bp-form/bp-form';
 import { InvoiceFormComponent } from './features/invoice/invoice-form/invoice-view';
 import { InvoicePrintComponent } from './features/invoice/invoice-print/invoice-print';
 import { ProductComponent } from './features/product/product/product';
-import { ServiceTypeComponent } from './features/service-type/service-type-list/service-type-list';
-import { ServiceTypeDialogComponent } from './features/service-type/service-type-dialog/service-type-dialog';
-import { ModuleDialogComponent } from './features/module/module-dialog/module-dialog';
-import { ModuleListComponent } from './features/module/module-list/module-list';
+import { ServiceTypeComponent } from './features/service-type/service-type/service-type';
+import { ModuleComponent } from './features/module/module/module';
+import { CustomerTypeComponent } from './features/customer-type/customer-type';
 export const routes: Routes = [
      { path: '', component: LoginComponent },
      { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -57,17 +56,19 @@ export const routes: Routes = [
                 {
                     path: 'serviceType',
                     children: [
-                         { path: '', component: ServiceTypeComponent },
-                         { path: 'create', component: ServiceTypeDialogComponent },
-                         { path: 'edit/:id', component: ServiceTypeDialogComponent }
+                         { path: '', component: ServiceTypeComponent }
+                    ]
+               },
+               {
+                    path: 'customerType',
+                    children: [
+                         { path: '', component: CustomerTypeComponent }
                     ]
                },
                {
                     path: 'module',
                     children: [
-                         { path: '', component: ModuleListComponent },
-                         { path: 'create', component: ModuleDialogComponent },
-                         { path: 'edit/:id', component: ModuleDialogComponent }
+                         { path: '', component: ModuleComponent },
                     ]
                },
                { path: '', redirectTo: 'home', pathMatch: 'full' }

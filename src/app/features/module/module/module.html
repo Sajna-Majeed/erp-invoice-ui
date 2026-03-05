@@ -1,0 +1,76 @@
+<div class="page">
+  <!-- Header -->
+  <div class="page-header">
+    <h2>Module</h2>
+    <div class="actions">
+      <button
+        pButton
+        label="Add Module"
+        icon="pi pi-plus"
+        class="p-button-primary"
+        (click)="openCreate()"
+      ></button>
+    </div>
+  </div>
+  
+  <!-- Table -->
+  <app-crud-table
+  [data]="modules"
+  [fileName]="'Modules'"
+  [columns]="columns"
+  [loading]="loading"
+  (edit)="openEdit($event)"
+  (delete)="delete($event.module_Id)"
+  (toggle)="toggleStatus($event.module_Id)">
+</app-crud-table>
+</div>
+<!-- Dialog -->
+<p-dialog
+  header="{{ dialogTitle }}"
+  [(visible)]="moduleDialog"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+>
+  <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"> </p-progressSpinner>
+  <form [formGroup]="form">
+    <div class="form-grid">
+      <div class="field">
+        <label>Code</label>
+        <input pInputText formControlName="code" />
+      </div>
+      <app-text-field
+        label="Module Name"
+        controlName="name"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+
+      <div class="field">
+        <label>Description</label> <input pInputText formControlName="description" />
+      </div>
+      <app-select-field
+        label="Product"
+        controlName="product_Id"
+        [options]="products"
+        optionLabel="name"
+        optionValue="prod_Id"
+        [submitted]="formSubmitted"
+      >
+      </app-select-field>
+
+      
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" text (click)="hideDialog()"></button>
+    <button
+      pButton
+      label="Save"
+      icon="pi pi-check"
+      [disabled]="form.invalid || form.pending || isSaving"
+      [loading]="isSaving"
+      (click)="saveModule()"
+    ></button>
+  </ng-template>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog> <p-toast></p-toast>

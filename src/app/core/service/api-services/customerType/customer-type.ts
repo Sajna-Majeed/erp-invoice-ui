@@ -4,8 +4,8 @@ import { ApiService } from '../api-service';
 @Injectable({
   providedIn: 'root',
 })
-export class ServiceTypeApiService {
-   private url = 'serviceType';
+export class CustomerTypeApiService {
+   private url = 'customerType';
     constructor(private api: ApiService) {}
     
     checkNameExists(name: string, id?: number) {
@@ -22,7 +22,7 @@ export class ServiceTypeApiService {
       return this.api.get(this.url);
     }
     getNextNumber() {
-       return this.api.get(`${this.url}/serviceTypecode`);
+       return this.api.get(`${this.url}/customerTypecode`);
     }
      getById(id: number) {
         return this.api.get(`${this.url}/${id}`);

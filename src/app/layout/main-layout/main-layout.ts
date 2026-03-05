@@ -59,7 +59,8 @@ menuItems = [
     icon: 'pi pi-folder',
     items: [
       { label: 'Products', icon: 'pi pi-box', routerLink: '/product' },
-      { label: 'Services', icon: 'pi pi-cog', routerLink: '/serviceType' },
+      { label: 'Services Types', icon: 'pi pi-cog', routerLink: '/serviceType' },
+      { label: 'Customer Types', icon: 'pi pi-users', routerLink: '/customerType' },
       { label: 'Modules', icon: 'pi pi-th-large', routerLink: '/module' },
       { label: 'Business Partners', icon: 'pi pi-briefcase', routerLink: '/bp' }
     ]
