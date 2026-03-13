@@ -1,0 +1,127 @@
+<div class="page">
+  <!-- Header -->
+  <div class="page-header">
+    <h2>Cusomter</h2>
+    <div class="actions">
+      <button
+        pButton
+        label="Add Customer"
+        icon="pi pi-plus"
+        class="p-button-primary"
+        (click)="openCreate()"
+      ></button>
+    </div>
+  </div>
+  
+  <!-- Table -->
+  <app-crud-table
+  [data]="customers"
+  [fileName]="'Customers'"
+  [columns]="columns"
+  [loading]="loading"
+  (edit)="openEdit($event)"
+  (delete)="delete($event.customer_Id)"
+  (toggle)="toggleStatus($event.customer_Id)">
+</app-crud-table>
+</div>
+<!-- Dialog -->
+<p-dialog
+  header="{{ dialogTitle }}"
+  [(visible)]="customerDialog"
+  [modal]="true"
+  [style]="{ width: '500px' }"
+>
+  <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"> </p-progressSpinner>
+  <form [formGroup]="form">
+    <div class="form-grid">
+        <div>
+      <div class="field">
+        <label>Code</label>
+        <input pInputText formControlName="code" />
+      </div>
+      <app-text-field
+        label="Customer Name"
+        controlName="name"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+
+      <div class="field">
+        <label>Description</label> <input pInputText formControlName="description" />
+      </div>
+      <app-select-field
+        label="Customer Type"
+        controlName="customer_Type_Id"
+        [options]="customerTypes"
+        optionLabel="name"
+        optionValue="ct_Id"
+        [submitted]="formSubmitted"
+      >
+      </app-select-field>
+</div>
+      <div>
+     <app-text-field
+        label="Contact Person"
+        controlName="contact_Person"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+      <app-text-field
+        label="Email"
+        controlName="email"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+
+     <app-text-field
+        label="Mobile Number"
+        controlName="mobile_number"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+       <app-text-field
+        label="Address Line"
+        controlName="addressline1"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+       <app-text-field
+        label="City"
+        controlName="city"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+       <app-text-field
+        label="Province"
+        controlName="country_Subdivision"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+       <app-text-field
+        label="Country"
+        controlName="country"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+         <app-text-field
+        label="Zip Code"
+        controlName="zip_code"
+        [submitted]="formSubmitted"
+      >
+      </app-text-field>
+</div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" text (click)="hideDialog()"></button>
+    <button
+      pButton
+      label="Save"
+      icon="pi pi-check"
+      [disabled]="form.invalid || form.pending || isSaving"
+      [loading]="isSaving"
+      (click)="saveCustomerType()"
+    ></button>
+  </ng-template>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog> <p-toast></p-toast>
