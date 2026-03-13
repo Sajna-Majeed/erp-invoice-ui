@@ -7,6 +7,7 @@ import { UserInfo } from '../../../models/user';
 export class UserService {
   private user: UserInfo | null = null;
   private company: any | null = null;
+  menu: any[] = [];
   constructor() {
     // Load saved user from localStorage on startup
     const savedUser = localStorage.getItem('user');
@@ -38,7 +39,7 @@ export class UserService {
   }
 
   setCompany(company: any) {
-    this.clearUser(); // Clear any existing user data
+    this.clearCompany(); // Clear any existing user data
     this.company = company;
     debugger
     localStorage.setItem('company', JSON.stringify(company));
@@ -58,6 +59,31 @@ export class UserService {
     this.company = null;
     localStorage.removeItem('company');
   }
+
+
+  
+setMenu(menu: any) {
+    this.clearMenu(); // Clear any existing menu data
+    this.menu = menu;
+    localStorage.setItem('menu', JSON.stringify(menu));
+  }
+
+  // ✅ Get current menu (from memory or localStorage)
+  getMenu(): any | null {
+    if (!this.menu) {
+      const savedMenu = localStorage.getItem('menu');
+      this.menu = savedMenu ? JSON.parse(savedMenu) : null;
+    }
+    return this.menu;
+  }
+
+  // ✅ Clear menu info (on logout)
+  clearMenu() {
+    this.company = null;
+    localStorage.removeItem('menu');
+  }
+
+
 
   // ✅ Helper getters
   getUsername(): string {

@@ -61,6 +61,7 @@ showError(message: string) {
         this.userService.setCompany({
           company: res.data.company
         });
+        this.userService.setMenu(res.data.menulist);
         this.router.navigate(['/dashboard']);
       },
       error: () => {

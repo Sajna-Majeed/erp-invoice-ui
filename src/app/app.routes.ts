@@ -12,6 +12,7 @@ import { ProductComponent } from './features/product/product/product';
 import { ServiceTypeComponent } from './features/service-type/service-type/service-type';
 import { ModuleComponent } from './features/module/module/module';
 import { CustomerTypeComponent } from './features/customer-type/customer-type';
+import { CustomerComponent } from './features/customer/customer';
 export const routes: Routes = [
      { path: '', component: LoginComponent },
      { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -63,6 +64,12 @@ export const routes: Routes = [
                     path: 'customerType',
                     children: [
                          { path: '', component: CustomerTypeComponent }
+                    ]
+               },
+                 {
+                    path: 'customer',
+                    children: [
+                         { path: '', component: CustomerComponent }
                     ]
                },
                {

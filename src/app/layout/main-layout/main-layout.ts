@@ -58,11 +58,12 @@ menuItems = [
     label: 'Master',
     icon: 'pi pi-folder',
     items: [
-      { label: 'Products', icon: 'pi pi-box', routerLink: '/product' },
       { label: 'Services Types', icon: 'pi pi-cog', routerLink: '/serviceType' },
       { label: 'Customer Types', icon: 'pi pi-users', routerLink: '/customerType' },
+      { label: 'Customer', icon: 'pi pi-briefcase', routerLink: '/customer' },
+      { label: 'Products', icon: 'pi pi-box', routerLink: '/product' },
       { label: 'Modules', icon: 'pi pi-th-large', routerLink: '/module' },
-      { label: 'Business Partners', icon: 'pi pi-briefcase', routerLink: '/bp' }
+      // { label: 'Business Partners', icon: 'pi pi-briefcase', routerLink: '/bp' }
     ]
   },
   {
