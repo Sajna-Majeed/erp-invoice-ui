@@ -1,0 +1,16 @@
+<div class="page">
+  <!-- Header -->
+  <div class="page-header">
+    <h2>Quote List</h2>
+    <div class="actions">
+      <button pButton label="Add Custom Product Price" icon="pi pi-plus" class="p-button-primary"
+        (click)="create()"></button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <app-crud-table [data]="quotes" [fileName]="'Quotes'" [columns]="columns" [loading]="loading"
+    (edit)="edit($event)" (delete)="delete($event.q_Id)" (toggle)="toggleStatus($event.q_Id)">
+  </app-crud-table>
+</div>
+<p-confirmDialog></p-confirmDialog> <p-toast></p-toast>

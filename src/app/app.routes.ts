@@ -1,18 +1,18 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout';
 import { authGuard } from './core/guard/auth-guard';
-import { LoginComponent } from './features/login/login';
-import { UserListComponent } from './features/user/user-list/user';
-import { UserFormComponent } from './features/user/user-form/create-edit';
-import { BpListComponent } from './features/bp/bp-list/bp-list';
-import { BpFormComponent } from './features/bp/bp-form/bp-form/bp-form';
-import { InvoiceFormComponent } from './features/invoice/invoice-form/invoice-view';
-import { InvoicePrintComponent } from './features/invoice/invoice-print/invoice-print';
-import { ProductComponent } from './features/product/product/product';
-import { ServiceTypeComponent } from './features/service-type/service-type/service-type';
-import { ModuleComponent } from './features/module/module/module';
-import { CustomerTypeComponent } from './features/customer-type/customer-type';
-import { CustomerComponent } from './features/customer/customer';
+import { QuoteListComponent } from './features/transaction/invoice/quote-list/quote-list';
+import { LoginComponent } from './features/authentication/login/login';
+import { UserListComponent } from './features/settings/user/user-list/user';
+import { UserFormComponent } from './features/settings/user/user-form/create-edit';
+import { InvoiceFormComponent } from './features/transaction/invoice/invoice-form/invoice-view';
+import { InvoicePrintComponent } from './features/transaction/invoice/invoice-print/invoice-print';
+import { ProductComponent } from './features/masters/product/product';
+import { ServiceTypeComponent } from './features/masters/service-type/service-type';
+import { CustomerTypeComponent } from './features/masters/customer-type/customer-type';
+import { CustomerComponent } from './features/masters/customer/customer';
+import { CustompriceComponent } from './features/masters/custom-price/custom-price';
+import { ModuleComponent } from './features/masters/module/module';
 export const routes: Routes = [
      { path: '', component: LoginComponent },
      { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -29,20 +29,9 @@ export const routes: Routes = [
                     ]
                },
 
-
-               {
-
-                    path: 'bp',
-                    children: [
-                         { path: '', component: BpListComponent },
-                         { path: 'create', component: BpFormComponent },
-                         { path: 'edit/:id', component: BpFormComponent }
-                    ]
-               },
-
-               { path: 'invoice',
+               { path: 'quote',
                      children: [
-                         { path: '', loadComponent: () => import('./features/invoice/invoice-list/invoice-list').then(m => m.InvoiceListComponent) },
+                         { path: '', component:QuoteListComponent },
                           { path: 'create', component: InvoiceFormComponent },
                          { path: 'edit/:id', component: InvoiceFormComponent },
                          { path: 'view/:id', component: InvoicePrintComponent }
@@ -70,6 +59,12 @@ export const routes: Routes = [
                     path: 'customer',
                     children: [
                          { path: '', component: CustomerComponent }
+                    ]
+               },
+               {
+                    path: 'custom-price',
+                    children: [
+                         { path: '', component: CustompriceComponent }
                     ]
                },
                {

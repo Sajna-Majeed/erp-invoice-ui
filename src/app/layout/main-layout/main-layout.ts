@@ -63,14 +63,14 @@ menuItems = [
       { label: 'Customer', icon: 'pi pi-briefcase', routerLink: '/customer' },
       { label: 'Products', icon: 'pi pi-box', routerLink: '/product' },
       { label: 'Modules', icon: 'pi pi-th-large', routerLink: '/module' },
-      // { label: 'Business Partners', icon: 'pi pi-briefcase', routerLink: '/bp' }
+      { label: 'Custom Price', icon: 'pi pi-money', routerLink: '/custom-price' }
     ]
   },
   {
     label: 'Transactions',
     icon: 'pi pi-refresh',
     items: [
-      { label: 'Invoices', icon: 'pi pi-file', routerLink: '/invoice' }
+      { label: 'Quotes', icon: 'pi pi-file', routerLink: '/quote' }
     ]
   },
   {
