@@ -41,7 +41,6 @@ export class UserService {
   setCompany(company: any) {
     this.clearCompany(); // Clear any existing user data
     this.company = company;
-    debugger
     localStorage.setItem('company', JSON.stringify(company));
   }
 

@@ -33,4 +33,7 @@ export class ModuleService {
       toggleStatus(moduleId: number) {
         return this.api.delete(`${this.url}/toggle/${moduleId}`);
       }
+      getByFilter(pd_id: number) {
+    return this.api.get(`${this.url}/product/${pd_id}`);
+  }
 }

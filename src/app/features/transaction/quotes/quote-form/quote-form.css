@@ -1,0 +1,65 @@
+.quote-form{
+display:flex;
+flex-direction:column;
+gap:30px;
+}
+
+.form-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:20px;
+}
+
+.lines-container{
+display:grid;
+grid-template-columns:repeat(6,1fr);
+gap:20px;
+}
+
+
+.summary-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.totals {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+.field {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.terms {
+  width: 50%;
+}
+
+.flags {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.increase-section {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.actions{
+display:flex;
+justify-content:flex-end;
+gap:10px;
+}
+
+.full{
+grid-column:1/-1;
+}

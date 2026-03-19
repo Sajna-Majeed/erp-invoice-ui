@@ -1,0 +1,45 @@
+<div class="card">
+
+  <!-- 🔹 Choose button -->
+  <p-fileupload
+    mode="basic"
+    chooseLabel="Choose Files"
+    [multiple]="true"
+    [customUpload]="true"
+    (onSelect)="onSelect($event)"/>
+
+  <!-- 🔹 Table -->
+  @if (allFiles.length > 0) {
+  <table class="file-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Type</th>
+        <th>File Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      @for (file of allFiles; track $index; let i = $index) {
+      <tr>
+        <td>{{ i + 1 }}</td>
+
+        <td>
+          <i class="check-icon" [class]="getFileIcon(file)"></i>
+        </td>
+
+        <td>
+          {{ file.displayName }}
+        </td>
+
+        <td>
+          <button (click)="removeFile(file,i)">❌</button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  }
+
+</div>

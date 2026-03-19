@@ -1,0 +1,197 @@
+<h2>{{ isEdit ? 'Edit Quote' : 'Create Quote' }}</h2>
+
+<form [formGroup]="form"  class="quote-form">
+
+  <!-- ================= HEADER ================= -->
+
+  <div class="form-grid">
+
+    <div class="field">
+      <label>Quote No</label>
+      <input pInputText formControlName="quote_No" readonly />
+    </div>
+
+    <div class="field">
+      <label>Quote Date</label>
+      <p-datepicker formControlName="quote_Date" dateFormat="yy-mm-dd"></p-datepicker>
+    </div>
+
+    <div class="field">
+      <label>Customer</label>
+      <p-select [options]="customers" optionLabel="name" optionValue="customer_Id" formControlName="customer_Id"
+        placeholder="Select Customer"></p-select>
+
+      <small class="p-error" *ngIf="form.get('customer_Id')?.invalid && form.touched">
+        Customer required
+      </small>
+    </div>
+
+  </div>
+
+
+  <!-- ================= LINES ================= -->
+
+  <div class="lines-container" [formGroup]="lineForm">
+    <p-floatlabel class="w-full md:w-56" variant="on">
+      <p-select [options]="products" optionLabel="name" [invalid]="isInvalid('prod_Id')" optionValue="prod_Id"
+        formControlName="pd_Id" (onChange)="onProductSelected($event)" fluid></p-select>
+      @if (isInvalid('pd_Id')) {
+      <p-message severity="error" size="small" variant="simple">Product is required.</p-message>
+      }
+      <label for="on_label">Product</label>
+    </p-floatlabel>
+    <p-floatlabel class="w-full md:w-56" variant="on">
+      <p-select [options]="modules" optionLabel="name" fluid optionValue="module_Id"
+        formControlName="module_Id"></p-select>
+      <label for="on_label">Module</label>
+    </p-floatlabel>
+    <p-floatlabel class="w-full md:w-56" variant="on">
+      <p-select [options]="serviceTypes" optionLabel="name" fluid optionValue="st_Id"
+        formControlName="st_Id"></p-select>
+      <label for="on_label">Service Type</label>
+    </p-floatlabel>
+    <p-floatlabel class="w-full md:w-56" variant="on">
+      <p-inputNumber formControlName="rate" mode="currency" fluid="" currency="INR"></p-inputNumber>
+      <label for="on_label">Rate</label>
+    </p-floatlabel>
+    <p-floatlabel class="w-full md:w-56" variant="on">
+      <p-inputNumber formControlName="license_Count" fluid="" [min]="1"></p-inputNumber>
+      <label for="on_label">License Count</label>
+    </p-floatlabel>
+    <div class="add-line">
+      <button pButton label="Add Line" fluid icon="pi pi-plus" type="button" (click)="addLine()"></button>
+    </div>
+
+  </div>
+
+
+  <!-- ================= ADD LINE ================= -->
+
+
+
+  <p-table [value]="lines.controls">
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Product</th>
+        <th>Module</th>
+        <th>Service</th>
+        <th>Last Billed Rate</th>
+        <th>License Count</th>
+        <th>Amount</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-row let-i="rowIndex">
+      <tr [formGroup]="row">
+
+        <td>{{ getProductName(row.value.pd_Id) }}</td>
+        <td>{{ getModuleName(row.value.module_Id) }}</td>
+        <td>{{ getServiceName(row.value.st_Id) }}</td>
+        <td>{{ row.value.rate }}</td>
+        <td>{{ row.value.license_Count }}</td>
+        <td>{{ row.value.rate }}</td>
+        <td class="actions">
+          <button pButton icon="pi pi-pencil" (click)="editLine(i)"></button>
+          <button pButton icon="pi pi-trash" (click)="removeLine(i)"></button>
+        </td>
+
+      </tr>
+    </ng-template>
+
+  </p-table>
+
+  <!-- ================= TOTALS ================= -->
+
+  <div class="summary-section">
+
+    <!-- LEFT SIDE (Totals) -->
+    <div class="terms">
+      <p-floatlabel variant="on">
+
+        <textarea id="tc" rows="6" cols="30" pTextarea formControlName="t_C" fluid></textarea>
+        <label for="tc">Terms & Conditions</label>
+      </p-floatlabel>
+    </div>
+
+
+
+
+
+    <!-- RIGHT SIDE (Terms) -->
+
+    <div class="totals">
+
+      <div class="field">
+        <label>Total Amount</label>
+        <p-inputNumber formControlName="total_Amt" mode="currency" currency="INR" readonly></p-inputNumber>
+      </div>
+
+      <div class="field">
+        <label>Discount</label>
+        <p-inputNumber formControlName="discount"></p-inputNumber>
+      </div>
+
+      <div class="field">
+        <label>Net Amount</label>
+        <p-inputNumber formControlName="net_Amt" mode="currency" currency="INR" readonly></p-inputNumber>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ================= FLAGS ================= -->
+
+  <div class="flags">
+    <div class="flex items-center gap-2">
+      <p-checkbox formControlName="quote_Send" [binary]="true" inputId="quote_Send"
+        [invalid]="isInvalid('quote_Send')" />
+      <label for="quote_Send"> Quote Send</label>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-checkbox formControlName="contract_Signed" [binary]="true" inputId="contract_Signed"
+        [invalid]="isInvalid('contract_Signed')" />
+      <label for="contract_Signed"> Contract Signed</label>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-checkbox formControlName="invoiced" [binary]="true" inputId="invoiced" [invalid]="isInvalid('invoiced')" />
+      <label for="invoiced"> Invoiced</label>
+    </div>
+    <div class="flex items-center gap-2">
+      <p-checkbox formControlName="payment_Received" [binary]="true" inputId="payment_Received"
+        [invalid]="isInvalid('payment_Received')" />
+      <label for="payment_Received"> Payment Received</label>
+    </div>
+  </div>
+  <!-- ================= TERMS ================= -->
+
+  <div class="increase-section">
+
+    <label>Increase By (%)</label>
+
+    <input pInputText formControlName="increased_Rate" type="number"/>
+
+    <button pButton label="Change" (click)="previewIncrease()"></button>
+
+    <button pButton label="Apply" severity="success" (click)="applyIncrease()"></button>
+
+  </div>
+
+<app-file-upload
+  [existingFiles]="existingFiles"
+  (filesChanged)="onFilesChanged($event)">
+</app-file-upload>
+  <!-- ================= ACTIONS ================= -->
+
+  <div class="actions">
+
+    <button pButton label="Cancel" severity="secondary" routerLink="/quote" type="button"></button>
+
+    <button pButton label="Save Quote" icon="pi pi-check" type="submit"
+      [disabled]="form.invalid || lines.length === 0" (click)="save()"></button>
+
+  </div>
+
+</form>

@@ -116,7 +116,6 @@ loadCustomerCode() {
   }
 
   openEdit(customer: any) {
-debugger
     this.form.patchValue(customer);
 
     this.dialogTitle = 'Edit Customer';
@@ -130,7 +129,6 @@ debugger
   }
 
   saveCustomerType() {
-debugger
     this.formSubmitted = true;
 
     if (this.form.invalid) return;

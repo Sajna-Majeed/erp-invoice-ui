@@ -64,6 +64,10 @@
                         {{ row[col.field] }}
                     </span>
 
+                    <!-- TEXT -->
+                    <span *ngIf="col.type === 'date'">
+                        {{ row[col.field] |date}}
+                    </span>
                     <!-- CURRENCY -->
                     <span *ngIf="col.type === 'currency'">
                         {{ row[col.field] | erpCurrency }}

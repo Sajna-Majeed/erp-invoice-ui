@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InvoiceView } from './invoice-view';
+import { FileUploadComponent } from './file-upload';
 
-describe('InvoiceView', () => {
-  let component: InvoiceView;
-  let fixture: ComponentFixture<InvoiceView>;
+describe('FileUploadComponent', () => {
+  let component: FileUploadComponent;
+  let fixture: ComponentFixture<FileUploadComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InvoiceView]
+      imports: [FileUploadComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InvoiceView);
+    fixture = TestBed.createComponent(FileUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

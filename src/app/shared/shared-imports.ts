@@ -22,9 +22,10 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SelectModule } from 'primeng/select';
 import { ToolbarModule } from 'primeng/toolbar';
 import { SplitButtonModule } from 'primeng/splitbutton';
-
-
-
+import { DatePickerModule } from 'primeng/datepicker';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TextareaModule } from 'primeng/textarea';
 // Angular Material imports
 //#region Material Modules
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -48,6 +49,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+
 //#endregion
 export const SHARED_IMPORTS = [
   CommonModule,
@@ -74,10 +76,10 @@ export const SHARED_IMPORTS = [
   SelectModule,
   ToolbarModule,
   SplitButtonModule,
-
-
-
-
+DatePickerModule,
+AutoCompleteModule,
+CheckboxModule,
+TextareaModule,
 
   MatSlideToggleModule,
   MatAutocompleteModule,

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ControlContainer,FormGroupDirective } from '@angular/forms';
+import { ControlContainer, FormGroupDirective } from '@angular/forms';
 import { SHARED_IMPORTS } from '../../../../shared/shared-imports';
 import { QuoteApiService } from '../../../../core/service/api-services/quote/quote';
 import { CrudTableComponent } from "../../../../shared/components/crud-table/crud-table";
@@ -10,39 +10,39 @@ import { CrudTableComponent } from "../../../../shared/components/crud-table/cru
 @Component({
   selector: 'app-quote-list',
   imports: [SHARED_IMPORTS, CrudTableComponent],
-   viewProviders: [
+  viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
   ],
-   providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService],
   templateUrl: './quote-list.html',
   styleUrl: './quote-list.css',
 })
 export class QuoteListComponent implements OnInit {
 
-  columns :any[] = [];
+  columns: any[] = [];
 
   quotes: any[] = [];
   loading = false;
 
   constructor(
     private service: QuoteApiService,
-    private router:Router,
-    private confirmationService:ConfirmationService,
+    private router: Router,
+    private confirmationService: ConfirmationService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
-   ngOnInit() {
+  ngOnInit() {
     this.load();
     this.columns = [
-    { field: 'rowId', header: '#', type: 'rowId' },
-    { field: 'quote_no', header: 'Quote No', type: 'text' },
-    { field: 'quote_date', header: 'Quote_Date', type: 'text' },
-    { field: 'customer', header: 'Customer', type: 'text' },
-    { field: 'net_amt', header: 'Net Amt', type: 'number' },
-    { field: 'quote_send', header: 'Quote Send', type: 'status' ,sortable:false},
-    { field: 'contract_Signed', header: 'Contract Signed', type: 'status' ,sortable:false},
-    { field: 'invoiced', header: 'Invoiced', type: 'status' ,sortable:false},
-    { field: 'payment_Recieved', header: 'Payment Recieved', type: 'status' ,sortable:false}
+      { field: 'rowId', header: '#', type: 'rowId' },
+      { field: 'quote_No', header: 'Quote No', type: 'text' },
+      { field: 'quote_Date', header: 'Quote_Date', type: 'date' },
+      { field: 'customer', header: 'Customer', type: 'text' },
+      { field: 'net_Amt', header: 'Net Amt', type: 'number' },
+      { field: 'quote_Send', header: 'Quote Send', type: 'status', sortable: false },
+      { field: 'contract_Signed', header: 'Contract Signed', type: 'status', sortable: false },
+      { field: 'invoiced', header: 'Invoiced', type: 'status', sortable: false },
+      { field: 'payment_Received', header: 'Payment Recieved', type: 'status', sortable: false }
     ];
   }
   load() {
@@ -56,7 +56,7 @@ export class QuoteListComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-         this.messageService.add({
+        this.messageService.add({
           severity: 'error',
           summary: 'Error',
           detail: 'Operation failed'
@@ -66,17 +66,17 @@ export class QuoteListComponent implements OnInit {
   }
 
   create() {
-    this.router.navigate(['/invoice/create']);
+    this.router.navigate(['/quote/create']);
   }
 
   edit(row: any) {
-    this.router.navigate(['/invoice/edit', row.q_Id]);
+    this.router.navigate(['/quote/edit', row.q_Id]);
   }
   view(row: any) {
     this.router.navigate(['/invoice/view', row.q_Id]);
   }
 
-    delete(id: number) {
+  delete(id: number) {
 
     this.confirmationService.confirm({
       message: 'Are you sure you want to delete this Quote?',
@@ -124,6 +124,6 @@ export class QuoteListComponent implements OnInit {
     });
   }
 
- 
+
 }
 

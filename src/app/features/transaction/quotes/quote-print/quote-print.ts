@@ -7,12 +7,12 @@ import { QuoteApiService } from '../../../../core/service/api-services/quote/quo
 import { CustomerApiService } from '../../../../core/service/api-services/customer/customer';
 import { ExcelExportService } from '../../../../core/service/excel-services/excel-services';
 @Component({
-  selector: 'app-invoice-print',
-  imports: [SHARED_IMPORTS, DatePipe, ErpNumberPipe],
-  templateUrl: './invoice-print.html',
-  styleUrl: './invoice-print.css',
+  selector: 'app-quote-print',
+  imports: [SHARED_IMPORTS,ErpNumberPipe],
+  templateUrl: './quote-print.html',
+  styleUrl: './quote-print.css',
 })
-export class InvoicePrintComponent implements OnInit {
+export class QuotePrintComponent implements OnInit {
 
   invoice: any;
   invoiceId!: number;
