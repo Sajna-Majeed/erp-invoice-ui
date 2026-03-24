@@ -41,18 +41,21 @@
       <app-text-field
         label="Module Name"
         controlName="name"
+        [required]="true"
         [submitted]="formSubmitted"
       >
       </app-text-field>
 
       <div class="field">
-        <label>Description</label> <input pInputText formControlName="description" />
+        <app-text-area label="Description" controlName="description" [submitted]="formSubmitted">
+        </app-text-area>
       </div>
       <app-select-field
         label="Product"
         controlName="product_Id"
         [options]="products"
         optionLabel="name"
+          [required]="true"
         optionValue="prod_Id"
         [submitted]="formSubmitted"
       >

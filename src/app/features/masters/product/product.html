@@ -3,34 +3,17 @@
   <div class="page-header">
     <h2>Products</h2>
     <div class="actions">
-      <button
-        pButton
-        label="Add Product"
-        icon="pi pi-plus"
-        class="p-button-primary"
-        (click)="openCreate()"
-      ></button>
+      <button pButton label="Add Product" icon="pi pi-plus" class="p-button-primary" (click)="openCreate()"></button>
     </div>
   </div>
-  
+
   <!-- Table -->
-  <app-crud-table
-  [data]="products"
-  [fileName]="'Products'"
-  [columns]="columns"
-  [loading]="loading"
-  (edit)="openEdit($event)"
-  (delete)="delete($event.prod_Id)"
-  (toggle)="toggleStatus($event.prod_Id)">
-</app-crud-table>
+  <app-crud-table [data]="products" [fileName]="'Products'" [columns]="columns" [loading]="loading"
+    (edit)="openEdit($event)" (delete)="delete($event.prod_Id)" (toggle)="toggleStatus($event.prod_Id)">
+  </app-crud-table>
 </div>
 <!-- Dialog -->
-<p-dialog
-  header="{{ dialogTitle }}"
-  [(visible)]="productDialog"
-  [modal]="true"
-  [style]="{ width: '500px' }"
->
+<p-dialog header="{{ dialogTitle }}" [(visible)]="productDialog" [modal]="true" [style]="{ width: '500px' }">
   <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"> </p-progressSpinner>
   <form [formGroup]="form">
     <div class="form-grid">
@@ -38,54 +21,30 @@
         <label>Code</label>
         <input pInputText formControlName="code" />
       </div>
-      <app-text-field
-        label="Product Name"
-        controlName="name"
-        [submitted]="formSubmitted"
-      >
+      <app-text-field label="Product Name" controlName="name" [required]="true" [submitted]="formSubmitted">
       </app-text-field>
 
       <div class="field">
-        <label>Description</label> <input pInputText formControlName="description" />
+        <app-text-area label="Description" controlName="description" [submitted]="formSubmitted">
+        </app-text-area>
       </div>
-      <app-select-field
-        label="UOM"
-        controlName="uom_Id"
-        [options]="uoms"
-        optionLabel="code"
-        optionValue="uom_Id"
-        [submitted]="formSubmitted"
-      >
+      <app-select-field label="UOM" [required]="true" controlName="uom_Id" [options]="uoms" optionLabel="code"
+        optionValue="uom_Id" [submitted]="formSubmitted">
       </app-select-field>
 
-      <app-number-field
-        label="Unit Price"
-        controlName="unit_Price"
-        mode="currency"
-        currency="INR"
-        [submitted]="formSubmitted"
-      >
+      <app-number-field label="Unit Price" [required]="true" controlName="unit_Price" mode="currency" 
+        [submitted]="formSubmitted">
       </app-number-field>
 
-      <app-number-field
-        label="Tax Rate"
-        controlName="tax_Rate"
-        suffix="%"
-        [submitted]="formSubmitted"
-      >
+      <app-number-field label="Tax Rate" [required]="true" controlName="tax_Rate" suffix="%"
+        [submitted]="formSubmitted">
       </app-number-field>
     </div>
   </form>
   <ng-template pTemplate="footer">
     <button pButton label="Cancel" text (click)="hideDialog()"></button>
-    <button
-      pButton
-      label="Save"
-      icon="pi pi-check"
-      [disabled]="form.invalid || form.pending || isSaving"
-      [loading]="isSaving"
-      (click)="saveProduct()"
-    ></button>
+    <button pButton label="Save" icon="pi pi-check" [disabled]="form.invalid || form.pending || isSaving"
+      [loading]="isSaving" (click)="saveProduct()"></button>
   </ng-template>
 </p-dialog>
 <p-confirmDialog></p-confirmDialog> <p-toast></p-toast>

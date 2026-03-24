@@ -8,11 +8,12 @@ import { CrudTableComponent } from '../../../shared/components/crud-table/crud-t
 import { CustomerApiService } from '../../../core/service/api-services/customer/customer';
 import { CustomerTypeApiService } from '../../../core/service/api-services/customerType/customer-type';
 import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
+import { NumberFieldComponent } from "../../../shared/components/number-field/number-field";
 
 
 @Component({
   selector: 'app-customer',
-  imports: [SHARED_IMPORTS, SelectFieldComponent, TextFieldComponent, CrudTableComponent, TextAreaComponent],
+  imports: [SHARED_IMPORTS, SelectFieldComponent, TextFieldComponent, CrudTableComponent, TextAreaComponent, NumberFieldComponent],
    viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
   ],

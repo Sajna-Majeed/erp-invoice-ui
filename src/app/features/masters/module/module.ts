@@ -9,6 +9,7 @@ import { SelectFieldComponent } from '../../../shared/components/select-field/se
 import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
 import { UserService } from '../../../core/service/model-services/user/user';
 import { ModuleService } from '../../../core/service/api-services/module/module';
+import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
 
 @Component({
   selector: 'app-module',
@@ -17,8 +18,9 @@ import { ModuleService } from '../../../core/service/api-services/module/module'
     SHARED_IMPORTS,
     TextFieldComponent,
     SelectFieldComponent,
-    CrudTableComponent
-  ],
+    CrudTableComponent,
+    TextAreaComponent
+],
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
   ],

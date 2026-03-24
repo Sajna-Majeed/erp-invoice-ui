@@ -9,6 +9,7 @@ import { SelectFieldComponent } from '../../../shared/components/select-field/se
 import { NumberFieldComponent } from '../../../shared/components/number-field/number-field';
 import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
 import { UserService } from '../../../core/service/model-services/user/user';
+import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
 
 @Component({
   selector: 'app-product',
@@ -18,7 +19,8 @@ import { UserService } from '../../../core/service/model-services/user/user';
     TextFieldComponent,
     SelectFieldComponent,
     NumberFieldComponent,
-    CrudTableComponent
+    CrudTableComponent,
+    TextAreaComponent
   ],
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
@@ -40,31 +42,31 @@ export class ProductComponent {
   formSubmitted = false;
 
   form!: FormGroup;
-company:any={};
-  columns: any[] = [ ];
+  company: any = {};
+  columns: any[] = [];
 
   constructor(
     private productService: ProductService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private userservice:UserService,
+    private userservice: UserService,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
-  
+
   ngOnInit() {
-    this.initForm();
-    this.loadUOMs();
     this.company = this.userservice.getCompany();
+    this.loadUOMs();
     this.columns = [
-     { field: 'rowId', header: '#', type: 'rowId' },
-    { field: 'code', header: 'Code', type: 'text' },
-    { field: 'name', header: 'Name', type: 'text' },
-    { field: 'uom', header: 'UOM', type: 'text' },
-    { field: 'unit_Price', header: `Price (${this.company.currency})`, type: 'currency' },
-    { field: 'tax_Rate', header: 'Tax %', type: 'tax' },
-    { field: 'is_Active', header: 'Status', type: 'status' ,sortable:false}
+      { field: 'rowId', header: '#', type: 'rowId' },
+      { field: 'code', header: 'Code', type: 'text' },
+      { field: 'name', header: 'Name', type: 'text' },
+      { field: 'uom', header: 'UOM', type: 'text' },
+      { field: 'unit_Price', header: `Price (${this.company.currency})`, type: 'currency' },
+      { field: 'tax_Rate', header: 'Tax %', type: 'tax' },
+      { field: 'is_Active', header: 'Status', type: 'status', sortable: false }
     ];
+    this.initForm();
   }
 
   initForm() {
@@ -82,7 +84,7 @@ company:any={};
       description: [''],
       uom_Id: [null, Validators.required],
       unit_Price: [0, [Validators.required, Validators.min(0)]],
-      tax_Rate: [5, [Validators.required, Validators.min(0), Validators.max(100)]],
+      tax_Rate: [5, [Validators.required, Validators.min(0), Validators.max(this.company.taxlimit)]],
       is_active: [true]
     });
   }

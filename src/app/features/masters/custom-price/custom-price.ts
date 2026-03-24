@@ -74,7 +74,7 @@ export class CustompriceComponent implements OnInit {
     this.form = this.fb.group({
       custom_Prod_Id: [null],
       code: [{ value: '', disabled: true }],
-      st_Id: [''],
+      st_Id: [null, Validators.required],
       customer_Id:[null, Validators.required],
       pd_Id:[null,Validators.required],
       module_Id:[null,Validators.required],
