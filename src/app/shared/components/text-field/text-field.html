@@ -1,17 +1,12 @@
 <div class="field flex flex-col gap-1">
 
-<label>{{label}}</label>
+  <label class="flex items-center gap-1">
+    {{ label }}
+    <span *ngIf="required" class="text-red-500">*</span>
+  </label>
+  <input pInputText [formControlName]="controlName" [invalid]="control?.invalid && (control?.touched || submitted)" />
 
-<input
-  pInputText
-  [formControlName]="controlName"
-  [invalid]="control?.invalid && (control?.touched || submitted)"
-/>
-
-<app-form-error
-  [control]="control"
-  [label]="label"
-  [show]="submitted">
-</app-form-error>
+  <app-form-error [control]="control" [label]="label" [show]="submitted">
+  </app-form-error>
 
 </div>

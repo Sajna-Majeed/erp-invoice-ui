@@ -9,28 +9,31 @@ import {
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormErrorComponent } from '../form-error/form-error';
+import { SHARED_IMPORTS } from '../../shared-imports';
 
 @Component({
-  selector: 'app-text-field',
+  selector: 'app-text-area',
   standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
     InputTextModule,
-    FormErrorComponent
+    FormErrorComponent,
+    SHARED_IMPORTS
   ],
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
   ],
-  templateUrl: './text-field.html'
+  templateUrl: './text-area.html',
+   styleUrl: './text-area.css',
 })
-export class TextFieldComponent {
+export class TextAreaComponent {
 
   @Input() label!: string;
   @Input() controlName!: string;
   @Input() submitted = false;
-  @Input() required = false;
-  constructor(private controlContainer: ControlContainer) { }
+
+  constructor(private controlContainer: ControlContainer) {}
 
   get control(): AbstractControl | null {
     return this.controlContainer.control?.get(this.controlName) ?? null;

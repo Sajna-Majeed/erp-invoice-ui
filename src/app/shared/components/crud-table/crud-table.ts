@@ -6,7 +6,6 @@ import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { MenuItem } from 'primeng/api';
-import { MessageService } from 'primeng/api';
 import { ErpCurrencyPipe } from "../../pipes/erp-currency-pipe";
 import { ErpNumberPipe } from "../../pipes/erp-number-pipe";
 import { UserService } from '../../../core/service/model-services/user/user';
@@ -29,6 +28,7 @@ export class CrudTableComponent {
   @Input() fileName: string = '';
   @Input() columns: any[] = [];
   @Input() loading = false;
+ @Input() showView = false;
 
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
@@ -59,6 +59,7 @@ export class CrudTableComponent {
     const numberFormat = `#,##0.${'0'.repeat(this.decimals)}`;
     // Header
     worksheet.addRow(['ERP Management System']);
+    worksheet.addRow([`Company: ${this.company?.name}` || '']); // 👈 Company Name
     worksheet.addRow([`Report: ${this.fileName}`]);
     worksheet.addRow([`Generated: ${new Date().toLocaleString()}`]);
     worksheet.addRow([]);
@@ -145,7 +146,7 @@ export class CrudTableComponent {
     const doc = new jsPDF();
 
     doc.setFontSize(16);
-    doc.text('ERP Management System', 14, 15);
+    doc.text(`ERP Management System- ${this.company?.name}`, 14, 15);
 
     doc.setFontSize(12);
     doc.text(`Report: ${this.fileName}`, 14, 22);

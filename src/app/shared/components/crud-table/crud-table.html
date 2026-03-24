@@ -54,11 +54,11 @@
 
                 <td *ngFor="let col of columns" [ngClass]="{'text-right': col.type === 'currency' ||
                 col.type === 'number','text-center': col.type === 'status'||col.type === 'tax' }">
-                    
+
                     <span *ngIf="col.type === 'rowId'">
-                         {{ rowIndex + 1 }}
+                        {{ rowIndex + 1 }}
                     </span>
-                  
+
                     <!-- TEXT -->
                     <span *ngIf="col.type === 'text'">
                         {{ row[col.field] }}
@@ -80,7 +80,7 @@
 
                     <!-- NUMBER -->
                     <span *ngIf="col.type === 'tax'">
-                        {{ (row[col.field])  }}
+                        {{ (row[col.field]) }}
                     </span>
                     <!-- STATUS -->
                     <span *ngIf="col.type === 'status'">
@@ -105,10 +105,10 @@
 
                     <button pButton icon="pi pi-trash" severity="danger" text (click)="delete.emit(row)">
                     </button>
-
-                     <button pButton icon="pi pi-eye"  text (click)="view.emit(row)">
-                    </button>
-
+                    <span *ngIf="showView">
+                         <button pButton icon="pi pi-eye" text (click)="view.emit(row)">
+                        </button>
+                    </span>
                 </td>
 
             </tr>

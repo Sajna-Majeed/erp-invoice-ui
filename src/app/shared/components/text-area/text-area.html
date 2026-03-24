@@ -1,0 +1,13 @@
+<div class="field flex flex-col gap-1">
+
+<label>{{label}}</label>
+
+
+<textarea rows="5"[autoResize]="true" cols="30" pTextarea [formControlName]="controlName"  [invalid]="control?.invalid && (control?.touched || submitted)"></textarea>
+<app-form-error
+  [control]="control"
+  [label]="label"
+  [show]="submitted">
+</app-form-error>
+
+</div>

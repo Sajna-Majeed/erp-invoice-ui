@@ -7,6 +7,7 @@ import { TextFieldComponent } from '../../../shared/components/text-field/text-f
 import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
 import { UserService } from '../../../core/service/model-services/user/user';
 import { ServiceTypeApiService } from '../../../core/service/api-services/serviceType/service-type';
+import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
 
 @Component({
  selector: 'app-service-type',
@@ -14,7 +15,8 @@ import { ServiceTypeApiService } from '../../../core/service/api-services/servic
   imports: [
     SHARED_IMPORTS,
     CrudTableComponent,
-    TextFieldComponent
+    TextFieldComponent,
+    TextAreaComponent
 ],
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
@@ -53,7 +55,7 @@ export class ServiceTypeComponent {
     this.load();
     this.company = this.userservice.getCompany();
     this.columns = [
-     { field: 'rowId', header: '#', type: 'rowId' },
+     { field: 'rowId', header: '#', type: 'rowId',sortable:false },
     { field: 'code', header: 'Code', type: 'text' },
     { field: 'name', header: 'Name', type: 'text' },
     { field: 'description', header: 'Description', type: 'text' },
@@ -68,12 +70,12 @@ export class ServiceTypeComponent {
        name: [
         '',
         {
-          validators: [Validators.required, Validators.maxLength(100)],
+          validators: [Validators.required, Validators.maxLength(20)],
           asyncValidators: [this.nameUniqueValidator()],
           updateOn: 'blur'
         }
       ],
-      description: [''],
+       description: [''],
      });
   }
 
