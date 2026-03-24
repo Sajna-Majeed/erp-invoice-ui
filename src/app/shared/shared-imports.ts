@@ -28,6 +28,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TreeModule } from 'primeng/tree';
 import { TabsModule } from 'primeng/tabs';
+import { ChartModule } from 'primeng/chart';
 //#endregion
 export const SHARED_IMPORTS = [
   CommonModule,
@@ -63,5 +64,6 @@ export const SHARED_IMPORTS = [
   FormsModule,
   ReactiveFormsModule,
   RouterModule,
-  TabsModule
+  TabsModule,
+  ChartModule
 ];

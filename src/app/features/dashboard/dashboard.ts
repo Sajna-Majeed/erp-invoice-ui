@@ -1,44 +1,58 @@
-import { Component, inject, ViewChild } from '@angular/core';
-import { MatSidenav, MatSidenavContent, MatSidenavContainer } from '@angular/material/sidenav';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { SHARED_IMPORTS } from '../../shared/shared-imports';
-import { MatListModule } from '@angular/material/list';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { Router } from '@angular/router';
-import { AuthService } from '../../core/service/api-services/auth/auth';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [SHARED_IMPORTS, MatListModule,MatToolbarModule],
+  imports: [SHARED_IMPORTS],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.css']
 })
-export class DashboardComponent {
-@ViewChild(MatSidenav) sidenav!: MatSidenav;
-router = inject(Router);
-auth = inject(AuthService);
+export class DashboardComponent implements OnInit {
 
+  stats = [
+    { title: 'Customers', value: 120, icon: 'pi pi-users', color: '#4CAF50' },
+    { title: 'Products', value: 45, icon: 'pi pi-box', color: '#2196F3' },
+    { title: 'Quotes', value: 32, icon: 'pi pi-file', color: '#FF9800' },
+    { title: 'Revenue', value: '₹ 2.5L', icon: 'pi pi-chart-line', color: '#9C27B0' }
+  ];
 
+  chartData: any;
+  chartOptions: any;
 
-  isMobile = false;
-ngAfterViewInit() {
-  setTimeout(() => this.checkScreen(), 50);
-}
+  recentQuotes: any[] = [];
+
   ngOnInit() {
-    this.checkScreen();
-    window.addEventListener('resize', () => this.checkScreen());
+    this.loadChart();
+    this.loadRecentData();
   }
 
-  checkScreen() {
-    this.isMobile = window.innerWidth <= 900;
-    if (this.isMobile && this.sidenav) this.sidenav.close();
+  loadChart() {
+    this.chartData = {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+      datasets: [
+        {
+          label: 'Quotes',
+          data: [10, 20, 15, 30, 25],
+          fill: false,
+          tension: 0.4
+        }
+      ]
+    };
+
+    this.chartOptions = {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' }
+      }
+    };
   }
 
-  toggleSidebar() {
-    this.sidenav.toggle();
-  }  
-  
-  logout() {
-  this.auth.logout();
-  this.router.navigate(['/login']);
-}
+  loadRecentData() {
+    this.recentQuotes = [
+      { customer: 'ABC Pvt Ltd', amount: 12000, date: '2026-03-20' },
+      { customer: 'XYZ Ltd', amount: 8500, date: '2026-03-18' },
+      { customer: 'TechSoft', amount: 15000, date: '2026-03-15' }
+    ];
+  }
 }

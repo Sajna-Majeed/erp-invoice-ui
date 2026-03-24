@@ -66,9 +66,9 @@ export class MainLayoutComponent {
       });
   }
 
-isActive(route: string): boolean {
-  return this.router.url === route;
-}
+  isActive(route: string): boolean {
+    return this.router.url === route;
+  }
 
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -87,19 +87,34 @@ isActive(route: string): boolean {
   loadMenu() {
     this.menuItems = this.userService.getMenu()
       .sort((a: any, b: any) => a.displayOrder - b.displayOrder)
-      .map((menu: any) => ({
+      .map((menu: any) => {
 
-        label: menu.name,
-        items: menu.menuItems
+        const items = (menu.menuItems || [])
           .sort((a: any, b: any) => a.displayOrder - b.displayOrder)
           .map((item: any) => ({
             label: item.name,
             icon: item.icon,
-             routerLink: item.link, // 👈 IMPORTANT
-              routerLinkActiveOptions: { exact: true },
-             styleClass: this.isActive(item.link) ? 'active-menu' : ''
-          }))
-      }));
+            routerLink: item.link,
+            routerLinkActiveOptions: { exact: true },
+            styleClass: this.isActive(item.link) ? 'active-menu' : ''
+          }));
+        if (items.length > 0) {
+          return {
+            label: menu.name,
+            icon: menu.icon,
+            routerLink: menu.link,
+            items: items
+          };
+        }
+        else{
+           return {
+            label: menu.name,
+            icon: menu.icon,
+            routerLink: menu.link,
+           }
+        }
+      });
+      console.log(this.menuItems);
   }
   mobileSidebar = false;
 

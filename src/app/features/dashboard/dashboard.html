@@ -1,23 +1,56 @@
-<!-- <div class="dashboard">
+<div class="dashboard">
 
-  <mat-card class="card">
-    <h3>Total Users</h3>
-    <h2>128</h2>
-  </mat-card>
+  <!-- 🔹 STATS CARDS -->
+  <div class="grid">
+    <div class="col-12 md:col-3" *ngFor="let stat of stats">
+      <div class="card stat-card">
+        <div class="stat-content">
+          <i [class]="stat.icon" [style.color]="stat.color"></i>
+          <div>
+            <h3>{{ stat.value }}</h3>
+            <p>{{ stat.title }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <mat-card class="card">
-    <h3>Business Partners</h3>
-    <h2>42</h2>
-  </mat-card>
+  <!-- 🔹 CHART -->
+  <div class="chartgrid">
+    <div class="col-6">
+      <div class="card">
+        <h3>Quotes Overview</h3>
+        <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
+      </div>
+    </div>
+  </div>
 
-  <mat-card class="card">
-    <h3>Invoices</h3>
-    <h2>314</h2>
-  </mat-card>
+  <!-- 🔹 RECENT TABLE -->
+  <div class="grid">
+    <div class="col-12">
+      <div class="card">
+        <h3>Recent Quotes</h3>
 
-  <mat-card class="card">
-    <h3>Revenue</h3>
-    <h2>$89,240</h2>
-  </mat-card>
+        <p-table [value]="recentQuotes">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Customer</th>
+              <th>Amount</th>
+              <th>Date</th>
+            </tr>
+          </ng-template>
 
-</div> -->
+          <ng-template pTemplate="body" let-row>
+            <tr>
+              <td>{{ row.customer }}</td>
+              <td>{{ row.amount | currency:'INR' }}</td>
+              <td>{{ row.date }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+  </div>
+
+</div>
