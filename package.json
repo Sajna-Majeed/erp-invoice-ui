@@ -36,13 +36,15 @@
     "chart.js": "^4.5.1",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
-    "jspdf": "^4.2.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.7",
     "ng2-charts": "^8.0.0",
     "primeicons": "^7.0.0",
     "primeng": "^21.1.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {

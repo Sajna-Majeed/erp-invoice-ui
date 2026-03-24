@@ -6,7 +6,11 @@
 .text-right {
   text-align: right;
 }
-
+.actions
+{
+  display: grid;
+    grid-auto-flow: column;
+}
 .text-center {
   text-align: center;
 }

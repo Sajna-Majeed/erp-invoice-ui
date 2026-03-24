@@ -1,0 +1,168 @@
+<div class="page">
+    <!-- Header -->
+    <div class="page-header">
+        <h2>UservRoles</h2>
+        <div class="actions">
+            <button pButton label="Add Role" icon="pi pi-plus" class="p-button-primary" (click)="openDialog()"></button>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <app-crud-table [data]="roles" [fileName]="'roles'" [columns]="columns" [loading]="loading"
+        (edit)="openEdit($event)" (delete)="deleteRole($event.role_Id)" (toggle)="toggleStatus($event.role_Id)">
+    </app-crud-table>
+</div>
+<!-- Dialog -->
+<p-dialog header="{{ dialogTitle }}" [(visible)]="displayDialog" [modal]="true" [style]="{ width: '50rem' }">
+
+    <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"></p-progressSpinner>
+
+    <form [formGroup]="roleForm">
+
+        <div class="form-grid">
+            <app-text-field label="Role Name" controlName="name" [submitted]="formSubmitted">
+            </app-text-field>
+
+            <div class="field">
+                <label>Description</label>
+                <input pInputText formControlName="description" />
+            </div>
+        </div>
+        <div class="tableview">
+            <p-table [value]="permissionTable" scrollable="true" scrollHeight="400px" class="permission-table">
+
+                <!-- HEADER -->
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Module</th>
+
+                        <th>
+                            View
+                            <p-checkbox binary="true" (onChange)="toggleColumn('VIEW', $event.checked)">
+                            </p-checkbox>
+                        </th>
+
+                        <th>
+                            Create
+                            <p-checkbox binary="true" (onChange)="toggleColumn('CREATE', $event.checked)">
+                            </p-checkbox>
+                        </th>
+
+                        <th>
+                            Edit
+                            <p-checkbox binary="true" (onChange)="toggleColumn('EDIT', $event.checked)">
+                            </p-checkbox>
+                        </th>
+
+                        <th>
+                            Delete
+                            <p-checkbox binary="true" (onChange)="toggleColumn('DELETE', $event.checked)">
+                            </p-checkbox>
+                        </th>
+
+                        <th>Select All</th>
+                    </tr>
+                </ng-template>
+
+                <!-- BODY -->
+                <ng-template pTemplate="body" let-row>
+
+                    <!-- 🔵 GROUP HEADER -->
+                    <tr *ngIf="row.isGroup" class="group-row">
+                        <td><strong>{{ row.group }}</strong></td>
+
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isGroupColumnChecked(row.group, 'VIEW')"
+                                [ngModelOptions]="{ standalone: true }"
+                                (onChange)="toggleGroupColumn(row.group, 'VIEW', $event.checked)">
+                            </p-checkbox>
+                        </td>
+
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isGroupColumnChecked(row.group, 'CREATE')"
+                                [ngModelOptions]="{ standalone: true }"
+                                (onChange)="toggleGroupColumn(row.group, 'CREATE', $event.checked)">
+                            </p-checkbox>
+                        </td>
+
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isGroupColumnChecked(row.group, 'EDIT')"
+                                [ngModelOptions]="{ standalone: true }"
+                                (onChange)="toggleGroupColumn(row.group, 'EDIT', $event.checked)">
+                            </p-checkbox>
+                        </td>
+
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isGroupColumnChecked(row.group, 'DELETE')"
+                                [ngModelOptions]="{ standalone: true }"
+                                (onChange)="toggleGroupColumn(row.group, 'DELETE', $event.checked)">
+                            </p-checkbox>
+                        </td>
+
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isGroupAllChecked(row.group)"
+                                [ngModelOptions]="{ standalone: true }"
+                                (onChange)="toggleGroupAll(row.group, $event.checked)">
+                            </p-checkbox>
+                        </td>
+                    </tr>
+
+                    <!-- 🟢 MODULE ROW -->
+                    <tr *ngIf="!row.isGroup">
+                        <td>{{ row.module }}</td>
+
+                        <!-- VIEW -->
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isChecked(row.VIEW)"
+                                [ngModelOptions]="{ standalone: true }"
+                                (onChange)="onPermissionChange($event.checked, row.VIEW, row, 'VIEW')">
+                            </p-checkbox>
+                        </td>
+
+                        <!-- CREATE -->
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isChecked(row.CREATE)"
+                                [ngModelOptions]="{ standalone: true }" [disabled]="!isChecked(row.VIEW)"
+                                (onChange)="onPermissionChange($event.checked, row.CREATE, row, 'CREATE')">
+                            </p-checkbox>
+                        </td>
+
+                        <!-- EDIT -->
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isChecked(row.EDIT)"
+                                [ngModelOptions]="{ standalone: true }" [disabled]="!isChecked(row.VIEW)"
+                                (onChange)="onPermissionChange($event.checked, row.EDIT, row, 'EDIT')">
+                            </p-checkbox>
+                        </td>
+
+                        <!-- DELETE -->
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isChecked(row.DELETE)"
+                                [ngModelOptions]="{ standalone: true }" [disabled]="!isChecked(row.VIEW)"
+                                (onChange)="onPermissionChange($event.checked, row.DELETE, row, 'DELETE')">
+                            </p-checkbox>
+                        </td>
+
+                        <!-- ROW SELECT -->
+                        <td>
+                            <p-checkbox binary="true" [ngModel]="isRowAllChecked(row)"
+                                [ngModelOptions]="{ standalone: true }" (onChange)="toggleRow(row, $event.checked)">
+                            </p-checkbox>
+                        </td>
+                    </tr>
+
+                </ng-template>
+
+            </p-table>
+        </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+        <button pButton label="Cancel" text (click)="hideDialog()"></button>
+        <button pButton label="Save" icon="pi pi-check" [disabled]="roleForm.invalid || roleForm.pending || isSaving"
+            [loading]="isSaving" (click)="saveRole()">
+        </button>
+    </ng-template>
+
+</p-dialog>
+<p-confirmDialog></p-confirmDialog> <p-toast></p-toast>

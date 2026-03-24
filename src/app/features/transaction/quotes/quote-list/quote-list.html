@@ -10,7 +10,7 @@
 
   <!-- Table -->
   <app-crud-table [data]="quotes" [fileName]="'Quotes'" [columns]="columns" [loading]="loading"
-    (edit)="edit($event)" (delete)="delete($event.q_Id)" (toggle)="toggleStatus($event.q_Id)">
+    (edit)="edit($event)" (delete)="delete($event.q_Id)" (view)="view($event)">
   </app-crud-table>
 </div>
 <p-confirmDialog></p-confirmDialog> <p-toast></p-toast>

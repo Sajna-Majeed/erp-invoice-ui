@@ -2,6 +2,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  background-color: #fff;
 }
 
 .file-table th, .file-table td {

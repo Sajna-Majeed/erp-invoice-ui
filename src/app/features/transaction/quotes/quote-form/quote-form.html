@@ -1,31 +1,29 @@
 <h2>{{ isEdit ? 'Edit Quote' : 'Create Quote' }}</h2>
 
-<form [formGroup]="form"  class="quote-form">
+<form [formGroup]="form" class="quote-form">
 
   <!-- ================= HEADER ================= -->
 
   <div class="form-grid">
 
-    <div class="field">
+    <p-floatlabel class="w-full md:w-56" variant="on">
+      <input pInputText formControlName="quote_No" readonly fluid />
       <label>Quote No</label>
-      <input pInputText formControlName="quote_No" readonly />
-    </div>
+    </p-floatlabel>
 
-    <div class="field">
-      <label>Quote Date</label>
-      <p-datepicker formControlName="quote_Date" dateFormat="yy-mm-dd"></p-datepicker>
-    </div>
+    <p-floatlabel class="w-full md:w-56" variant="on">
+      <p-datepicker formControlName="quote_Date" dateFormat="yy-mm-dd" fluid />
+      <label for="quote_Date">Quote Date</label>
+    </p-floatlabel>
 
-    <div class="field">
-      <label>Customer</label>
-      <p-select [options]="customers" optionLabel="name" optionValue="customer_Id" formControlName="customer_Id"
-        placeholder="Select Customer"></p-select>
-
-      <small class="p-error" *ngIf="form.get('customer_Id')?.invalid && form.touched">
-        Customer required
-      </small>
-    </div>
-
+    <p-floatlabel class="w-full md:w-56" variant="on">
+      <p-select [options]="customers" optionLabel="name" [invalid]="isInvalid('customer_Id')" optionValue="customer_Id"
+        formControlName="customer_Id" fluid></p-select>
+      @if (isInvalid('customer_Id')) {
+      <p-message severity="error" size="small" variant="simple">Customer is required.</p-message>
+      }
+      <label for="quote_Date">Customer</label>
+    </p-floatlabel>
   </div>
 
 
@@ -33,8 +31,10 @@
 
   <div class="lines-container" [formGroup]="lineForm">
     <p-floatlabel class="w-full md:w-56" variant="on">
-      <p-select [options]="products" optionLabel="name" [invalid]="isInvalid('prod_Id')" optionValue="prod_Id"
-        formControlName="pd_Id" (onChange)="onProductSelected($event)" fluid></p-select>
+
+      <p-autocomplete formControlName="product" fluid [invalid]="isInvalid('prod_Id')"
+        (onChange)="onProductSelected($event)" optionValue="product" [forceSelection]="true"
+        [suggestions]="filteresproducts" (completeMethod)="filterProducts($event)" optionLabel="name" />
       @if (isInvalid('pd_Id')) {
       <p-message severity="error" size="small" variant="simple">Product is required.</p-message>
       }
@@ -51,7 +51,7 @@
       <label for="on_label">Service Type</label>
     </p-floatlabel>
     <p-floatlabel class="w-full md:w-56" variant="on">
-      <p-inputNumber formControlName="rate" mode="currency" fluid="" currency="INR"></p-inputNumber>
+      <p-inputNumber formControlName="rate" mode="currency" fluid="" [currency]="currencyCode"></p-inputNumber>
       <label for="on_label">Rate</label>
     </p-floatlabel>
     <p-floatlabel class="w-full md:w-56" variant="on">
@@ -89,9 +89,9 @@
         <td>{{ getProductName(row.value.pd_Id) }}</td>
         <td>{{ getModuleName(row.value.module_Id) }}</td>
         <td>{{ getServiceName(row.value.st_Id) }}</td>
-        <td>{{ row.value.rate }}</td>
+        <td [ngClass]="'text-right'">{{ row.value.rate| erpCurrency }}</td>
         <td>{{ row.value.license_Count }}</td>
-        <td>{{ row.value.rate }}</td>
+        <td [ngClass]="'text-right'">{{ row.value.rate| erpCurrency }}</td>
         <td class="actions">
           <button pButton icon="pi pi-pencil" (click)="editLine(i)"></button>
           <button pButton icon="pi pi-trash" (click)="removeLine(i)"></button>
@@ -109,8 +109,7 @@
     <!-- LEFT SIDE (Totals) -->
     <div class="terms">
       <p-floatlabel variant="on">
-
-        <textarea id="tc" rows="6" cols="30" pTextarea formControlName="t_C" fluid></textarea>
+        <textarea id="tc" rows="7" cols="30" style="resize: none;" pTextarea formControlName="t_C" fluid></textarea>
         <label for="tc">Terms & Conditions</label>
       </p-floatlabel>
     </div>
@@ -123,20 +122,24 @@
 
     <div class="totals">
 
-      <div class="field">
+      <p-floatlabel class="w-full md:w-56" variant="on">
+
+        <p-inputNumber formControlName="total_Amt" [inputStyle]="{ 'text-align': 'right' }" fluid mode="currency"
+          [currency]="currencyCode" readonly></p-inputNumber>
         <label>Total Amount</label>
-        <p-inputNumber formControlName="total_Amt" mode="currency" currency="INR" readonly></p-inputNumber>
-      </div>
+      </p-floatlabel>
 
-      <div class="field">
+      <p-floatlabel class="w-full md:w-56" variant="on">
+
+        <p-inputNumber formControlName="discount" [inputStyle]="{ 'text-align': 'right' }" fluid></p-inputNumber>
         <label>Discount</label>
-        <p-inputNumber formControlName="discount"></p-inputNumber>
-      </div>
+      </p-floatlabel>
 
-      <div class="field">
+      <p-floatlabel class="w-full md:w-56" variant="on">
+        <p-inputNumber formControlName="net_Amt" [inputStyle]="{ 'text-align': 'right' }" mode="currency" fluid
+          currency="INR" readonly></p-inputNumber>
         <label>Net Amount</label>
-        <p-inputNumber formControlName="net_Amt" mode="currency" currency="INR" readonly></p-inputNumber>
-      </div>
+      </p-floatlabel>
 
     </div>
   </div>
@@ -164,33 +167,40 @@
         [invalid]="isInvalid('payment_Received')" />
       <label for="payment_Received"> Payment Received</label>
     </div>
+
+    <div class="increase-section">
+      <p-floatlabel class="w-full md:w-56" variant="on">
+
+        <input pInputText formControlName="increased_Rate" fluid type="number" />
+        <label>Increase By (%)</label></p-floatlabel>
+
+      <button pButton label="Change" (click)="previewIncrease()"></button>
+    </div>
   </div>
   <!-- ================= TERMS ================= -->
 
-  <div class="increase-section">
+  <!-- <div class="increase-section">
 
     <label>Increase By (%)</label>
 
-    <input pInputText formControlName="increased_Rate" type="number"/>
+    <input pInputText formControlName="increased_Rate" type="number" />
 
     <button pButton label="Change" (click)="previewIncrease()"></button>
 
-    <button pButton label="Apply" severity="success" (click)="applyIncrease()"></button>
+     <button pButton label="Apply" severity="success" (click)="applyIncrease()"></button> 
 
-  </div>
+  </div> -->
 
-<app-file-upload
-  [existingFiles]="existingFiles"
-  (filesChanged)="onFilesChanged($event)">
-</app-file-upload>
+  <app-file-upload [existingFiles]="existingFiles" (filesChanged)="onFilesChanged($event)">
+  </app-file-upload>
   <!-- ================= ACTIONS ================= -->
 
   <div class="actions">
 
     <button pButton label="Cancel" severity="secondary" routerLink="/quote" type="button"></button>
 
-    <button pButton label="Save Quote" icon="pi pi-check" type="submit"
-      [disabled]="form.invalid || lines.length === 0" (click)="save()"></button>
+    <button pButton label="Save Quote" icon="pi pi-check" type="submit" [disabled]="form.invalid || lines.length === 0"
+      (click)="save()"></button>
 
   </div>
 

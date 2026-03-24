@@ -12,6 +12,8 @@ import { CustompriceComponent } from './features/masters/custom-price/custom-pri
 import { ModuleComponent } from './features/masters/module/module';
 import { QuoteFormComponent } from './features/transaction/quotes/quote-form/quote-form';
 import { QuoteListComponent } from './features/transaction/quotes/quote-list/quote-list';
+import { QuotePrintComponent } from './features/transaction/quotes/quote-print/quote-print';
+import { RolePermissionComponent } from './features/role-permission/role-permission';
 export const routes: Routes = [
      { path: '', component: LoginComponent },
      { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -33,7 +35,7 @@ export const routes: Routes = [
                          { path: '', component:QuoteListComponent },
                           { path: 'create', component: QuoteFormComponent },
                          { path: 'edit/:id', component: QuoteFormComponent },
-                         { path: 'view/:id', component: QuoteFormComponent }
+                         { path: 'view/:id', component: QuotePrintComponent }
                     ]
                },
                {
@@ -70,6 +72,12 @@ export const routes: Routes = [
                     path: 'module',
                     children: [
                          { path: '', component: ModuleComponent },
+                    ]
+               },
+                {
+                    path: 'role',
+                    children: [
+                         { path: '', component: RolePermissionComponent },
                     ]
                },
                { path: '', redirectTo: 'home', pathMatch: 'full' }

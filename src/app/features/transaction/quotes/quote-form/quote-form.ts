@@ -13,11 +13,14 @@ import { Message } from "primeng/message";
 import { CustomPriceApiService } from '../../../../core/service/api-services/customPrice/customPrice';
 import { FileUploadComponent } from "../../../../shared/components/file-upload/file-upload";
 import { MessageService } from 'primeng/api';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { ErpCurrencyPipe } from "../../../../shared/pipes/erp-currency-pipe";
+import { UserService } from '../../../../core/service/model-services/user/user';
 
 
 @Component({
   selector: 'app-quote-view',
-  imports: [SHARED_IMPORTS, MatDatepickerModule, MatNativeDateModule, Message, FileUploadComponent],
+  imports: [SHARED_IMPORTS, MatDatepickerModule, MatNativeDateModule, Message, FileUploadComponent, ErpCurrencyPipe],
   templateUrl: './quote-form.html',
   styleUrl: './quote-form.css',
   providers: [MessageService]
@@ -25,6 +28,7 @@ import { MessageService } from 'primeng/api';
 export class QuoteFormComponent implements OnInit {
 
   products: any[] = [];
+  filteresproducts: any[] = [];
   customers: any[] = [];
   serviceTypes: any[] = [];
   modules: any[] = [];
@@ -37,6 +41,7 @@ export class QuoteFormComponent implements OnInit {
   existingFiles: any[] = []; // from API
   newFiles: File[] = [];
   deletedFileIds: number[] = [];
+  currencyCode:string="INR";
   constructor(
     private fb: FormBuilder,
     private service: QuoteApiService,
@@ -47,12 +52,14 @@ export class QuoteFormComponent implements OnInit {
     private productService: ProductService,
     private route: ActivatedRoute,
     private customPriceService: CustomPriceApiService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private userService:UserService
   ) { }
 
   ngOnInit() {
     this.initializeForm();
-
+    let company=this.userService.getCompany();
+    this.currencyCode=company.currency;
     this.q_Id = +this.route.snapshot.paramMap.get('id')!;
     this.isEdit = !!this.q_Id;
 
@@ -103,9 +110,9 @@ export class QuoteFormComponent implements OnInit {
       quote_No: [{ value: '', disabled: true }],
       quote_Date: [new Date(), Validators.required],
       customer_Id: [null, Validators.required],
-      total_Amt: [0],
+      total_Amt: [{ value: 0, disabled: true }],
       discount: [0],
-      net_Amt: [0],
+      net_Amt: [{ value: 0, disabled: true }],
       increased_Rate: [0],
       t_C: [''],
       quote_Send: [false],
@@ -193,6 +200,23 @@ export class QuoteFormComponent implements OnInit {
   //#endregion
 
   //#region  Dom Helper Methods
+
+ filterProducts(event: AutoCompleteCompleteEvent) {
+        let filtered: any[] = [];
+        let query = event.query;
+        
+        for (let i = 0; i < (this.products as any[]).length; i++) {
+            let prod = (this.products as any[])[i];
+            if (prod.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+                filtered.push(prod);
+            }
+        }
+        this.filteresproducts = filtered;
+    }
+
+
+
+
   onProductSelected(event: any) {
 
     const productId = event.value;

@@ -1,75 +1,71 @@
 @if (invoice) {
-  <div class="invoice-container">
-    <div class="top-bar">
-      <h1>INVOICE</h1>
-      <button mat-raised-button color="primary" (click)="print()">
-        Download PDF
-      </button>
-      <button mat-stroked-button type="button" (click)="exportExcel()">
-        Export Excel
-      </button>
+<div class="invoice-container">
+  <div class="top-bar">
+    <p-splitbutton icon="pi pi-download" [model]="items" [rounded]="true" [text]="true" [raised]="true" />
+  </div>
+  <!-- FROM / TO SECTION -->
+  <div id="invoice-content">
+    <div class="from-to">
+      <div class="from">
+        <h3>From</h3>
+        <p><strong>{{ company.name }}</strong></p>
+        <p>{{ company.address_Line }}</p>
+        <p>{{ company.city }}, {{ company.country_Subdivision }}</p>
+        <p>{{ company.country }},{{ company.zip_Code }}</p>
+        <p>{{ company.email }}</p>
+      </div>
+      <div class="to">
+        <h3>To</h3>
+        <p><strong>{{ invoice?.customer?.name }}</strong></p>
+        <p style="white-space: pre-line;"> {{ invoice.customer.addressLine1 }}</p>
+         <p>{{ invoice.customer.city }}, {{ invoice.customer.country_Subdivision }}</p>
+        <p>{{ invoice.customer.country }},{{ invoice.customer.zip_code }}</p>
+        <p>{{ invoice?.businessPoint?.email }}</p>
+      </div>
     </div>
-    <!-- FROM / TO SECTION -->
-    <div id="invoice-content" >
-      <div class="from-to">
-        <div class="from">
-          <h3>From</h3>
-          <p><strong>{{ company.name }}</strong></p>
-          <p>{{ company.address }}</p>
-          <p>{{ company.phone }}</p>
-          <p>{{ company.email }}</p>
-        </div>
-        <div class="to">
-          <h3>To</h3>
-          <p><strong>{{ invoice?.businessPoint?.name }}</strong></p>
-          <p style="white-space: pre-line;">
-            {{ invoice.addressLine }}
-          </p>
-          <p>{{ invoice?.businessPoint?.mobile_No }}</p>
-          <p>{{ invoice?.businessPoint?.email }}</p>
-        </div>
+    <!-- INVOICE DETAILS -->
+    <div class="invoice-meta">
+      <div>
+        <p><strong>Quote No:</strong> {{ invoice.quote_No }}</p>
+        <p><strong>Date:</strong> {{ invoice.quote_Date | date }}</p>
       </div>
-      <!-- INVOICE DETAILS -->
-      <div class="invoice-meta">
-        <div>
-          <p><strong>Invoice No:</strong> {{ invoice.invoice_No }}</p>
-          <p><strong>Date:</strong> {{ invoice.invoice_Date | date }}</p>
-          <p><strong>Due Date:</strong> {{ invoice.due_Date | date }}</p>
-        </div>
-      </div>
-      <!-- LINE ITEMS TABLE -->
-      <table class="invoice-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Item</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Tax %</th>
-            <th>Total (in AED)</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (line of invoice.lines; track line; let i = $index) {
-            <tr>
-              <td >{{ i + 1 }}</td>
-              <td >{{ line.item_Name }}</td>
-              <td class="text-right">{{ line.item_Price_Base_Qty }}</td>
-              <td class="text-right">{{ line.item_Net_Price | erpNumber }}</td>
-              <td class="text-right">{{ line.item_Tax_Rate }}%</td>
-              <td class="text-right"> {{ line.amt_In_Aed | erpNumber }}</td>
-            </tr>
-          }
-        </tbody>
-      </table>
-      <!-- TOTALS -->
-      <div class="totals">
-        <div><strong>Net:</strong> {{ invoice.net_Amt | erpNumber }}</div>
-        <div><strong>Tax:</strong> {{ invoice.total_Tax_Amt | erpNumber }}</div>
-        <div class="grand-total">
-          <strong>Total:</strong> {{ invoice.total_W_Tax | erpNumber }}
-        </div>
+    </div>
+    <!-- LINE ITEMS TABLE -->
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Service Type</th>
+          <th>Product</th>
+          <th>Module</th>
+          <th>Last Bill Rate</th>
+          <th>License Count</th>
+          <th>Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (line of invoice.lines; track line; let i = $index) {
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td>{{ line.serviceType }}</td>
+          <td>{{ line.product }}</td>
+          <td>{{ line.module }}</td>
+          <td class="text-right">{{ line.previousRate??line.rate | erpNumber }}</td>
+          <td>{{ line.license_Count }}</td>
+          <td class="text-right"> {{ line.rate | erpNumber }}</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    <!-- TOTALS -->
+    <div class="totals">
+        <div><strong>Increaed By:</strong> {{ invoice.increased_Rate}} %</div>
+      <div><strong>Total:</strong> {{ invoice.total_Amt | erpNumber }}</div>
+      <div><strong>Discount:</strong> {{ invoice.discount | erpNumber }}</div>
+      <div class="grand-total">
+        <strong>Net Total:</strong> {{ invoice.net_Amt | erpNumber }}
       </div>
     </div>
   </div>
+</div>
 }

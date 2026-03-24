@@ -98,12 +98,15 @@
                 </td>
 
                 <!-- Actions -->
-                <td class="flex gap-2">
+                <td class=" actions">
 
                     <button pButton icon="pi pi-pencil" text (click)="edit.emit(row)">
                     </button>
 
                     <button pButton icon="pi pi-trash" severity="danger" text (click)="delete.emit(row)">
+                    </button>
+
+                     <button pButton icon="pi pi-eye"  text (click)="view.emit(row)">
                     </button>
 
                 </td>

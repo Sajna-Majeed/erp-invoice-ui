@@ -69,7 +69,7 @@ setMenu(menu: any) {
 
   // ✅ Get current menu (from memory or localStorage)
   getMenu(): any | null {
-    if (!this.menu) {
+    if (!this.menu || this.menu.length==0) {
       const savedMenu = localStorage.getItem('menu');
       this.menu = savedMenu ? JSON.parse(savedMenu) : null;
     }

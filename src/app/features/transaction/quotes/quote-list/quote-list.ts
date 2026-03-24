@@ -73,7 +73,7 @@ export class QuoteListComponent implements OnInit {
     this.router.navigate(['/quote/edit', row.q_Id]);
   }
   view(row: any) {
-    this.router.navigate(['/invoice/view', row.q_Id]);
+    this.router.navigate(['/quote/view', row.q_Id]);
   }
 
   delete(id: number) {

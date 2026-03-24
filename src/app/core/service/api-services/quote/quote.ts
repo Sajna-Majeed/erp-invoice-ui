@@ -18,7 +18,9 @@ export class QuoteApiService {
   getById(id: number) {
     return this.api.get(`${this.url}/${id}`);
   }
-
+  getViewById(id: number) {
+    return this.api.get(`${this.url}/view/${id}`);
+  }
   create(data: any) {
     return this.api.post(this.url, data);
   }

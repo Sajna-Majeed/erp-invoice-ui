@@ -69,8 +69,8 @@ removeFile(file: any, index: number) {
 
     switch (ext) {
       case 'pdf': return 'pi pi-file-pdf text-red-500';
-      case 'jpg':
-      case 'jpeg':
+      case 'jpg':return 'pi pi-image text-blue-500';
+      case 'jpeg':return 'pi pi-image text-blue-500';
       case 'png': return 'pi pi-image text-blue-500';
       case 'xls':
       case 'xlsx': return 'pi pi-file-excel text-green-500';
@@ -78,6 +78,7 @@ removeFile(file: any, index: number) {
       case 'docx': return 'pi pi-file-word text-blue-700';
       default: return 'pi pi-file';
     }
+
   }
 
   // 🔥 EMIT TO PARENT

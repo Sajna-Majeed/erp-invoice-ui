@@ -1,0 +1,18 @@
+.permission-table .p-datatable-thead > tr > th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+}
+
+.group-row {
+  background: #f5f5f5;
+  font-weight: bold;
+}
+.tableview
+{
+  margin-top: 5%;
+}
+.permission-table tr:not(.group-row) td:first-child {
+  padding-left: 20px;
+}

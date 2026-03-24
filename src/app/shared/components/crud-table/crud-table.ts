@@ -33,6 +33,7 @@ export class CrudTableComponent {
   @Output() edit = new EventEmitter<any>();
   @Output() delete = new EventEmitter<any>();
   @Output() toggle = new EventEmitter<any>();
+  @Output() view = new EventEmitter<any>();
 
 
   userService = inject(UserService);

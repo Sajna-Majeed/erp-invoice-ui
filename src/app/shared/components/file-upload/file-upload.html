@@ -1,45 +1,44 @@
 <div class="card">
+  <div class="header">
+    <h4>Attachments</h4>
+    <!-- 🔹 Choose button -->
+    <p-fileupload mode="basic" chooseLabel="Choose Files" [multiple]="true" [customUpload]="true"
+      (onSelect)="onSelect($event)" />
 
-  <!-- 🔹 Choose button -->
-  <p-fileupload
-    mode="basic"
-    chooseLabel="Choose Files"
-    [multiple]="true"
-    [customUpload]="true"
-    (onSelect)="onSelect($event)"/>
+    <!-- 🔹 Table -->
+    @if (allFiles.length > 0) {
+    <table class="file-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Type</th>
+          <th>File Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
 
-  <!-- 🔹 Table -->
-  @if (allFiles.length > 0) {
-  <table class="file-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Type</th>
-        <th>File Name</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+      <tbody>
+        @for (file of allFiles; track $index; let i = $index) {
+        <tr>
+          <td>{{ i + 1 }}</td>
 
-    <tbody>
-      @for (file of allFiles; track $index; let i = $index) {
-      <tr>
-        <td>{{ i + 1 }}</td>
+          <td>
+            <i class="check-icon" [class]="getFileIcon(file)"></i>
+          </td>
 
-        <td>
-          <i class="check-icon" [class]="getFileIcon(file)"></i>
-        </td>
+          <td>
+            {{ file.displayName }}
+          </td>
 
-        <td>
-          {{ file.displayName }}
-        </td>
-
-        <td>
-          <button (click)="removeFile(file,i)">❌</button>
-        </td>
-      </tr>
-      }
-    </tbody>
-  </table>
-  }
-
+          <td>
+            <button (click)="removeFile(file,i)">
+              <i class="pi pi-trash"></i>
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    }
+  </div>
 </div>
