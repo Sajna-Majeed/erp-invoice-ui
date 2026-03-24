@@ -29,6 +29,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TreeModule } from 'primeng/tree';
 import { TabsModule } from 'primeng/tabs';
 import { ChartModule } from 'primeng/chart';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 //#endregion
 export const SHARED_IMPORTS = [
   CommonModule,
@@ -65,5 +66,6 @@ export const SHARED_IMPORTS = [
   ReactiveFormsModule,
   RouterModule,
   TabsModule,
-  ChartModule
+  ChartModule,
+  NgxIntlTelInputModule
 ];

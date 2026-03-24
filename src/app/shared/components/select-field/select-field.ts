@@ -30,6 +30,7 @@ export class SelectFieldComponent {
   @Input() optionLabel!: string;
   @Input() optionValue!: string;
   @Input() submitted = false;
+  @Input() required = false;
 
   constructor(private controlContainer: ControlContainer) {}
 

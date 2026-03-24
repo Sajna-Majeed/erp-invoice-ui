@@ -29,6 +29,7 @@ export class NumberFieldComponent {
   @Input() label!: string;
   @Input() controlName!: string;
   @Input() submitted = false;
+  @Input() required = false;
 
   @Input() mode: 'decimal' | 'currency' = 'decimal';
   @Input() currency?: string;

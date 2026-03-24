@@ -7,6 +7,7 @@ import { CrudTableComponent } from '../../../shared/components/crud-table/crud-t
 import { TextFieldComponent } from '../../../shared/components/text-field/text-field';
 import { CustomerTypeApiService } from '../../../core/service/api-services/customerType/customer-type';
 import { UserService } from '../../../core/service/model-services/user/user';
+import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
 
 @Component({
    selector: 'app-customer-type',
@@ -14,7 +15,8 @@ import { UserService } from '../../../core/service/model-services/user/user';
   imports: [
     SHARED_IMPORTS,
     CrudTableComponent,
-    TextFieldComponent
+    TextFieldComponent,
+    TextAreaComponent
 ],
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
@@ -68,7 +70,7 @@ export class CustomerTypeComponent {
        name: [
         '',
         {
-          validators: [Validators.required, Validators.maxLength(100)],
+          validators: [Validators.required, Validators.maxLength(20)],
           asyncValidators: [this.nameUniqueValidator()],
           updateOn: 'blur'
         }

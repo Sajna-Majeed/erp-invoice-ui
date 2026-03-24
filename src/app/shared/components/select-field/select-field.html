@@ -1,20 +1,15 @@
 <div class="field flex flex-col gap-1">
 
-<label>{{ label }}</label>
+  <label class="flex items-center gap-1">
+    {{ label }}
+    <span *ngIf="required" class="text-red-500">*</span>
+  </label>
 
-<p-select
-  [options]="options"
-  [optionLabel]="optionLabel"
-  [optionValue]="optionValue"
-  [formControlName]="controlName"
-  [invalid]="control?.invalid && submitted"
-  class="w-full">
-</p-select>
+  <p-select [options]="options" [optionLabel]="optionLabel" [optionValue]="optionValue" [formControlName]="controlName"
+    [invalid]="control?.invalid && submitted" class="w-full">
+  </p-select>
 
-<app-form-error
-  [control]="control"
-  [label]="label"
-  [show]="submitted">
-</app-form-error>
+  <app-form-error [control]="control" [label]="label" [show]="submitted">
+  </app-form-error>
 
 </div>

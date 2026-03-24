@@ -7,11 +7,12 @@ import { TextFieldComponent } from '../../../shared/components/text-field/text-f
 import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
 import { CustomerApiService } from '../../../core/service/api-services/customer/customer';
 import { CustomerTypeApiService } from '../../../core/service/api-services/customerType/customer-type';
+import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
 
 
 @Component({
   selector: 'app-customer',
-  imports: [SHARED_IMPORTS, SelectFieldComponent, TextFieldComponent, CrudTableComponent],
+  imports: [SHARED_IMPORTS, SelectFieldComponent, TextFieldComponent, CrudTableComponent, TextAreaComponent],
    viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
   ],
@@ -69,12 +70,13 @@ form!: FormGroup;
       customer_Type_Id:[null, Validators.required],
       contact_Person:['',Validators.required],
       email:['',{validators:[Validators.required,Validators.email]}],
-      mobile_number:['',Validators.required],
+      mobile_number:['',{validators:[Validators.required,Validators.maxLength(15),
+        Validators.pattern(/^\d{3}\d{3}\d{4}$/)]}],
       city:['',Validators.required],
-      addressline1:['',Validators.required],
+      addressLine1:['',Validators.required],
       country_Subdivision:['',Validators.required],
       country:['',Validators.required],
-      zip_code:['',Validators.required],
+      zip_code:['',{validators:[Validators.required,Validators.pattern(/^\d{6}$/)]}]
      });
   }
 
