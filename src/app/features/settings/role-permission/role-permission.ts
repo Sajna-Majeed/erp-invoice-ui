@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RoleApiService } from '../../core/service/api-services/role/role';
-import { SHARED_IMPORTS } from '../../shared/shared-imports';
-import { TextFieldComponent } from "../../shared/components/text-field/text-field";
-import { CrudTableComponent } from "../../shared/components/crud-table/crud-table";
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { map, of } from 'rxjs';
+import { SHARED_IMPORTS } from '../../../shared/shared-imports';
+import { TextFieldComponent } from '../../../shared/components/text-field/text-field';
+import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
+import { RoleApiService } from '../../../core/service/api-services/role/role';
 
 @Component({
   selector: 'app-role-permission',

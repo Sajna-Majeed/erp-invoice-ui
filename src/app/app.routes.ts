@@ -2,8 +2,6 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout';
 import { authGuard } from './core/guard/auth-guard';
 import { LoginComponent } from './features/authentication/login/login';
-import { UserListComponent } from './features/settings/user/user-list/user';
-import { UserFormComponent } from './features/settings/user/user-form/create-edit';
 import { ProductComponent } from './features/masters/product/product';
 import { ServiceTypeComponent } from './features/masters/service-type/service-type';
 import { CustomerTypeComponent } from './features/masters/customer-type/customer-type';
@@ -13,7 +11,9 @@ import { ModuleComponent } from './features/masters/module/module';
 import { QuoteFormComponent } from './features/transaction/quotes/quote-form/quote-form';
 import { QuoteListComponent } from './features/transaction/quotes/quote-list/quote-list';
 import { QuotePrintComponent } from './features/transaction/quotes/quote-print/quote-print';
-import { RolePermissionComponent } from './features/role-permission/role-permission';
+import { UserListComponent } from './features/settings/user/user';
+import { RolePermissionComponent } from './features/settings/role-permission/role-permission';
+
 export const routes: Routes = [
      { path: '', component: LoginComponent },
      { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,9 +24,7 @@ export const routes: Routes = [
                {
                     path: 'users',
                     children: [
-                         { path: '', component: UserListComponent },
-                         { path: 'create', component: UserFormComponent },
-                         { path: 'edit/:id', component: UserFormComponent }
+                         { path: '', component: UserListComponent }
                     ]
                },
 

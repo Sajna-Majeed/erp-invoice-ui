@@ -139,7 +139,8 @@ loadCustomerCode() {
     this.isSaving = true;
 
     const value = this.form.getRawValue();
-
+    value.mobile_number=value.mobile_number.toString();
+    value.zip_code=value.zip_code.toString();
     const request = value.customer_Id
       ? this.service.update(value)
       : this.service.create(value);

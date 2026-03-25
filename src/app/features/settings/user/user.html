@@ -1,0 +1,44 @@
+<div class="page">
+  <!-- Header -->
+  <div class="page-header">
+    <h2>Users</h2>
+    <div class="actions">
+      <button pButton label="Add User" icon="pi pi-plus" class="p-button-primary" (click)="openCreate()"></button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <app-crud-table [data]="users" [fileName]="'Users'" [columns]="columns" [loading]="loading" (edit)="openEdit($event)"
+    (delete)="delete($event.user_Id)" (toggle)="toggleStatus($event.user_Id)">
+  </app-crud-table>
+</div>
+<!-- Dialog -->
+<p-dialog header="{{ dialogTitle }}" [(visible)]="customerDialog" [modal]="true" [style]="{ width: '500px' }">
+  <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"> </p-progressSpinner>
+  <form [formGroup]="form">
+    <div class="form-grid">
+      <div>
+        <app-text-field label="Name" controlName="name" [required]="true" [submitted]="formSubmitted">
+        </app-text-field>
+        <app-text-field label="Email" [required]="true" controlName="email" [submitted]="formSubmitted">
+        </app-text-field>
+        <app-number-field label="Mobile Number" [required]="true" controlName="mobile_Number"
+          [submitted]="formSubmitted">
+        </app-number-field>
+        <app-text-field label="User Name" controlName="user_Name" [required]="true" [submitted]="formSubmitted">
+        </app-text-field>
+        <app-select-field label="Role" controlName="role_Id" [options]="roles" optionLabel="name" [required]="true"
+          optionValue="role_Id" [submitted]="formSubmitted">
+        </app-select-field>
+      </div>
+      <div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" text (click)="hideDialog()"></button>
+    <button pButton label="Save" icon="pi pi-check" [disabled]="form.invalid || form.pending || isSaving"
+      [loading]="isSaving" (click)="saveUser()"></button>
+  </ng-template>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog> <p-toast></p-toast>
