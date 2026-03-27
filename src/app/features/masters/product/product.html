@@ -1,15 +1,15 @@
 <div class="page">
   <!-- Header -->
   <div class="page-header">
-    <h2>Products</h2>
+    <h2>Category</h2>
     <div class="actions">
-      <button pButton label="Add Product" icon="pi pi-plus" class="p-button-primary" (click)="openCreate()"></button>
+      <button pButton label="Add Category" icon="pi pi-plus" class="p-button-primary" (click)="openCreate()"></button>
     </div>
   </div>
 
   <!-- Table -->
   <app-crud-table [data]="products" [fileName]="'Products'" [columns]="columns" [loading]="loading"
-    (edit)="openEdit($event)" (delete)="delete($event.prod_Id)" (toggle)="toggleStatus($event.prod_Id)">
+    (edit)="openEdit($event)" (delete)="delete($event.pd_Id)" (toggle)="toggleStatus($event.pd_Id)">
   </app-crud-table>
 </div>
 <!-- Dialog -->
@@ -21,24 +21,21 @@
         <label>Code</label>
         <input pInputText formControlName="code" />
       </div>
-      <app-text-field label="Product Name" controlName="name" [required]="true" [submitted]="formSubmitted">
+      <app-text-field label="Category" controlName="name" [required]="true" [submitted]="formSubmitted">
       </app-text-field>
 
       <div class="field">
         <app-text-area label="Description" controlName="description" [submitted]="formSubmitted">
         </app-text-area>
       </div>
-      <app-select-field label="UOM" [required]="true" controlName="uom_Id" [options]="uoms" optionLabel="code"
-        optionValue="uom_Id" [submitted]="formSubmitted">
+      <app-select-field label="Service Type" [required]="true" controlName="st_Id" [options]="servicetypes" optionLabel="name"
+        optionValue="st_Id" [submitted]="formSubmitted">
       </app-select-field>
 
-      <app-number-field label="Unit Price" [required]="true" controlName="unit_Price" 
+      <!-- <app-number-field label="Unit Price" [required]="true" controlName="unit_Price" 
         [submitted]="formSubmitted">
-      </app-number-field>
+      </app-number-field> -->
 
-      <app-number-field label="Tax Rate" [required]="true" controlName="tax_Rate" suffix="%"
-        [submitted]="formSubmitted">
-      </app-number-field>
     </div>
   </form>
   <ng-template pTemplate="footer">

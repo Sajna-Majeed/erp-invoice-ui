@@ -10,6 +10,7 @@ import { CrudTableComponent } from '../../../shared/components/crud-table/crud-t
 import { UserService } from '../../../core/service/model-services/user/user';
 import { ModuleService } from '../../../core/service/api-services/module/module';
 import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
+import { NumberFieldComponent } from "../../../shared/components/number-field/number-field";
 
 @Component({
   selector: 'app-module',
@@ -19,7 +20,8 @@ import { TextAreaComponent } from "../../../shared/components/text-area/text-are
     TextFieldComponent,
     SelectFieldComponent,
     CrudTableComponent,
-    TextAreaComponent
+    TextAreaComponent,
+    NumberFieldComponent
 ],
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
@@ -37,9 +39,10 @@ export class ModuleComponent {
   isSaving = false;
 
   moduleDialog = false;
-  dialogTitle = 'Add Module';
+  dialogTitle = 'Add Subcategory';
   formSubmitted = false;
 
+  isALF:boolean=false;
   form!: FormGroup;
   company: any = {};
   columns: any[] = [];
@@ -62,15 +65,17 @@ export class ModuleComponent {
       { field: 'rowId', header: '#', type: 'rowId' },
       { field: 'code', header: 'Code', type: 'text' },
       { field: 'name', header: 'Name', type: 'text' },
-      { field: 'description', header: 'Description', type: 'text' },
-      { field: 'product', header: 'Product', type: 'text' },
+      { field: 'product', header: 'Category', type: 'text' },
+      { field: 'description', header: `Description`, type: 'text' },
+      // { field: 'unit_Rate', header: `Price (${this.company.currency})`, type: 'currency' },
+      //  { field: 'alf_Rate', header: 'Renewal Percentage(%)', type: 'tax' },
       { field: 'is_Active', header: 'Status', type: 'status', sortable: false }
     ];
   }
 
   initForm() {
     this.form = this.fb.group({
-      module_Id: [null],
+      lt_Id: [null],
       code: [{ value: '', disabled: true }],
       name: [
         '',
@@ -81,7 +86,11 @@ export class ModuleComponent {
         }
       ],
       description: [''],
-      product_Id: [null, Validators.required]
+      pd_Id: [null, Validators.required],
+      unit_Rate: [0.0, [Validators.min(0)]],
+      s_Rate: [0.0, [ Validators.min(0)]],
+      p_Rate: [0.0, [ Validators.min(0)]],
+      alf_Rate: [5, [ Validators.min(0), Validators.max(this.company.taxlimit)]],
     });
   }
 
@@ -97,7 +106,7 @@ export class ModuleComponent {
     this.moduleService.getAll().subscribe((res: any) => {
       this.modules = res.data;
       this.modules.forEach((module: any, index: number) => {
-        module.product = this.products.find((p: any) => p.prod_Id === module.product_Id)?.name || 'N/A';
+        module.product = this.products.find((p: any) => p.pd_Id === module.pd_Id)?.name || 'N/A';
       });
       this.loading = false;
     });
@@ -114,9 +123,9 @@ export class ModuleComponent {
 
       if (!control.value) return of(null);
 
-      const id = this.form?.get('module_Id')?.value;
+      const id = this.form?.get('lt_Id')?.value;
 
-      return this.productService
+      return this.moduleService
         .checkNameExists(control.value, id)
         .pipe(map((res: any) => res.data ? { nameExists: true } : null));
     };
@@ -125,23 +134,28 @@ export class ModuleComponent {
   openCreate() {
 
     this.form.reset({
-      unit_Price: 0,
-      tax_Rate: 5,
+      unit_Rate: 0,
+      alf_Rate: 0,
       is_active: true
     });
 
-    this.dialogTitle = 'Add Module';
+    this.dialogTitle = 'Add Subcategory';
     this.moduleDialog = true;
     this.formSubmitted = false;
 
     this.loadModuleCode();
   }
 
+ onProductSelected(event: any) {
+    const pd_Id = event;
+    var product=this.products.find(x => x.pd_Id == pd_Id);
+    this.isALF=(product.serviceType=='ALF');
+  }
   openEdit(module: any) {
 
     this.form.patchValue(module);
 
-    this.dialogTitle = 'Edit Module';
+    this.dialogTitle = 'Edit Subcategory';
     this.moduleDialog = true;
     this.formSubmitted = false;
 
@@ -162,7 +176,7 @@ export class ModuleComponent {
 
     const value = this.form.getRawValue();
 
-    const request = value.module_Id
+    const request = value.lt_Id
       ? this.moduleService.update(value)
       : this.moduleService.create(value);
 
@@ -177,7 +191,7 @@ export class ModuleComponent {
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: value.id ? 'Module updated' : 'Module created'
+          detail: value.id ? 'Licese Type updated' : 'Licese Type created'
         });
 
       },
@@ -198,8 +212,8 @@ export class ModuleComponent {
   delete(id: number) {
 
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this module?',
-      header: 'Delete Module',
+      message: 'Are you sure you want to delete this Licese Type?',
+      header: 'Delete Licese Type',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.moduleService.delete(id).subscribe(() => {
@@ -221,7 +235,7 @@ export class ModuleComponent {
   toggleStatus(id: number) {
 
     this.confirmationService.confirm({
-      message: 'Are you sure you want to change module status?',
+      message: 'Are you sure you want to change Licese Type status?',
       header: 'Change Status',
       icon: 'pi pi-info-circle',
       accept: () => {
@@ -233,7 +247,7 @@ export class ModuleComponent {
           this.messageService.add({
             severity: 'success',
             summary: 'Updated',
-            detail: 'Module status updated'
+            detail: 'Licese Type status updated'
           });
 
         });

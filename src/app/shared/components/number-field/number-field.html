@@ -7,10 +7,11 @@
 
 <p-inputNumber
   [formControlName]="controlName"
-  [mode]="mode"
+  mode="decimal"
   [currency]="currency"
   [suffix]="suffix"
    [useGrouping]="false" 
+   [minFractionDigits]="2" [maxFractionDigits]="5" 
   [invalid]="control?.invalid && submitted"
   class="w-full">
 </p-inputNumber>

@@ -52,8 +52,8 @@
 
             <tr>
 
-                <td *ngFor="let col of columns" [ngClass]="{'text-right': col.type === 'currency' ||
-                col.type === 'number','text-center': col.type === 'status'||col.type === 'tax' }">
+                <td *ngFor="let col of columns" [ngClass]="{'text-right': 
+                col.type === 'number','text-center': col.type === 'currency' || col.type === 'status'||col.type === 'tax' }">
 
                     <span *ngIf="col.type === 'rowId'">
                         {{ rowIndex + 1 }}
@@ -98,7 +98,7 @@
                 </td>
 
                 <!-- Actions -->
-                <td class=" actions">
+                <td class="actions">
 
                     <button pButton icon="pi pi-pencil" text (click)="edit.emit(row)">
                     </button>

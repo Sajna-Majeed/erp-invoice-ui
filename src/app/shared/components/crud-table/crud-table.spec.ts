@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CrudTable } from './crud-table';
+import { CrudTableComponent } from './crud-table';
 
-describe('CrudTable', () => {
-  let component: CrudTable;
-  let fixture: ComponentFixture<CrudTable>;
+describe('CrudTableComponent', () => {
+  let component: CrudTableComponent;
+  let fixture: ComponentFixture<CrudTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CrudTable]
+      imports: [CrudTableComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CrudTable);
+    fixture = TestBed.createComponent(CrudTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

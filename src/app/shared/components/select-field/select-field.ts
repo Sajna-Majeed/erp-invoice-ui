@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   AbstractControl,
   ControlContainer,
@@ -32,10 +32,15 @@ export class SelectFieldComponent {
   @Input() submitted = false;
   @Input() required = false;
 
+@Output() selectionChange = new EventEmitter<any>();
+
   constructor(private controlContainer: ControlContainer) {}
 
   get control(): AbstractControl | null {
     return this.controlContainer.control?.get(this.controlName) ?? null;
   }
 
+  onSelectChange(event: any) {
+  this.selectionChange.emit(event.value);
+}
 }

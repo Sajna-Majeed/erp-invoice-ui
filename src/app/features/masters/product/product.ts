@@ -10,6 +10,7 @@ import { NumberFieldComponent } from '../../../shared/components/number-field/nu
 import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
 import { UserService } from '../../../core/service/model-services/user/user';
 import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
+import { ServiceTypeApiService } from '../../../core/service/api-services/serviceType/service-type';
 
 @Component({
   selector: 'app-product',
@@ -18,7 +19,6 @@ import { TextAreaComponent } from "../../../shared/components/text-area/text-are
     SHARED_IMPORTS,
     TextFieldComponent,
     SelectFieldComponent,
-    NumberFieldComponent,
     CrudTableComponent,
     TextAreaComponent
   ],
@@ -32,7 +32,7 @@ import { TextAreaComponent } from "../../../shared/components/text-area/text-are
 export class ProductComponent {
 
   products: any[] = [];
-  uoms: any[] = [];
+  servicetypes: any[] = [];
 
   loading = false;
   isSaving = false;
@@ -50,20 +50,20 @@ export class ProductComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private userservice: UserService,
+    private stservice:ServiceTypeApiService,
     private fb: FormBuilder
   ) { }
 
 
   ngOnInit() {
     this.company = this.userservice.getCompany();
-    this.loadUOMs();
+    this.loadServiceTypes();
     this.columns = [
       { field: 'rowId', header: '#', type: 'rowId' },
       { field: 'code', header: 'Code', type: 'text' },
       { field: 'name', header: 'Name', type: 'text' },
-      { field: 'uom', header: 'UOM', type: 'text' },
-      { field: 'unit_Price', header: `Price (${this.company.currency})`, type: 'currency' },
-      { field: 'tax_Rate', header: 'Tax %', type: 'tax' },
+      { field: 'servicetype', header: 'Service Type', type: 'text' },
+      // { field: 'unit_Price', header: `Price (${this.company.currency})`, type: 'currency' },
       { field: 'is_Active', header: 'Status', type: 'status', sortable: false }
     ];
     this.initForm();
@@ -71,7 +71,7 @@ export class ProductComponent {
 
   initForm() {
     this.form = this.fb.group({
-      prod_Id: [null],
+      pd_Id: [null],
       code: [{ value: '', disabled: true }],
       name: [
         '',
@@ -82,18 +82,17 @@ export class ProductComponent {
         }
       ],
       description: [''],
-      uom_Id: [null, Validators.required],
-      unit_Price: [0, [Validators.required, Validators.min(0)]],
-      tax_Rate: [5, [Validators.required, Validators.min(0), Validators.max(this.company.taxlimit)]],
+      st_Id: [null, Validators.required],
+      unit_Price: [0],
       is_active: [true]
     });
   }
 
-  loadUOMs() {
+  loadServiceTypes() {
     this.loading = true;
 
-    this.productService.getUom().subscribe((res: any) => {
-      this.uoms = res.data || [];
+    this.stservice.getAll().subscribe((res: any) => {
+      this.servicetypes = res.data || [];
       this.loadProducts();
     });
   }
@@ -103,7 +102,7 @@ export class ProductComponent {
 
       this.products = (res.data || []).map((p: any) => ({
         ...p,
-        uom: this.uoms.find(u => u.uom_Id === p.uom_Id)?.code || 'N/A'
+        servicetype: this.servicetypes.find(u => u.st_Id === p.st_Id)?.name || 'N/A'
       }));
 
       this.loading = false;
@@ -121,7 +120,7 @@ export class ProductComponent {
 
       if (!control.value) return of(null);
 
-      const id = this.form?.get('prod_Id')?.value;
+      const id = this.form?.get('pd_Id')?.value;
 
       return this.productService
         .checkNameExists(control.value, id)
@@ -133,7 +132,6 @@ export class ProductComponent {
 
     this.form.reset({
       unit_Price: 0,
-      tax_Rate: 5,
       is_active: true
     });
 
@@ -169,7 +167,7 @@ export class ProductComponent {
 
     const value = this.form.getRawValue();
 
-    const request = value.prod_Id
+    const request = value.pd_Id
       ? this.productService.update(value)
       : this.productService.create(value);
 

@@ -42,6 +42,13 @@ export class QuoteFormComponent implements OnInit {
   newFiles: File[] = [];
   deletedFileIds: number[] = [];
   currencyCode: string = "INR";
+  activeTab: any = 0;
+  st_products: any[] = [];
+  st_modules: any[] = [];
+  licensetype: any[] = [
+    { name: "Perpetual", Id: 3 },
+    { name: "Subscription", Id: 4 },
+  ]
   constructor(
     private fb: FormBuilder,
     private service: QuoteApiService,
@@ -75,6 +82,8 @@ export class QuoteFormComponent implements OnInit {
       this.products = products.data;
       this.serviceTypes = services.data;
       this.modules = modules.data;
+      this.activeTab = this.serviceTypes.at(0)?.st_Id;
+      this.st_products = this.products.filter(x => x.st_Id == this.activeTab);
 
       if (this.isEdit) {
         this.loadQuote(); // ✅ now safe
@@ -87,12 +96,8 @@ export class QuoteFormComponent implements OnInit {
     this.form.get('customer_Id')?.valueChanges.subscribe(() => {
       this.loadRate();
     });
-    this.lineForm.get('module_Id')?.valueChanges.subscribe(() => {
-      this.loadRate();
-    });
-    this.lineForm.get('st_Id')?.valueChanges.subscribe(() => {
-      this.loadRate();
-    });
+
+
 
 
   }
@@ -100,7 +105,10 @@ export class QuoteFormComponent implements OnInit {
   //#region Initalization methods
 
 
-
+  onTabChange() {
+    console.log('Tab changed to index:', this.activeTab);
+    this.st_products = this.products.filter(x => x.st_Id == this.activeTab)
+  }
   initializeForm() {
     this.form = this.fb.group({
       q_Id: [0],
@@ -109,6 +117,7 @@ export class QuoteFormComponent implements OnInit {
       customer_Id: [null, Validators.required],
       total_Amt: [{ value: 0, disabled: true }],
       discount: [0],
+      st_Id: [null],
       net_Amt: [{ value: 0, disabled: true }],
       increased_Rate: [0],
       t_C: [''],
@@ -119,11 +128,16 @@ export class QuoteFormComponent implements OnInit {
       lines: this.fb.array([])
     });
     this.lineForm = this.fb.group({
+      lt: [3],
+      start_Date: [new Date()],
+      end_Date: [new Date(new Date().getFullYear(), 11, 31), Validators.required],
       pd_Id: [null, Validators.required],
       product: [null],
       module_Id: [null],
       st_Id: [null],
-      base_rate: [0],
+      total:[0],
+      alf_amount:[0],
+      alf_rate: [0],
       rate: [0],
       license_Count: [1]
     });
@@ -202,15 +216,14 @@ export class QuoteFormComponent implements OnInit {
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.products as any[]).length; i++) {
-      let prod = (this.products as any[])[i];
+    for (let i = 0; i < (this.st_products as any[]).length; i++) {
+      let prod = (this.st_products as any[])[i];
       if (prod.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
         filtered.push(prod);
       }
     }
     this.filteresproducts = filtered;
   }
-
 
 
 
@@ -226,10 +239,18 @@ export class QuoteFormComponent implements OnInit {
       base_rate: product.unit_Price
     });
 
-    this.moduleService.getByFilter(productId)
-      .subscribe((res: any) => {
-        this.modules = res.data;
-      });
+    this.st_modules = this.modules.filter(x => x.pd_Id == productId);
+  }
+
+  onModuleSelected(event: any) {
+    debugger
+    const lt_Id = event.value;
+    var module=this.modules.find(x => x.lt_Id == lt_Id);
+    const rate=this.lineForm.value.lt==3?module.p_Rate:module.s_Rate;
+    this.lineForm.patchValue({
+      rate: rate,
+      alf_rate:module.alf_Rate
+    });
 
   }
   getProductName(id: number) {

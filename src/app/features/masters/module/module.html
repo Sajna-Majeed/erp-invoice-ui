@@ -1,15 +1,16 @@
 <div class="page">
   <!-- Header -->
   <div class="page-header">
-    <h2>Module</h2>
+    <h2>Sub Category</h2>
     <div class="actions">
-      <button pButton label="Add Module" icon="pi pi-plus" class="p-button-primary" (click)="openCreate()"></button>
+      <button pButton label="Add Sub Category" icon="pi pi-plus" class="p-button-primary"
+        (click)="openCreate()"></button>
     </div>
   </div>
 
   <!-- Table -->
-  <app-crud-table [data]="modules" [fileName]="'Modules'" [columns]="columns" [loading]="loading"
-    (edit)="openEdit($event)" (delete)="delete($event.module_Id)" (toggle)="toggleStatus($event.module_Id)">
+  <app-crud-table [data]="modules" [fileName]="'Subcategory'" [columns]="columns" [loading]="loading"
+    (edit)="openEdit($event)" (delete)="delete($event.lt_Id)" (toggle)="toggleStatus($event.lt_Id)">
   </app-crud-table>
 </div>
 <!-- Dialog -->
@@ -21,14 +22,31 @@
         <label>Code</label>
         <input pInputText formControlName="code" />
       </div>
-      <app-text-field label="Module Name" controlName="name" [required]="true" [submitted]="formSubmitted">
+      <app-text-field label="Subcategory" controlName="name" [required]="true" [submitted]="formSubmitted">
       </app-text-field>
-      <app-select-field label="Product" controlName="product_Id" [options]="products" optionLabel="name"
-        [required]="true" optionValue="prod_Id" [submitted]="formSubmitted">
+      <app-select-field label="Category" controlName="pd_Id" [options]="products" optionLabel="name" [required]="true"
+        optionValue="pd_Id" (selectionChange)="onProductSelected($event)" [submitted]="formSubmitted">
       </app-select-field>
       <div class="field">
         <app-text-area label="Description" controlName="description" [submitted]="formSubmitted">
         </app-text-area>
+        @if(isALF){
+        <app-number-field label="Subscription Rate" [required]="true" mode="decimal" controlName="s_Rate"
+          [submitted]="formSubmitted">
+        </app-number-field>
+        <app-number-field label="Perpetual Rate" [required]="true" mode="decimal" controlName="p_Rate"
+          [submitted]="formSubmitted">
+        </app-number-field>
+        <app-number-field label="Renewal Percentage" [required]="true" mode="decimal" controlName="alf_Rate" suffix="%"
+          [submitted]="formSubmitted">
+        </app-number-field>
+        }
+        @if(!isALF){
+        <app-number-field label="Unit Rate" [required]="true" mode="decimal" controlName="unit_Rate"
+          [submitted]="formSubmitted">
+        </app-number-field>
+        }
+
       </div>
 
 

@@ -117,7 +117,6 @@ export class MainLayoutComponent {
           }
         }
       });
-    console.log(this.menuItems);
   }
   mobileSidebar = false;
   

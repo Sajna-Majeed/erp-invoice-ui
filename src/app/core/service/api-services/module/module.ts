@@ -5,18 +5,23 @@ import { ApiService } from '../api-service';
   providedIn: 'root',
 })
 export class ModuleService {
-   private url = 'module';
+   private url = 'licenseType';
     constructor(private api: ApiService) {}
   
     search(term: string) {
       return this.api.get(`${this.url}/search?term=${term}`);
     }
-  
+    checkNameExists(name: string, id?: number) {
+    return this.api.get(`${this.url}/check`, {
+      name: name,
+      id: id
+    });
+  }
     getAll() {
       return this.api.get(this.url);
     }
     getNextNumber() {
-       return this.api.get(`${this.url}/modulecode`);
+       return this.api.get(`${this.url}/licenseTypecode`);
     }
      getById(id: number) {
         return this.api.get(`${this.url}/${id}`);
