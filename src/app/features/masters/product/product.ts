@@ -169,7 +169,7 @@ export class ProductComponent {
 
     const value = this.form.getRawValue();
 
-    const request = value.id
+    const request = value.prod_Id
       ? this.productService.update(value)
       : this.productService.create(value);
 

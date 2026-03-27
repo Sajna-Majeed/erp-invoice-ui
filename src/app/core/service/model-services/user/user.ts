@@ -9,21 +9,19 @@ export class UserService {
   private company: any | null = null;
   menu: any[] = [];
   constructor() {
-    // Load saved user from localStorage on startup
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
       this.user = JSON.parse(savedUser);
     }
   }
 
-  // ✅ Save user info after login
-  setUser(user: UserInfo) {
-    this.clearUser(); // Clear any existing user data
+
+  setUser(user: any | null) {
+    this.clearUser();
     this.user = user;
     localStorage.setItem('user', JSON.stringify(user));
   }
 
-  // ✅ Get current user (from memory or localStorage)
   getUser(): UserInfo | null {
     if (!this.user) {
       const savedUser = localStorage.getItem('user');
@@ -32,19 +30,17 @@ export class UserService {
     return this.user;
   }
 
-  // ✅ Clear user info (on logout)
   clearUser() {
     this.user = null;
     localStorage.removeItem('user');
   }
 
   setCompany(company: any) {
-    this.clearCompany(); // Clear any existing user data
+    this.clearCompany();
     this.company = company;
     localStorage.setItem('company', JSON.stringify(company));
   }
 
-  // ✅ Get current company (from memory or localStorage)
   getCompany(): any | null {
     if (!this.company) {
       const savedCompany = localStorage.getItem('company');
@@ -53,30 +49,27 @@ export class UserService {
     return this.company.company;
   }
 
-  // ✅ Clear company info (on logout)
   clearCompany() {
     this.company = null;
     localStorage.removeItem('company');
   }
 
 
-  
-setMenu(menu: any) {
-    this.clearMenu(); // Clear any existing menu data
+
+  setMenu(menu: any) {
+    this.clearMenu();
     this.menu = menu;
     localStorage.setItem('menu', JSON.stringify(menu));
   }
 
-  // ✅ Get current menu (from memory or localStorage)
   getMenu(): any | null {
-    if (!this.menu || this.menu.length==0) {
+    if (!this.menu || this.menu.length == 0) {
       const savedMenu = localStorage.getItem('menu');
       this.menu = savedMenu ? JSON.parse(savedMenu) : null;
     }
     return this.menu;
   }
 
-  // ✅ Clear menu info (on logout)
   clearMenu() {
     this.company = null;
     localStorage.removeItem('menu');
@@ -84,17 +77,16 @@ setMenu(menu: any) {
 
 
 
-  // ✅ Helper getters
   getUsername(): string {
-    return this.user?.username || '';
+    return this.user?.user_Name || '';
   }
 
   getUserRole(): string {
-    return this.user?.userRole || '';
+    return this.user?.role || '';
   }
 
   getEmail(): string {
-    return this.user?.fullName || '';
+    return this.user?.name || '';
   }
 }
 export type { UserInfo };

@@ -68,6 +68,9 @@ export class CustompriceComponent implements OnInit {
     { field: 'unit_Price', header: 'Unit Price', type: 'number' },
     { field: 'is_Active', header: 'Status', type: 'status' ,sortable:false}
     ];
+      this.form.get('pd_Id')?.valueChanges.subscribe(() => {
+      this.filterModule();
+    });
   }
 
  initForm() {
@@ -117,7 +120,15 @@ loadModules() {
     });
   }
 
+ filterModule() {
 
+    const productId = this.form.value.pd_Id;
+    this.moduleService.getByFilter(productId)
+      .subscribe((res: any) => {
+        this.modules = res.data;
+      });
+
+  }
   openCreate() {
     this.form.reset({
     });

@@ -5,11 +5,13 @@ import { ThemeService } from '../../core/service/theme-services/theme';
 import { AuthService } from '../../core/service/api-services/auth/auth';
 import { SHARED_IMPORTS } from '../../shared/shared-imports';
 import { UserInfo, UserService } from '../../core/service/model-services/user/user';
+import { UiService } from '../../core/service/model-services/profile/profile';
+import { UserProfileComponent } from "../../features/authentication/user-profile/user-profile";
 
 
 @Component({
   selector: 'app-main-layout',
-  imports: [SHARED_IMPORTS],
+  imports: [SHARED_IMPORTS, UserProfileComponent],
   templateUrl: './main-layout.html',
   styleUrl: './main-layout.css'
 })
@@ -58,7 +60,8 @@ export class MainLayoutComponent {
     private auth: AuthService,
     public themeService: ThemeService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private uiService:UiService
   ) {
     this.breakpointObserver.observe([Breakpoints.Handset])
       .subscribe(result => {
@@ -106,23 +109,23 @@ export class MainLayoutComponent {
             items: items
           };
         }
-        else{
-           return {
+        else {
+          return {
             label: menu.name,
             icon: menu.icon,
             routerLink: menu.link,
-           }
+          }
         }
       });
-      console.log(this.menuItems);
+    console.log(this.menuItems);
   }
   mobileSidebar = false;
-
-
+  
   userItems = [
     {
       label: 'Profile',
-      icon: 'pi pi-user'
+      icon: 'pi pi-user',
+      command: () => this.uiService.openProfile()
     },
     {
       separator: true

@@ -13,6 +13,7 @@ import { QuoteListComponent } from './features/transaction/quotes/quote-list/quo
 import { QuotePrintComponent } from './features/transaction/quotes/quote-print/quote-print';
 import { UserListComponent } from './features/settings/user/user';
 import { RolePermissionComponent } from './features/settings/role-permission/role-permission';
+import { UserProfileComponent } from './features/authentication/user-profile/user-profile';
 
 export const routes: Routes = [
      { path: '', component: LoginComponent },
@@ -27,7 +28,12 @@ export const routes: Routes = [
                          { path: '', component: UserListComponent }
                     ]
                },
-
+               {
+                    path: 'profile',
+                    children: [
+                         { path: '', component: UserProfileComponent }
+                    ]
+               },
                { path: 'quote',
                      children: [
                          { path: '', component:QuoteListComponent },

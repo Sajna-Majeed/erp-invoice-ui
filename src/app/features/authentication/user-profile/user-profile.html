@@ -1,0 +1,84 @@
+<p-dialog header="User Profile" [(visible)]="displayProfileDialog" [modal]="true" [style]="{ width: '40rem' }">
+    <form [formGroup]="profileForm">
+
+         <p-tabs [(value)]="activeTab">
+
+            <!-- 🔹 TAB HEADERS -->
+            <p-tablist>
+                <p-tab [value]="0" >Profile</p-tab>
+                <p-tab [value]="1" >Change Password</p-tab>
+            </p-tablist>
+
+            <!-- 🔹 TAB CONTENT -->
+            <p-tabpanels>
+
+                <!-- PROFILE TAB -->
+                <p-tabpanel [value]="0">
+                    <div class="form-grid">
+
+                        <app-text-field label="Name" controlName="name" [required]="true" [submitted]="formSubmitted">
+                        </app-text-field>
+
+                        <app-text-field label="Email" controlName="email" [required]="true" [submitted]="formSubmitted">
+                        </app-text-field>
+
+                        <app-number-field label="Mobile Number" [required]="true" controlName="mobile_Number"
+                            [submitted]="formSubmitted">
+                        </app-number-field>
+
+                    </div>
+                </p-tabpanel>
+
+                <!-- PASSWORD TAB -->
+                <p-tabpanel [value]="1">
+
+                    <form [formGroup]="passwordForm" class="form-grid">
+
+                        <div class="field">
+                            <label>Current Password</label>
+                              <p-password formControlName="currentPassword" fluid inputStyleClass="w-56" [feedback]="false" [toggleMask]="true"  [showClear]="true" autocomplete="off" />
+                        </div>
+
+                        <div class="field">
+                            <label>New Password</label>
+                             <p-password formControlName="newPassword" fluid [feedback]="false" [toggleMask]="true"  [showClear]="true" autocomplete="off" />
+                       </div>
+
+                        <div class="field">
+                            <label>Confirm Password</label>
+                             <p-password formControlName="confirmPassword" fluid [feedback]="false" [toggleMask]="true"  [showClear]="true" autocomplete="off" />
+                        </div>
+
+                        <small *ngIf="passwordForm.errors?.['mismatch']" class="error">
+                            Passwords do not match
+                        </small>
+
+                    </form>
+
+                </p-tabpanel>
+
+            </p-tabpanels>
+
+        </p-tabs>
+
+    </form>
+
+    <!-- 🔹 FOOTER -->
+    <ng-template pTemplate="footer">
+
+        <button pButton label="Cancel" text (click)="closeProfileDialog()">
+        </button>
+
+        <!-- Save Profile -->
+        <button pButton label="Save Profile" icon="pi pi-check" *ngIf="activeTab === 0" [loading]="isSaving"
+            (click)="saveProfile()">
+        </button>
+
+        <!-- Change Password -->
+        <button pButton label="Change Password" icon="pi pi-lock" *ngIf="activeTab === 1" [loading]="isPasswordSaving"
+            (click)="changePassword()">
+        </button>
+
+    </ng-template>
+
+</p-dialog>

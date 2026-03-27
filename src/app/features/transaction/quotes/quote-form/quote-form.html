@@ -32,8 +32,8 @@
   <div class="lines-container" [formGroup]="lineForm">
     <p-floatlabel class="w-full md:w-56" variant="on">
 
-      <p-autocomplete formControlName="product" fluid [invalid]="isInvalid('prod_Id')"
-        (onChange)="onProductSelected($event)" optionValue="product" [forceSelection]="true"
+      <p-autocomplete formControlName="product" fluid [invalid]="isInvalid('pd_Id')" [dropdown]="true"
+        (onSelect)="onProductSelected($event)" optionValue="product" [forceSelection]="true"
         [suggestions]="filteresproducts" (completeMethod)="filterProducts($event)" optionLabel="name" />
       @if (isInvalid('pd_Id')) {
       <p-message severity="error" size="small" variant="simple">Product is required.</p-message>
@@ -131,7 +131,7 @@
 
       <p-floatlabel class="w-full md:w-56" variant="on">
 
-        <p-inputNumber formControlName="discount" [inputStyle]="{ 'text-align': 'right' }" fluid></p-inputNumber>
+        <p-inputNumber (onBlur)="onDiscount($event)" formControlName="discount" [inputStyle]="{ 'text-align': 'right' }" fluid></p-inputNumber>
         <label>Discount</label>
       </p-floatlabel>
 

@@ -7,19 +7,24 @@ import { ApiService } from '../api-service';
 })
 export class AuthService {
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService) { }
 
   login(data: any) {
     return this.api.post('auth/login', data);
   }
-
+  update(data: any) {
+    return this.api.put('auth/profile', data);
+  }
+  changepassword(data: any) {
+    return this.api.put('auth/password', data);
+  }
   setToken(token: string) {
     localStorage.setItem('token', token);
   }
   setRefreshToken(token: string) {
     localStorage.setItem('refreshToken', token);
   }
-  
+
   getRefreshToken() {
     return localStorage.getItem('refreshToken');
   }

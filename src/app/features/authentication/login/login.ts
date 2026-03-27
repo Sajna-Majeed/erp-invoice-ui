@@ -52,11 +52,7 @@ showError(message: string) {
       next: (res: any) => {
         this.auth.setToken(res.data.accessToken); 
         this.auth.setRefreshToken(res.data.refreshToken);
-        this.userService.setUser({
-          username: res.data.username,
-          fullName: res.data.fullName,
-          userRole: res.data.role
-        });
+        this.userService.setUser(res.data );
         this.userService.setCompany({
           company: res.data.company
         });

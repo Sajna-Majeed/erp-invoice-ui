@@ -147,7 +147,7 @@ export class ServiceTypeComponent {
 
     const value = this.form.getRawValue();
 
-    const request = value.id
+    const request = value.st_Id
       ? this.serviceTypeservice.update(value)
       : this.serviceTypeservice.create(value);
 

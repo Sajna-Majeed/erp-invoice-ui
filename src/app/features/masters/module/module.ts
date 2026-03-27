@@ -162,9 +162,9 @@ export class ModuleComponent {
 
     const value = this.form.getRawValue();
 
-    const request = value.id
-      ? this.productService.update(value)
-      : this.productService.create(value);
+    const request = value.module_Id
+      ? this.moduleService.update(value)
+      : this.moduleService.create(value);
 
     request.subscribe({
       next: () => {

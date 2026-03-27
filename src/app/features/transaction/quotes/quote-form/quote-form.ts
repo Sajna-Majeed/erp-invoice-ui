@@ -41,7 +41,7 @@ export class QuoteFormComponent implements OnInit {
   existingFiles: any[] = []; // from API
   newFiles: File[] = [];
   deletedFileIds: number[] = [];
-  currencyCode:string="INR";
+  currencyCode: string = "INR";
   constructor(
     private fb: FormBuilder,
     private service: QuoteApiService,
@@ -53,13 +53,13 @@ export class QuoteFormComponent implements OnInit {
     private route: ActivatedRoute,
     private customPriceService: CustomPriceApiService,
     private messageService: MessageService,
-    private userService:UserService
+    private userService: UserService
   ) { }
 
   ngOnInit() {
     this.initializeForm();
-    let company=this.userService.getCompany();
-    this.currencyCode=company.currency;
+    let company = this.userService.getCompany();
+    this.currencyCode = company.currency;
     this.q_Id = +this.route.snapshot.paramMap.get('id')!;
     this.isEdit = !!this.q_Id;
 
@@ -93,10 +93,7 @@ export class QuoteFormComponent implements OnInit {
     this.lineForm.get('st_Id')?.valueChanges.subscribe(() => {
       this.loadRate();
     });
-  this.form.get('discount')?.valueChanges.subscribe(() => {
-    this.calculateTotals();
-    });
-    
+
 
   }
 
@@ -201,26 +198,25 @@ export class QuoteFormComponent implements OnInit {
 
   //#region  Dom Helper Methods
 
- filterProducts(event: AutoCompleteCompleteEvent) {
-        let filtered: any[] = [];
-        let query = event.query;
-        
-        for (let i = 0; i < (this.products as any[]).length; i++) {
-            let prod = (this.products as any[])[i];
-            if (prod.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-                filtered.push(prod);
-            }
-        }
-        this.filteresproducts = filtered;
+  filterProducts(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.products as any[]).length; i++) {
+      let prod = (this.products as any[])[i];
+      if (prod.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(prod);
+      }
     }
+    this.filteresproducts = filtered;
+  }
 
 
 
 
   onProductSelected(event: any) {
-
-    const productId = event.value;
-    const product = this.products.find(p => p.prod_Id === productId);
+    const product = event.value;
+    const productId = product.prod_Id;
 
     if (!product) return;
 
@@ -258,7 +254,6 @@ export class QuoteFormComponent implements OnInit {
     return this.form.get('lines') as FormArray;
   }
   addLine() {
-
     if (this.lineForm.invalid) {
       this.lineForm.markAllAsTouched();
       return;
@@ -305,6 +300,26 @@ export class QuoteFormComponent implements OnInit {
   removeLine(index: number) {
     this.lines.removeAt(index);
     this.calculateTotals();
+  }
+
+  onDiscount(event: any) {
+    debugger
+    const discount = this.form.value.discount;
+    let total = 0;
+    this.lines.controls.forEach(line => {
+
+      const value = line.getRawValue();
+
+      const rate = value.rate || 0;
+      const qty = value.license_Count || 0;
+
+      total += rate * qty;
+
+    });
+    this.form.patchValue({
+      total_Amt: total,
+      net_Amt: total - discount
+    }, { emitEvent: false });
   }
   calculateTotals() {
 

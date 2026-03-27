@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api-service';
-import { User } from '../../../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -22,10 +21,10 @@ export class UserApiService {
   toggleStatus(moduleId: number) {
     return this.api.delete(`${this.url}/toggle/${moduleId}`);
   }
-  register(user: User) {
+  register(user: any) {
     return this.api.post(this.url, user);
   }
-  update(user: User) {
+  update(user: any) {
     return this.api.put(this.url, user);
   }
   delete(userId: number) {

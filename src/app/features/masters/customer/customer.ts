@@ -100,7 +100,7 @@ loadCustomerCode() {
       this.customers = res.data;
        this.customers.forEach((bp: any, index: number) => {
           bp.id = index + 1;
-          bp.customerType=this.customerTypes.find(x=>x.ct_id==bp.cutomer_Type_Id)?.name
+          bp.customerType=this.customerTypes.find(x=>x.ct_Id==bp.customer_Type_Id)?.name
         });
     });
   }
