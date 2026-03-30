@@ -1,19 +1,17 @@
 import { Component } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
-import { ProductService } from '../../../core/service/api-services/product/product';
+import { CategoryService } from '../../../core/service/api-services/category/category';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AbstractControl, AsyncValidatorFn, ControlContainer, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { map, of } from 'rxjs';
 import { TextFieldComponent } from '../../../shared/components/text-field/text-field';
 import { SelectFieldComponent } from '../../../shared/components/select-field/select-field';
-import { NumberFieldComponent } from '../../../shared/components/number-field/number-field';
 import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
-import { UserService } from '../../../core/service/model-services/user/user';
 import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
 import { ServiceTypeApiService } from '../../../core/service/api-services/serviceType/service-type';
 
 @Component({
-  selector: 'app-product',
+  selector: 'app-category',
   standalone: true,
   imports: [
     SHARED_IMPORTS,
@@ -25,20 +23,20 @@ import { ServiceTypeApiService } from '../../../core/service/api-services/servic
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
   ],
-  templateUrl: './product.html',
-  styleUrl: './product.css',
+  templateUrl: './category.html',
+  styleUrl: './category.css',
   providers: [ConfirmationService, MessageService]
 })
-export class ProductComponent {
+export class CategoryComponent {
 
-  products: any[] = [];
+  category: any[] = [];
   servicetypes: any[] = [];
 
   loading = false;
   isSaving = false;
 
-  productDialog = false;
-  dialogTitle = 'Add Product';
+  categoryDialog = false;
+  dialogTitle = 'Add Category';
   formSubmitted = false;
 
   form!: FormGroup;
@@ -46,32 +44,29 @@ export class ProductComponent {
   columns: any[] = [];
 
   constructor(
-    private productService: ProductService,
+    private service:CategoryService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private userservice: UserService,
     private stservice:ServiceTypeApiService,
     private fb: FormBuilder
   ) { }
 
 
   ngOnInit() {
-    this.company = this.userservice.getCompany();
     this.loadServiceTypes();
     this.columns = [
       { field: 'rowId', header: '#', type: 'rowId' },
       { field: 'code', header: 'Code', type: 'text' },
       { field: 'name', header: 'Name', type: 'text' },
-      { field: 'servicetype', header: 'Service Type', type: 'text' },
-      // { field: 'unit_Price', header: `Price (${this.company.currency})`, type: 'currency' },
-      { field: 'is_Active', header: 'Status', type: 'status', sortable: false }
+      { field: 'serviceType', header: 'Service Type', type: 'text' },
+     { field: 'is_Active', header: 'Status', type: 'status', sortable: false }
     ];
     this.initForm();
   }
 
   initForm() {
     this.form = this.fb.group({
-      pd_Id: [null],
+      cat_Id: [0],
       code: [{ value: '', disabled: true }],
       name: [
         '',
@@ -83,7 +78,6 @@ export class ProductComponent {
       ],
       description: [''],
       st_Id: [null, Validators.required],
-      unit_Price: [0],
       is_active: [true]
     });
   }
@@ -93,24 +87,21 @@ export class ProductComponent {
 
     this.stservice.getAll().subscribe((res: any) => {
       this.servicetypes = res.data || [];
-      this.loadProducts();
+      this.loadCatgeories();
     });
   }
 
-  loadProducts() {
-    this.productService.getAll().subscribe((res: any) => {
+  loadCatgeories() {
+    this.service.getAll().subscribe((res: any) => {
 
-      this.products = (res.data || []).map((p: any) => ({
-        ...p,
-        servicetype: this.servicetypes.find(u => u.st_Id === p.st_Id)?.name || 'N/A'
-      }));
+      this.category = res.data || [];
 
       this.loading = false;
     });
   }
 
-  loadProductCode() {
-    this.productService.getNextNumber().subscribe((res: any) => {
+  loadCode() {
+    this.service.getNextNumber().subscribe((res: any) => {
       this.form.patchValue({ code: res.data });
     });
   }
@@ -120,9 +111,9 @@ export class ProductComponent {
 
       if (!control.value) return of(null);
 
-      const id = this.form?.get('pd_Id')?.value;
+      const id = this.form?.get('cat_Id')?.value;
 
-      return this.productService
+      return this.service
         .checkNameExists(control.value, id)
         .pipe(map((res: any) => res.data ? { nameExists: true } : null));
     };
@@ -135,26 +126,26 @@ export class ProductComponent {
       is_active: true
     });
 
-    this.dialogTitle = 'Add Product';
-    this.productDialog = true;
+    this.dialogTitle = 'Add Category';
+    this.categoryDialog = true;
     this.formSubmitted = false;
 
-    this.loadProductCode();
+    this.loadCode();
   }
 
-  openEdit(product: any) {
+  openEdit(category: any) {
 
-    this.form.patchValue(product);
+    this.form.patchValue(category);
 
-    this.dialogTitle = 'Edit Product';
-    this.productDialog = true;
+    this.dialogTitle = 'Edit Category';
+    this.categoryDialog = true;
     this.formSubmitted = false;
 
     this.form.get('name')?.updateValueAndValidity();
   }
 
   hideDialog() {
-    this.productDialog = false;
+    this.categoryDialog = false;
   }
 
   saveProduct() {
@@ -167,22 +158,22 @@ export class ProductComponent {
 
     const value = this.form.getRawValue();
 
-    const request = value.pd_Id
-      ? this.productService.update(value)
-      : this.productService.create(value);
+    const request = value.cat_Id
+      ? this.service.update(value)
+      : this.service.create(value);
 
     request.subscribe({
       next: () => {
 
         this.isSaving = false;
-        this.productDialog = false;
+        this.categoryDialog = false;
 
-        this.loadProducts();
+        this.loadCatgeories();
 
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: value.id ? 'Product updated' : 'Product created'
+          detail: value.id ? 'Category updated' : 'Category created'
         });
 
       },
@@ -203,19 +194,19 @@ export class ProductComponent {
   delete(id: number) {
 
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this product?',
-      header: 'Delete Product',
+      message: 'Are you sure you want to delete this category?',
+      header: 'Delete Category',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
 
-        this.productService.delete(id).subscribe(() => {
+        this.service.delete(id).subscribe(() => {
 
-          this.loadProducts();
+          this.loadCatgeories();
 
           this.messageService.add({
             severity: 'success',
             summary: 'Deleted',
-            detail: 'Product deleted successfully'
+            detail: 'Category deleted successfully'
           });
 
         });
@@ -232,14 +223,14 @@ export class ProductComponent {
       icon: 'pi pi-info-circle',
       accept: () => {
 
-        this.productService.toggleStatus(id).subscribe(() => {
+        this.service.toggleStatus(id).subscribe(() => {
 
-          this.loadProducts();
+          this.loadCatgeories();
 
           this.messageService.add({
             severity: 'success',
             summary: 'Updated',
-            detail: 'Product status updated'
+            detail: 'Category status updated'
           });
 
         });

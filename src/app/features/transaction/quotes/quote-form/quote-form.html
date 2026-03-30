@@ -47,105 +47,161 @@
         @if (tab.name=="ALF") {
         <div class="lines-container" [formGroup]="lineForm">
 
+          <!-- Service Item -->
           <p-floatlabel class="w-full md:w-56" variant="on">
-            <p-datepicker formControlName="start_Date" view="month" dateFormat="mm/yy" [readonlyInput]="true" />
-            @if (isInvalid('start_Date')) {
-            <p-message severity="error" size="small" variant="simple">Start Date is required.</p-message>
-            }
-            <label for="on_label">Start Date</label>
+            <p-select [options]="getFilteredServiceItems()" optionLabel="name" fluid optionValue="id"
+              formControlName="serviceItemId"></p-select>
+            <label>Service Item</label>
+          </p-floatlabel>
+
+          <!-- Product -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-autocomplete formControlName="productId" fluid [suggestions]="filteresproducts"
+              (completeMethod)="filterProducts($event)" optionLabel="name" optionValue="id"
+              (onSelect)="onProductSelected($event)" [dropdown]="true" [forceSelection]="true" />
+            <label>Product</label>
+          </p-floatlabel>
+
+          <!-- License Model -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-select [options]="licenseModels" optionLabel="name" fluid optionValue="value"
+              formControlName="licenseModel"></p-select>
+            <label>License Model</label>
+          </p-floatlabel>
+
+          <!-- License Type -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-select [options]="licenseTypes" optionLabel="name" fluid  optionValue="id"
+              formControlName="licenseTypeId"></p-select>
+            <label>License Type</label>
+          </p-floatlabel>
+
+          <!-- Dates -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-datepicker formControlName="start_Date" view="month" dateFormat="M/yy" />
+            <label>Start Date</label>
           </p-floatlabel>
 
           <p-floatlabel class="w-full md:w-56" variant="on">
-            <p-datepicker formControlName="end_Date" view="month" dateFormat="mm/yy" [readonlyInput]="true" />
-            @if (isInvalid('end_Date')) {
-            <p-message severity="error" size="small" variant="simple">End Date is required.</p-message>
-            }
-            <label for="on_label">End Date</label>
+            <p-datepicker formControlName="end_Date" view="month" dateFormat="M/yy" />
+            <label>End Date</label>
           </p-floatlabel>
 
+          <!-- Quantity -->
           <p-floatlabel class="w-full md:w-56" variant="on">
-            <p-select [options]="licensetype" optionLabel="name" fluid optionValue="Id" formControlName="lt"></p-select>
-            <label for="on_label">License Model</label>
+            <p-inputNumber formControlName="license_Count" [min]="1"></p-inputNumber>
+            <label>License Count</label>
           </p-floatlabel>
-          <p-floatlabel class="w-full md:w-56" variant="on">
 
-            <p-autocomplete formControlName="product" fluid [invalid]="isInvalid('pd_Id')" [dropdown]="true"
-              (onSelect)="onProductSelected($event)" optionValue="product" [forceSelection]="true"
-              [suggestions]="filteresproducts" (completeMethod)="filterProducts($event)" optionLabel="name" />
-            @if (isInvalid('pd_Id')) {
-            <p-message severity="error" size="small" variant="simple">Category is required.</p-message>
-            }
-            <label for="on_label">Category</label>
-          </p-floatlabel>
+          <!-- Rate -->
           <p-floatlabel class="w-full md:w-56" variant="on">
-            <p-select [options]="modules" optionLabel="name" fluid optionValue="lt_Id"
-              (onChange)="onModuleSelected($event)" formControlName="module_Id"></p-select>
-            <label for="on_label">Module</label>
+            <p-inputNumber formControlName="rate" mode="currency" [currency]="currencyCode"></p-inputNumber>
+            <label>Unit Rate</label>
           </p-floatlabel>
+
+          <!-- Total -->
           <p-floatlabel class="w-full md:w-56" variant="on">
-            <p-inputNumber formControlName="license_Count" fluid="" [min]="1"></p-inputNumber>
-            <label for="on_label">License Count</label>
+            <p-inputNumber formControlName="total" mode="currency" [currency]="currencyCode"></p-inputNumber>
+            <label>Total</label>
           </p-floatlabel>
+
+          <!-- ALF % -->
           <p-floatlabel class="w-full md:w-56" variant="on">
-            <p-inputNumber formControlName="rate" mode="currency" fluid="" [currency]="currencyCode"></p-inputNumber>
-            <label for="on_label">Unit Rate</label>
+            <p-inputNumber formControlName="alf_rate"></p-inputNumber>
+            <label>ALF %</label>
           </p-floatlabel>
+
+          <!-- ALF Amount -->
           <p-floatlabel class="w-full md:w-56" variant="on">
-            <p-inputNumber formControlName="total" mode="currency" fluid="" [currency]="currencyCode"></p-inputNumber>
-            <label for="on_label">Total</label>
+            <p-inputNumber formControlName="alf_amount" mode="currency" [currency]="currencyCode"></p-inputNumber>
+            <label>ALF Amount</label>
           </p-floatlabel>
-          <p-floatlabel class="w-full md:w-56" variant="on">
-            <p-inputNumber formControlName="alf_rate" mode="currency" fluid="" [currency]="currencyCode"></p-inputNumber>
-            <label for="on_label">Alf Rate(%)</label>
-          </p-floatlabel>
-          <p-floatlabel class="w-full md:w-56" variant="on">
-            <p-inputNumber formControlName="alf_amount" mode="currency" fluid=""
-              [currency]="currencyCode"></p-inputNumber>
-            <label for="on_label">Alf Amount</label>
-          </p-floatlabel>
+
           <div class="add-line">
-            <button pButton label="Add Line" fluid icon="pi pi-plus" type="button" (click)="addLine()"></button>
+            <button pButton label="Add Line" icon="pi pi-plus" type="button" (click)="addLine()"></button>
           </div>
 
         </div>
+        }
+        @if (tab.name=="AMC") {
+        <div class="lines-container" [formGroup]="lineForm">
 
+          <!-- Service Item -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-select [options]="getFilteredServiceItems()" optionLabel="name" fluid optionValue="id"
+              formControlName="serviceItemId"></p-select>
+            <label>Service Item</label>
+          </p-floatlabel>
 
-        <!-- ================= ADD LINE ================= -->
+          <!-- Product (optional but recommended) -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-autocomplete formControlName="productId" [suggestions]="filteresproducts"
+              (completeMethod)="filterProducts($event)" optionLabel="name" optionValue="id"
+              (onSelect)="onProductSelected($event)" [dropdown]="true" [forceSelection]="true">
+            </p-autocomplete>
+            <label>Product</label>
+          </p-floatlabel>
 
+          <!-- Work Order -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <input pInputText formControlName="workOrderNo" />
+            <label>Work Order No</label>
+          </p-floatlabel>
 
+          <!-- Work Order Amount -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-inputNumber formControlName="workOrderAmount" mode="currency" [currency]="currencyCode"></p-inputNumber>
+            <label>Work Order Amount</label>
+          </p-floatlabel>
 
-        <p-table [value]="lines.controls">
+          <div class="add-line">
+            <button pButton label="Add Line" icon="pi pi-plus" type="button" (click)="addLine()"></button>
+          </div>
 
-          <ng-template pTemplate="header">
-            <tr>
-              <th>Product</th>
-              <th>Module</th>
-              <th>Service</th>
-              <th>Last Billed Rate</th>
-              <th>License Count</th>
-              <th>Amount</th>
-              <th>Actions</th>
-            </tr>
-          </ng-template>
+        </div>
+        }
+        @if (tab.name=="HOSTING" || tab.name=="Hosting") {
+        <div class="lines-container" [formGroup]="lineForm">
 
-          <ng-template pTemplate="body" let-row let-i="rowIndex">
-            <tr [formGroup]="row">
+          <!-- Service Item -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-select [options]="getFilteredServiceItems()" optionLabel="name" fluid optionValue="id"
+              formControlName="serviceItemId"></p-select>
+            <label>Service Item</label>
+          </p-floatlabel>
 
-              <td>{{ getProductName(row.value.pd_Id) }}</td>
-              <td>{{ getModuleName(row.value.module_Id) }}</td>
-              <td>{{ getServiceName(row.value.st_Id) }}</td>
-              <td [ngClass]="'text-right'">{{ row.value.rate| erpCurrency }}</td>
-              <td>{{ row.value.license_Count }}</td>
-              <td [ngClass]="'text-right'">{{ row.value.rate| erpCurrency }}</td>
-              <td class="actions">
-                <button pButton icon="pi pi-pencil" (click)="editLine(i)"></button>
-                <button pButton icon="pi pi-trash" (click)="removeLine(i)"></button>
-              </td>
+          <!-- Product -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-autocomplete formControlName="productId" [suggestions]="filteresproducts"
+              (completeMethod)="filterProducts($event)" optionLabel="name" optionValue="id" [dropdown]="true"
+              [forceSelection]="true">
+            </p-autocomplete>
+            <label>Product</label>
+          </p-floatlabel>
 
-            </tr>
-          </ng-template>
+          <!-- Users / Quantity -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-inputNumber formControlName="quantity" [min]="1"></p-inputNumber>
+            <label>Users / Qty</label>
+          </p-floatlabel>
 
-        </p-table>
+          <!-- Unit Rate -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-inputNumber formControlName="rate" mode="currency" [currency]="currencyCode"></p-inputNumber>
+            <label>Unit Rate</label>
+          </p-floatlabel>
+
+          <!-- Total -->
+          <p-floatlabel class="w-full md:w-56" variant="on">
+            <p-inputNumber formControlName="total" mode="currency" [currency]="currencyCode"></p-inputNumber>
+            <label>Total</label>
+          </p-floatlabel>
+
+          <div class="add-line">
+            <button pButton label="Add Line" icon="pi pi-plus" type="button" (click)="addLine()"></button>
+          </div>
+
+        </div>
         }
       </p-tabpanel>
       }

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout';
 import { authGuard } from './core/guard/auth-guard';
 import { LoginComponent } from './features/authentication/login/login';
-import { ProductComponent } from './features/masters/product/product';
+import { CategoryComponent } from './features/masters/category/category';
 import { ServiceTypeComponent } from './features/masters/service-type/service-type';
 import { CustomerTypeComponent } from './features/masters/customer-type/customer-type';
 import { CustomerComponent } from './features/masters/customer/customer';
@@ -45,7 +45,7 @@ export const routes: Routes = [
                {
                     path: 'product',
                     children: [
-                         { path: '', component: ProductComponent }
+                         { path: '', component: CategoryComponent }
                     ]
                },
                 {

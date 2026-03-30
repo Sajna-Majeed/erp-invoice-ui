@@ -4,8 +4,8 @@ import { ApiService } from '../api-service';
 @Injectable({
   providedIn: 'root',
 })
-export class ProductService {
-  private url = 'product';
+export class CategoryService {
+  private url = 'category';
   constructor(private api: ApiService) { }
   checkNameExists(name: string, id?: number) {
     return this.api.get(`${this.url}/check`, {
@@ -13,17 +13,12 @@ export class ProductService {
       id: id
     });
   }
-  search(term: string) {
-    return this.api.get(`${this.url}/search?term=${term}`);
-  }
-  getUom() {
-    return this.api.get(`${this.url}/uom`);
-  }
+
   getAll() {
     return this.api.get(this.url);
   }
   getNextNumber() {
-    return this.api.get(`${this.url}/productcode`);
+    return this.api.get(`${this.url}/code`);
   }
   getById(id: number) {
     return this.api.get(`${this.url}/${id}`);

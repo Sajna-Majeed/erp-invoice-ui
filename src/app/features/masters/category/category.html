@@ -8,12 +8,12 @@
   </div>
 
   <!-- Table -->
-  <app-crud-table [data]="products" [fileName]="'Products'" [columns]="columns" [loading]="loading"
-    (edit)="openEdit($event)" (delete)="delete($event.pd_Id)" (toggle)="toggleStatus($event.pd_Id)">
+  <app-crud-table [data]="category" [fileName]="'Categories'" [columns]="columns" [loading]="loading"
+    (edit)="openEdit($event)" (delete)="delete($event.cat_Id)" (toggle)="toggleStatus($event.cat_Id)">
   </app-crud-table>
 </div>
 <!-- Dialog -->
-<p-dialog header="{{ dialogTitle }}" [(visible)]="productDialog" [modal]="true" [style]="{ width: '500px' }">
+<p-dialog header="{{ dialogTitle }}" [(visible)]="categoryDialog" [modal]="true" [style]="{ width: '500px' }">
   <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"> </p-progressSpinner>
   <form [formGroup]="form">
     <div class="form-grid">
@@ -31,10 +31,6 @@
       <app-select-field label="Service Type" [required]="true" controlName="st_Id" [options]="servicetypes" optionLabel="name"
         optionValue="st_Id" [submitted]="formSubmitted">
       </app-select-field>
-
-      <!-- <app-number-field label="Unit Price" [required]="true" controlName="unit_Price" 
-        [submitted]="formSubmitted">
-      </app-number-field> -->
 
     </div>
   </form>

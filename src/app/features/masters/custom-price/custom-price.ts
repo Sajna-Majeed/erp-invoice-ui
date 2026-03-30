@@ -7,7 +7,7 @@ import { CrudTableComponent } from '../../../shared/components/crud-table/crud-t
 import { NumberFieldComponent } from '../../../shared/components/number-field/number-field';
 import { CustomPriceApiService } from '../../../core/service/api-services/customPrice/customPrice';
 import { CustomerApiService } from '../../../core/service/api-services/customer/customer';
-import { ProductService } from '../../../core/service/api-services/product/product';
+import { CategoryService } from '../../../core/service/api-services/category/category';
 import { ServiceTypeApiService } from '../../../core/service/api-services/serviceType/service-type';
 import { ModuleService } from '../../../core/service/api-services/module/module';
 
@@ -42,7 +42,7 @@ export class CustompriceComponent implements OnInit {
   constructor(
     private service: CustomPriceApiService,
     private customerService: CustomerApiService,
-    private productService: ProductService,
+    private productService: CategoryService,
     private serviceTypeService: ServiceTypeApiService,
     private moduleService: ModuleService,
     private confirmationService:ConfirmationService,

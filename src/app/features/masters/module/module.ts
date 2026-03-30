@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
-import { ProductService } from '../../../core/service/api-services/product/product';
+import { CategoryService } from '../../../core/service/api-services/category/category';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AbstractControl, AsyncValidatorFn, ControlContainer, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { map, of } from 'rxjs';
@@ -48,7 +48,7 @@ export class ModuleComponent {
   columns: any[] = [];
 
   constructor(
-    private productService: ProductService,
+    private categoryService: CategoryService,
     private moduleService: ModuleService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
@@ -95,7 +95,7 @@ export class ModuleComponent {
   }
 
   loadProduct() {
-    this.productService.getAll().subscribe((res: any) => {
+    this.categoryService.getAll().subscribe((res: any) => {
       this.products = res.data;
       this.load();
     });

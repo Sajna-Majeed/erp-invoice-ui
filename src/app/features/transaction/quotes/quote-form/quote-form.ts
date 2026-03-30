@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { SHARED_IMPORTS } from '../../../../shared/shared-imports';
-import { ProductService } from '../../../../core/service/api-services/product/product';
+import { CategoryService } from '../../../../core/service/api-services/category/category';
 import { QuoteApiService } from '../../../../core/service/api-services/quote/quote';
 import { ModuleService } from '../../../../core/service/api-services/module/module';
 import { ServiceTypeApiService } from '../../../../core/service/api-services/serviceType/service-type';
@@ -20,7 +20,7 @@ import { UserService } from '../../../../core/service/model-services/user/user';
 
 @Component({
   selector: 'app-quote-view',
-  imports: [SHARED_IMPORTS, MatDatepickerModule, MatNativeDateModule, Message, FileUploadComponent, ErpCurrencyPipe],
+  imports: [SHARED_IMPORTS, MatDatepickerModule, MatNativeDateModule, Message, FileUploadComponent],
   templateUrl: './quote-form.html',
   styleUrl: './quote-form.css',
   providers: [MessageService]
@@ -45,10 +45,38 @@ export class QuoteFormComponent implements OnInit {
   activeTab: any = 0;
   st_products: any[] = [];
   st_modules: any[] = [];
-  licensetype: any[] = [
-    { name: "Perpetual", Id: 3 },
-    { name: "Subscription", Id: 4 },
-  ]
+  activeTabName: string = '';
+
+  getActiveTabName() {
+    const st = this.serviceTypes.find(s => s.st_Id === this.activeTab);
+    return st ? st.name : '';
+  }
+ licenseModels = [
+  { name: 'Perpetual', value: 'Perpetual' },
+  { name: 'Subscription', value: 'Subscription' }
+];
+
+licenseTypes = [
+  { id: 1, name: 'Professional' },
+  { id: 2, name: 'Limited' },
+  { id: 3, name: 'Mobile' },
+  { id: 4, name: 'Indirect' }
+];
+serviceItems = [
+  // ALF
+  { id: 1, name: 'Sage License', st: 'ALF' },
+  { id: 2, name: 'SAP License', st: 'ALF' },
+  { id: 3, name: 'Third Party License', st: 'ALF' },
+
+  // AMC
+  { id: 4, name: 'HLB AMC', st: 'AMC' },
+  { id: 5, name: 'Third Party AMC', st: 'AMC' },
+
+  // HOSTING
+  { id: 6, name: 'HLB Hosting', st: 'HOST' },
+  { id: 7, name: 'CCC Hosting', st: 'HOST' },
+  { id: 8, name: 'Third Party Hosting', st: 'HOST' }
+];
   constructor(
     private fb: FormBuilder,
     private service: QuoteApiService,
@@ -56,7 +84,7 @@ export class QuoteFormComponent implements OnInit {
     private stService: ServiceTypeApiService,
     private bpService: CustomerApiService,
     private router: Router,
-    private productService: ProductService,
+    private productService: CategoryService,
     private route: ActivatedRoute,
     private customPriceService: CustomPriceApiService,
     private messageService: MessageService,
@@ -104,7 +132,12 @@ export class QuoteFormComponent implements OnInit {
 
   //#region Initalization methods
 
-
+getFilteredServiceItems() {
+  debugger
+  var ctab=this.getActiveTabName();
+  var dta=this.serviceItems.filter(x => x.st === ctab);
+  return dta;
+}
   onTabChange() {
     console.log('Tab changed to index:', this.activeTab);
     this.st_products = this.products.filter(x => x.st_Id == this.activeTab)
@@ -128,10 +161,15 @@ export class QuoteFormComponent implements OnInit {
       lines: this.fb.array([])
     });
     this.lineForm = this.fb.group({
-      lt: [3],
       start_Date: [new Date()],
+      licenseTypeId: [1],
+      licenseModel: ['Perpetual'],
+      quantity: [1, Validators.min(1)],
+      workOrderAmount: [0],
+      serviceItemId: [null],
       end_Date: [new Date(new Date().getFullYear(), 11, 31), Validators.required],
-      pd_Id: [null, Validators.required],
+      productId: [null, Validators.required],
+      workOrderNo: [''],
       product: [null],
       module_Id: [null],
       st_Id: [null],
