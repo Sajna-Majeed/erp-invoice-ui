@@ -17,6 +17,9 @@ export class CategoryService {
   getAll() {
     return this.api.get(this.url);
   }
+   getFiltered(st_id:number) {
+    return this.api.get(`${this.url}/filter/${st_id}`);
+  }
   getNextNumber() {
     return this.api.get(`${this.url}/code`);
   }

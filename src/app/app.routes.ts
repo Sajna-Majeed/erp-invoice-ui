@@ -6,7 +6,7 @@ import { CategoryComponent } from './features/masters/category/category';
 import { ServiceTypeComponent } from './features/masters/service-type/service-type';
 import { CustomerTypeComponent } from './features/masters/customer-type/customer-type';
 import { CustomerComponent } from './features/masters/customer/customer';
-import { CustompriceComponent } from './features/masters/custom-price/custom-price';
+import { PriceListComponent } from './features/masters/price-list/price-list';
 import {  ProductComponent } from './features/masters/product/product';
 import { QuoteFormComponent } from './features/transaction/quotes/quote-form/quote-form';
 import { QuoteListComponent } from './features/transaction/quotes/quote-list/quote-list';
@@ -14,6 +14,8 @@ import { QuotePrintComponent } from './features/transaction/quotes/quote-print/q
 import { UserListComponent } from './features/settings/user/user';
 import { RolePermissionComponent } from './features/settings/role-permission/role-permission';
 import { UserProfileComponent } from './features/authentication/user-profile/user-profile';
+import { LicenseTypeComponent } from './features/masters/license-type/license-type';
+import { LicenseModeComponent } from './features/masters/license-mode/license-mode';
 
 export const routes: Routes = [
      { path: '', component: LoginComponent },
@@ -54,6 +56,18 @@ export const routes: Routes = [
                          { path: '', component: ServiceTypeComponent }
                     ]
                },
+                {
+                    path: 'licenseType',
+                    children: [
+                         { path: '', component: LicenseTypeComponent }
+                    ]
+               },
+                {
+                    path: 'licenseMode',
+                    children: [
+                         { path: '', component: LicenseModeComponent }
+                    ]
+               },
                {
                     path: 'customerType',
                     children: [
@@ -67,9 +81,9 @@ export const routes: Routes = [
                     ]
                },
                {
-                    path: 'custom-price',
+                    path: 'price',
                     children: [
-                         { path: '', component: CustompriceComponent }
+                         { path: '', component: PriceListComponent }
                     ]
                },
                {

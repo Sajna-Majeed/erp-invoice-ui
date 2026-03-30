@@ -32,7 +32,7 @@ export class FormErrorComponent {
     if (errors['min']) return `${this.label} cannot be negative`;
     if (errors['max']) return `${this.label} exceeds limit`;
     if (errors['nameExists']) return `${this.label} already exists`;
-
+    if (errors['dateRangeInvalid']) return `Effective To must be after Effective From`;
     return 'Invalid value';
   }
 }

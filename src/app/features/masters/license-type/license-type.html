@@ -1,0 +1,41 @@
+<div class="page">
+  <!-- Header -->
+  <div class="page-header">
+    <h2>License Types</h2>
+    <div class="actions">
+      <button pButton label="Add License Type" icon="pi pi-plus" class="p-button-primary"
+        (click)="openCreate()"></button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <app-crud-table [data]="licenseTypes" [fileName]="'License Types'" [columns]="columns" [loading]="loading"
+    (edit)="openEdit($event)" (delete)="delete($event.lt_Id)" (toggle)="toggleStatus($event.lt_Id)" [showView]="false">
+  </app-crud-table>
+</div>
+<!-- Dialog -->
+<p-dialog header="{{ dialogTitle }}" [(visible)]="licenseTypeDialog" [modal]="true" [style]="{ width: '500px' }">
+  <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"> </p-progressSpinner>
+  <form [formGroup]="form">
+    <div class="form-grid">
+      <div class="field">
+        <label>Code</label>
+        <input pInputText formControlName="code" />
+      </div>
+      <app-text-field label="License Type Name" [required]="true" controlName="name" [submitted]="formSubmitted">
+      </app-text-field>
+
+      <div class="field">
+        <app-text-area label="Description" controlName="description" [submitted]="formSubmitted">
+        </app-text-area>
+      </div>
+
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" text (click)="hideDialog()"></button>
+    <button pButton label="Save" icon="pi pi-check" [disabled]="form.invalid || form.pending || isSaving"
+      [loading]="isSaving" (click)="saveServiceType()"></button>
+  </ng-template>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog> <p-toast></p-toast>

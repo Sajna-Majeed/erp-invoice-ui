@@ -10,7 +10,7 @@ import { ProductService } from '../../../../core/service/api-services/product/pr
 import { ServiceTypeApiService } from '../../../../core/service/api-services/serviceType/service-type';
 import { CustomerApiService } from '../../../../core/service/api-services/customer/customer';
 import { Message } from "primeng/message";
-import { CustomPriceApiService } from '../../../../core/service/api-services/customPrice/customPrice';
+import { PriceListApiService } from '../../../../core/service/api-services/price-list/price-list';
 import { FileUploadComponent } from "../../../../shared/components/file-upload/file-upload";
 import { MessageService } from 'primeng/api';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
@@ -86,7 +86,7 @@ serviceItems = [
     private router: Router,
     private categoryService: CategoryService,
     private route: ActivatedRoute,
-    private customPriceService: CustomPriceApiService,
+    private customPriceService: PriceListApiService,
     private messageService: MessageService,
     private userService: UserService
   ) { }

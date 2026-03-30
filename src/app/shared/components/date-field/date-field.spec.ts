@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProductComponent } from './product';
+import { DateFieldComponent } from './date-field';
 
-describe('ProductComponent', () => {
-  let component: ProductComponent;
-  let fixture: ComponentFixture<ProductComponent>;
+describe('DateFieldComponent', () => {
+  let component: DateFieldComponent;
+  let fixture: ComponentFixture<DateFieldComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductComponent]
+      imports: [DateFieldComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ProductComponent);
+    fixture = TestBed.createComponent(DateFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

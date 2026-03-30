@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CustomPriceApiService } from './customPrice';
+import { LicenseTypeService } from './license-type';
 
-describe('CustomPriceApiService', () => {
-  let service: CustomPriceApiService;
+describe('LicenseTypeService', () => {
+  let service: LicenseTypeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CustomPriceApiService);
+    service = TestBed.inject(LicenseTypeService);
   });
 
   it('should be created', () => {

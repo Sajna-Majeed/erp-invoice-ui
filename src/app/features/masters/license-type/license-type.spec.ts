@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Customprice } from './custom-price';
+import { LicenseTypeComponent } from './license-type';
 
-describe('Customprice', () => {
-  let component: Customprice;
-  let fixture: ComponentFixture<Customprice>;
+describe('LicenseTypeComponent', () => {
+  let component: LicenseTypeComponent;
+  let fixture: ComponentFixture<LicenseTypeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Customprice]
+      imports: [LicenseTypeComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Customprice);
+    fixture = TestBed.createComponent(LicenseTypeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

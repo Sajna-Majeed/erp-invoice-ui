@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProductComponent } from './product';
+import { LicenseModeComponent } from './license-mode';
 
-describe('ProductComponent', () => {
-  let component: ProductComponent;
-  let fixture: ComponentFixture<ProductComponent>;
+describe('LicenseModeComponent', () => {
+  let component: LicenseModeComponent;
+  let fixture: ComponentFixture<LicenseModeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProductComponent]
+      imports: [LicenseModeComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ProductComponent);
+    fixture = TestBed.createComponent(LicenseModeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

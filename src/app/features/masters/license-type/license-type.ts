@@ -1,121 +1,108 @@
 import { Component } from '@angular/core';
 import { SHARED_IMPORTS } from '../../../shared/shared-imports';
-import { CategoryService } from '../../../core/service/api-services/category/category';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AbstractControl, AsyncValidatorFn, ControlContainer, FormBuilder, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { map, of } from 'rxjs';
 import { TextFieldComponent } from '../../../shared/components/text-field/text-field';
-import { SelectFieldComponent } from '../../../shared/components/select-field/select-field';
 import { CrudTableComponent } from '../../../shared/components/crud-table/crud-table';
-import { ProductService } from '../../../core/service/api-services/product/product';
+import { UserService } from '../../../core/service/model-services/user/user';
+import { ServiceTypeApiService } from '../../../core/service/api-services/serviceType/service-type';
 import { TextAreaComponent } from "../../../shared/components/text-area/text-area";
+import { LicenseTypeService } from '../../../core/service/api-services/license-type/license-type';
 
 @Component({
-  selector: 'app-module',
+ selector: 'app-service-type',
   standalone: true,
   imports: [
     SHARED_IMPORTS,
-    TextFieldComponent,
-    SelectFieldComponent,
     CrudTableComponent,
+    TextFieldComponent,
     TextAreaComponent
 ],
   viewProviders: [
     { provide: ControlContainer, useExisting: FormGroupDirective }
   ],
-  templateUrl: './product.html',
-  styleUrl: './product.css',
+  templateUrl: './license-type.html',
+  styleUrl: './license-type.css',
   providers: [ConfirmationService, MessageService]
 })
-export class ProductComponent {
 
-  products: any[] = [];
-  categories: any[] = [];
+export class LicenseTypeComponent {
+
+  licenseTypes: any[] = [];
 
   loading = false;
   isSaving = false;
 
-  moduleDialog = false;
-  dialogTitle = 'Add Product';
+  licenseTypeDialog = false;
+  dialogTitle = 'Add License Type';
   formSubmitted = false;
 
-  isALF:boolean=false;
   form!: FormGroup;
-  company: any = {};
-  columns: any[] = [];
+  company:any={};
+  columns: any[] = [ ];
 
   constructor(
-    private categoryService: CategoryService,
-    private service: ProductService,
+    private licenseTypeservice: LicenseTypeService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
+    private userservice:UserService,
     private fb: FormBuilder
-  ) { }
+  ) {}
 
-
+  
   ngOnInit() {
     this.initForm();
-    this.loadCategory();
+    this.load();
+    this.company = this.userservice.getCompany();
     this.columns = [
-      { field: 'rowId', header: '#', type: 'rowId' },
-      { field: 'code', header: 'Code', type: 'text' },
-      { field: 'name', header: 'Name', type: 'text' },
-      // { field: 'category', header: 'Category', type: 'text' },
-      { field: 'description', header: `Description`, type: 'text' },
-      { field: 'is_Active', header: 'Status', type: 'status', sortable: false }
+     { field: 'rowId', header: '#', type: 'rowId',sortable:false },
+    { field: 'code', header: 'Code', type: 'text' },
+    { field: 'name', header: 'Name', type: 'text' },
+    { field: 'description', header: 'Description', type: 'text' },
+    { field: 'is_Active', header: 'Status', type: 'status' ,sortable:false}
     ];
   }
 
   initForm() {
     this.form = this.fb.group({
-      pd_Id: [null],
-      code: [{ value: '',disabled: true}],
-      name: [
+      lt_Id: [null],
+      code: [{ value: '', disabled: true }],
+       name: [
         '',
         {
-          validators: [Validators.required, Validators.maxLength(100)],
+          validators: [Validators.required, Validators.maxLength(20)],
           asyncValidators: [this.nameUniqueValidator()],
           updateOn: 'blur'
         }
       ],
-      description: [''],
-      cat_Id: [null, Validators.required]
-    });
+       description: [''],
+     });
   }
 
-  loadCategory() {
-    this.categoryService.getAll().subscribe((res: any) => {
-      this.categories = res.data;
-      this.loadProduct();
-    });
-  }
-
-  loadProduct() {
+  load() {
     this.loading = true;
-    this.service.getAll().subscribe((res: any) => {
-      this.products = res.data;
-      this.products.forEach((product: any, index: number) => {
-        product.category = this.categories.find((c: any) => c.cat_Id === product.cat_Id)?.name || 'N/A';
-      });
+     this.licenseTypeservice.getAll().subscribe((res:any)=>{
+    this.licenseTypes = res.data;
       this.loading = false;
     });
   }
 
-  loadProductCode() {
-    this.service.getNextNumber().subscribe((res: any) => {
+ 
+ loadLicenseTypeCode() {
+    this.licenseTypeservice.getNextNumber().subscribe((res: any) => {
       this.form.patchValue({ code: res.data });
     });
   }
-
 
   nameUniqueValidator(): AsyncValidatorFn {
     return (control: AbstractControl) => {
 
       if (!control.value) return of(null);
 
-      const id = this.form?.get('pd_Id')?.value;
+      const id = this.form?.get('lt_Id')?.value;
 
-      return this.service
+      return this.licenseTypeservice
         .checkNameExists(control.value, id)
         .pipe(map((res: any) => res.data ? { nameExists: true } : null));
     };
@@ -124,35 +111,34 @@ export class ProductComponent {
   openCreate() {
 
     this.form.reset({
-      unit_Rate: 0,
-      alf_Rate: 0,
+      unit_Price: 0,
+      tax_Rate: 5,
       is_active: true
     });
 
-    this.dialogTitle = 'Add Product';
-    this.moduleDialog = true;
+    this.dialogTitle = 'Add License Type';
+    this.licenseTypeDialog = true;
     this.formSubmitted = false;
 
-    this.loadProductCode();
+    this.loadLicenseTypeCode();
   }
 
+  openEdit(licenseType: any) {
 
-  openEdit(module: any) {
+    this.form.patchValue(licenseType);
 
-    this.form.patchValue(module);
-
-    this.dialogTitle = 'Edit Product';
-    this.moduleDialog = true;
+    this.dialogTitle = 'Edit License Type';
+    this.licenseTypeDialog = true;
     this.formSubmitted = false;
 
     this.form.get('name')?.updateValueAndValidity();
   }
 
   hideDialog() {
-    this.moduleDialog = false;
+    this.licenseTypeDialog = false;
   }
 
-  saveModule() {
+  saveServiceType() {
 
     this.formSubmitted = true;
 
@@ -162,22 +148,22 @@ export class ProductComponent {
 
     const value = this.form.getRawValue();
 
-    const request = value.pd_Id
-      ? this.service.update(value)
-      : this.service.create(value);
+    const request = value.lt_Id
+      ? this.licenseTypeservice.update(value)
+      : this.licenseTypeservice.create(value);
 
     request.subscribe({
       next: () => {
 
         this.isSaving = false;
-        this.moduleDialog = false;
+        this.licenseTypeDialog = false;
 
-        this.loadProduct();
+        this.load();
 
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
-          detail: value.id ? 'Product updated' : 'Product created'
+          detail: value.id ? 'License Type updated' : 'License Type created'
         });
 
       },
@@ -198,18 +184,19 @@ export class ProductComponent {
   delete(id: number) {
 
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this Licese Type?',
-      header: 'Delete Licese Type',
+      message: 'Are you sure you want to delete this license type?',
+      header: 'Delete License Type',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.service.delete(id).subscribe(() => {
 
-          this.loadProduct();
+        this.licenseTypeservice.delete(id).subscribe(() => {
+
+          this.load();
 
           this.messageService.add({
             severity: 'success',
             summary: 'Deleted',
-            detail: 'Product deleted successfully'
+            detail: 'Service Type deleted successfully'
           });
 
         });
@@ -221,19 +208,19 @@ export class ProductComponent {
   toggleStatus(id: number) {
 
     this.confirmationService.confirm({
-      message: 'Are you sure you want to change Product status?',
+      message: 'Are you sure you want to change license type status?',
       header: 'Change Status',
       icon: 'pi pi-info-circle',
       accept: () => {
 
-        this.service.toggleStatus(id).subscribe(() => {
+        this.licenseTypeservice.toggleStatus(id).subscribe(() => {
 
-          this.loadProduct();
+          this.load();
 
           this.messageService.add({
             severity: 'success',
             summary: 'Updated',
-            detail: 'Product status updated'
+            detail: 'License Type status updated'
           });
 
         });

@@ -1,0 +1,62 @@
+<div class="page">
+  <!-- Header -->
+  <div class="page-header">
+    <h2>Custom Product Price</h2>
+    <div class="actions">
+      <button pButton label="Add Custom Product Price" icon="pi pi-plus" class="p-button-primary"
+        (click)="openCreate()"></button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <app-crud-table [data]="pricelist" [fileName]="'CustomPrice'" [columns]="columns" [loading]="loading"
+    (edit)="openEdit($event)" (delete)="delete($event.pl_Id)" (toggle)="toggleStatus($event.pl_Id)">
+  </app-crud-table>
+</div>
+<!-- Dialog -->
+<p-dialog header="{{ dialogTitle }}" [(visible)]="customPriceDialog" [modal]="true" [style]="{ width: '500px' }">
+  <p-progressSpinner *ngIf="isSaving" styleClass="dialog-spinner"> </p-progressSpinner>
+  <form [formGroup]="form">
+    <div class="form-grid">
+      <div>
+        <app-select-field label="Service Type" [required]="true" controlName="st_Id" [options]="serviceType"
+          optionLabel="name" optionValue="st_Id" [submitted]="formSubmitted" (selectionChange)="loadCategories()">
+        </app-select-field>
+        <app-select-field label="Category" [required]="true" controlName="cat_Id" [options]="categories"
+          optionLabel="name" optionValue="cat_Id" [submitted]="formSubmitted" (selectionChange)="loadProducts()">
+        </app-select-field>
+        <app-select-field label="Product" [required]="true" controlName="pd_Id" [options]="products" optionLabel="name"
+          optionValue="pd_Id" [submitted]="formSubmitted">
+        </app-select-field>
+        <div *ngIf="form.value.st_Id === 1">
+          <app-select-field label="License Type" [required]="true" controlName="lt_Id" [options]="licenseTypes"
+            optionLabel="name" optionValue="lt_Id" [submitted]="formSubmitted">
+          </app-select-field>
+          <app-select-field label="License Mode" [required]="true" controlName="lm_Id" [options]="licenseModels"
+            optionLabel="name" optionValue="lm_Id" [submitted]="formSubmitted">
+          </app-select-field>
+        </div>
+        <app-number-field label="Unit Rate" [required]="true" controlName="unit_Rate" mode="currency" currency="USD"
+          [submitted]="formSubmitted">
+        </app-number-field>
+        <div *ngIf="form.value.st_Id === 1">
+          <app-number-field label="Alf Rate" [required]="true" controlName="alf_Rate" mode="decimal" suffix="%"
+            [submitted]="formSubmitted">
+          </app-number-field>
+        </div>
+        <app-date-field label="Effective From" [required]="true" controlName="effective_From" dateFormat="mm/dd/yy"
+          [submitted]="formSubmitted">
+        </app-date-field>
+        <app-date-field label="Effective To" controlName="effective_To" dateFormat="mm/dd/yy"
+          [submitted]="formSubmitted">
+        </app-date-field>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <button pButton label="Cancel" text (click)="hideDialog()"></button>
+    <button pButton label="Save" icon="pi pi-check" [disabled]="form.invalid || form.pending || isSaving"
+      [loading]="isSaving" (click)="saveCustomerType()"></button>
+  </ng-template>
+</p-dialog>
+<p-confirmDialog></p-confirmDialog> <p-toast></p-toast>

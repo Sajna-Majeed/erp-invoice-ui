@@ -4,8 +4,8 @@ import { ApiService } from '../api-service';
 @Injectable({
   providedIn: 'root',
 })
-export class ProductService {
-   private url = 'product';
+export class LicenseTypeService {
+   private url = 'LicenseType';
     constructor(private api: ApiService) {}
   
    
@@ -18,9 +18,6 @@ export class ProductService {
     getAll() {
       return this.api.get(this.url);
     }
-      getFiltered(cat_id:number) {
-    return this.api.get(`${this.url}/filter/${cat_id}`);
-  }
     getNextNumber() {
        return this.api.get(`${this.url}/code`);
     }
