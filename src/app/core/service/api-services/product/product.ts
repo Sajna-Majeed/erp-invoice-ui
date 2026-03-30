@@ -4,13 +4,11 @@ import { ApiService } from '../api-service';
 @Injectable({
   providedIn: 'root',
 })
-export class ModuleService {
-   private url = 'licenseType';
+export class ProductService {
+   private url = 'product';
     constructor(private api: ApiService) {}
   
-    search(term: string) {
-      return this.api.get(`${this.url}/search?term=${term}`);
-    }
+   
     checkNameExists(name: string, id?: number) {
     return this.api.get(`${this.url}/check`, {
       name: name,
@@ -21,11 +19,8 @@ export class ModuleService {
       return this.api.get(this.url);
     }
     getNextNumber() {
-       return this.api.get(`${this.url}/licenseTypecode`);
+       return this.api.get(`${this.url}/code`);
     }
-     getById(id: number) {
-        return this.api.get(`${this.url}/${id}`);
-      }
       create(module: any) {
         return this.api.post(this.url, module);
       }
@@ -38,7 +33,4 @@ export class ModuleService {
       toggleStatus(moduleId: number) {
         return this.api.delete(`${this.url}/toggle/${moduleId}`);
       }
-      getByFilter(pd_id: number) {
-    return this.api.get(`${this.url}/product/${pd_id}`);
-  }
 }

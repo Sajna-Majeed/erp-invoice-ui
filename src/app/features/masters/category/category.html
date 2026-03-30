@@ -23,14 +23,13 @@
       </div>
       <app-text-field label="Category" controlName="name" [required]="true" [submitted]="formSubmitted">
       </app-text-field>
-
+      <app-select-field label="Service Type" [required]="true" controlName="st_Id" [options]="servicetypes"
+        optionLabel="name" optionValue="st_Id" [submitted]="formSubmitted">
+      </app-select-field>
       <div class="field">
         <app-text-area label="Description" controlName="description" [submitted]="formSubmitted">
         </app-text-area>
       </div>
-      <app-select-field label="Service Type" [required]="true" controlName="st_Id" [options]="servicetypes" optionLabel="name"
-        optionValue="st_Id" [submitted]="formSubmitted">
-      </app-select-field>
 
     </div>
   </form>

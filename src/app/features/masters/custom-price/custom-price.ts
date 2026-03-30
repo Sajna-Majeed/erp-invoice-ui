@@ -9,7 +9,7 @@ import { CustomPriceApiService } from '../../../core/service/api-services/custom
 import { CustomerApiService } from '../../../core/service/api-services/customer/customer';
 import { CategoryService } from '../../../core/service/api-services/category/category';
 import { ServiceTypeApiService } from '../../../core/service/api-services/serviceType/service-type';
-import { ModuleService } from '../../../core/service/api-services/module/module';
+import { ProductService } from '../../../core/service/api-services/product/product';
 
 
 @Component({
@@ -44,7 +44,7 @@ export class CustompriceComponent implements OnInit {
     private customerService: CustomerApiService,
     private productService: CategoryService,
     private serviceTypeService: ServiceTypeApiService,
-    private moduleService: ModuleService,
+    private moduleService: ProductService,
     private confirmationService:ConfirmationService,
     private messageService: MessageService,
     private fb: FormBuilder
@@ -122,11 +122,7 @@ loadModules() {
 
  filterModule() {
 
-    const productId = this.form.value.pd_Id;
-    this.moduleService.getByFilter(productId)
-      .subscribe((res: any) => {
-        this.modules = res.data;
-      });
+   this.modules;
 
   }
   openCreate() {

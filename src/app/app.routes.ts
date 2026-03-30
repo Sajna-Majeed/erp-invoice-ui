@@ -7,7 +7,7 @@ import { ServiceTypeComponent } from './features/masters/service-type/service-ty
 import { CustomerTypeComponent } from './features/masters/customer-type/customer-type';
 import { CustomerComponent } from './features/masters/customer/customer';
 import { CustompriceComponent } from './features/masters/custom-price/custom-price';
-import { ModuleComponent } from './features/masters/module/module';
+import {  ProductComponent } from './features/masters/product/product';
 import { QuoteFormComponent } from './features/transaction/quotes/quote-form/quote-form';
 import { QuoteListComponent } from './features/transaction/quotes/quote-list/quote-list';
 import { QuotePrintComponent } from './features/transaction/quotes/quote-print/quote-print';
@@ -43,7 +43,7 @@ export const routes: Routes = [
                     ]
                },
                {
-                    path: 'product',
+                    path: 'category',
                     children: [
                          { path: '', component: CategoryComponent }
                     ]
@@ -73,9 +73,9 @@ export const routes: Routes = [
                     ]
                },
                {
-                    path: 'module',
+                    path: 'product',
                     children: [
-                         { path: '', component: ModuleComponent },
+                         { path: '', component: ProductComponent },
                     ]
                },
                 {

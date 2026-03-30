@@ -6,7 +6,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { SHARED_IMPORTS } from '../../../../shared/shared-imports';
 import { CategoryService } from '../../../../core/service/api-services/category/category';
 import { QuoteApiService } from '../../../../core/service/api-services/quote/quote';
-import { ModuleService } from '../../../../core/service/api-services/module/module';
+import { ProductService } from '../../../../core/service/api-services/product/product';
 import { ServiceTypeApiService } from '../../../../core/service/api-services/serviceType/service-type';
 import { CustomerApiService } from '../../../../core/service/api-services/customer/customer';
 import { Message } from "primeng/message";
@@ -80,11 +80,11 @@ serviceItems = [
   constructor(
     private fb: FormBuilder,
     private service: QuoteApiService,
-    private moduleService: ModuleService,
+    private productService: ProductService,
     private stService: ServiceTypeApiService,
     private bpService: CustomerApiService,
     private router: Router,
-    private productService: CategoryService,
+    private categoryService: CategoryService,
     private route: ActivatedRoute,
     private customPriceService: CustomPriceApiService,
     private messageService: MessageService,
@@ -103,7 +103,7 @@ serviceItems = [
       this.bpService.getAll().toPromise(),
       this.productService.getAll().toPromise(),
       this.stService.getAll().toPromise(),
-      this.moduleService.getAll().toPromise()
+      this.productService.getAll().toPromise()
     ]).then(([customers, products, services, modules]: any) => {
 
       this.customers = customers.data;
